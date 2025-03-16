@@ -1,10 +1,41 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>Log in | DoctorClick</title>
 </head>
+
 <body>
-    <h1>Pantalla login</h1>
+    <header>
+        <h1>Pantalla login</h1>
+    </header>
+    <main>
+        <fieldset>
+            <form id="formulario">
+                <label for="nombre">Nombre de usuario</label>
+                <input type="text" id="nombre" name="nombre" required>
+                <br>
+                <label for="contrasena">Contrasena</label>
+                <input type="text" id="contrasena" name="contrasena" required>
+                <br>
+                <label for="usuario">Iniciar sesión como:</label>
+                <select id="usuario">
+                    <option value="paciente">Paciente</option>
+                    <option value="medico">Médico</option>
+                </select>
+                <br>
+                <input type="submit">
+                <br>
+                <p>¿Es tu primera vez aquí?
+                <p>
+                    <a href="registro.html">Registrate aquí</a>
+            </form>
+        </fieldset>
+    </main>
+    <footer>
+        <p>Esto es el footer</p>
+    </footer>
 </body>
+
 </html>
