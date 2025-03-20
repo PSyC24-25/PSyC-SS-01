@@ -1,17 +1,16 @@
 package es.deusto.spq.doctorclick.model;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Table;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "Pacientes")
 public class Paciente {
+
     @Id
-    @GeneratedValue
-    private Long idPaciente;
-    private String nombrePaciente;
-    private String apellidoPaciente;
-    private String dniPaciente;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private String nombre;
+    private String apellido;
+    private String dni;
 
 }
