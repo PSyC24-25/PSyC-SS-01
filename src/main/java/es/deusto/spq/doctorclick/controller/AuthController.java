@@ -5,10 +5,15 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("medico/")
-public class MedicoController {
-    @GetMapping("")
-    public String indice(){
-        return "medicoIndice";
+@RequestMapping("/")
+public class AuthController {
+    @GetMapping("login")
+    public String login(){
+        return "login";
+    }
+
+    @GetMapping("registro")
+    public String registro(){
+        return "registro";
     }
 }

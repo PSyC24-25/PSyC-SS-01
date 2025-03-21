@@ -11,13 +11,15 @@
         <h1>Pantalla login</h1>
     </header>
     <main>
+        <div th:if="${param.error}">Usuario o contraseña inválidos.</div>
+        <div th:if="${param.logout}">Se ha cerrado la sesión.</div>
         <fieldset>
-            <form id="formulario">
+            <form th:action="@{/login}" method="post">
                 <label for="nombre">Nombre de usuario</label>
-                <input type="text" id="nombre" name="nombre" required>
+                <input type="text" id="nombre" name="username" required>
                 <br>
                 <label for="contrasena">Contrasena</label>
-                <input type="text" id="contrasena" name="contrasena" required>
+                <input type="password" id="contrasena" name="password" required>
                 <br>
                 <label for="usuario">Iniciar sesión como:</label>
                 <select id="usuario">
@@ -25,7 +27,7 @@
                     <option value="medico">Médico</option>
                 </select>
                 <br>
-                <input type="submit">
+                <button type="submit">Iniciar sesión</button>
                 <br>
                 <p>¿Es tu primera vez aquí?
                 <p>

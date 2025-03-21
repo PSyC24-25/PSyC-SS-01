@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 @Service
 public class PacienteService {
-
     private final PacienteRepository pacienteRepository;
 
     @Autowired

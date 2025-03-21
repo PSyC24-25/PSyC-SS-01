@@ -5,10 +5,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("medico/")
-public class MedicoController {
+@RequestMapping("paciente/")
+public class PacienteController {
     @GetMapping("")
     public String indice(){
-        return "medicoIndice";
+        return "pacienteIndice";
     }
 }
