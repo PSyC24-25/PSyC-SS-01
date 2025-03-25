@@ -3,7 +3,11 @@
 
 <head>
     <meta charset="UTF-8">
+    <meta name="csrf-token" content="${_csrf.token}">
     <title>Registro | DoctorClick</title>
+    <style>
+        * {margin: 5px;}
+    </style>
 </head>
 
 <body>
@@ -12,15 +16,38 @@
     </header>
     <main>
         <fieldset> <legend>Introduzca sus datos</legend>
-            <form id="registro">
+            <form id="formulario" method="post" th:action="@{/registro}">
+                <input type="hidden" name="_csrf" value="${_csrf.token}"> <!-- Token CSRF generado por Spring -->
+
                 <label for="nombre">Nombre</label>
                 <input type="text" id="nombre" name="nombre" required>
                 <br>
-                <label for="dni">DNI</label>
-                <input type="text"id="dni" name="dni">
+                <label for="apellido">Apellido</label>
+                <input type="text" id="apellido" name="apellido" required>
                 <br>
-                <input type="submit" value="Registrarse">
-                <a href="login.html">
+                <label for="contrasena">Contrasena</label>
+                <input type="password" id="contrasena" name="contrasena" required>
+                <br>
+                <label for="dni">DNI</label>
+                <input type="text" id="dni" name="dni">
+                <br>
+                <label for="tipo">Registrarse como</label>
+                <select id="tipo" name="tipo">
+                    <option value="medico">Médico</option>
+                    <option value="paciente">Paciente</option>
+                </select>
+
+                <label for="especialidad"></label>
+                <select id="especialidad" name="especialidad">
+                    <option value="cardiologia">Cardiología</option>
+                    <option value="neurologia">Neurología</option>
+                    <option value="oncologia">Oncología</option>
+                    <option value="pediatria">Pediatria</option>
+                    <option value="psiquiatria">Psiquiatria</option>
+                </select>
+                <br>
+                <input type="submit" id="enviar" value="Registrarse">
+                <a href="/login">
                     <button type="button">Cancelar</button>
                 </a>
             </form>
@@ -30,6 +57,7 @@
     <footer>
         <p>Esto es el footer</p>
     </footer>
+    <script src="/js/registro.js"></script>
 </body>
 
 </html>

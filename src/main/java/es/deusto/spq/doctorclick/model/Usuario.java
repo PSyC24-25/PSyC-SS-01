@@ -13,7 +13,7 @@ public abstract class Usuario {
 
     private String dni;
     private String nombre;
-    private String apellidos;
+    private String apellido;
 
     private String contrasenia;
 
@@ -25,8 +25,8 @@ public abstract class Usuario {
         this.nombre = nombre;
     }
 
-    public void setApellidos(String apellidos) {
-        this.apellidos = apellidos;
+    public void setApellido(String apellido) {
+        this.apellido = apellido;
     }
 
     public void setContrasenia(String contrasenia) {
@@ -41,8 +41,8 @@ public abstract class Usuario {
         return nombre;
     }
 
-    public String getApellidos() {
-        return apellidos;
+    public String getApellido() {
+        return apellido;
     }
 
     public String getContrasenia() {
