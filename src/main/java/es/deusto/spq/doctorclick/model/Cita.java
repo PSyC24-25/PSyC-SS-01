@@ -60,7 +60,12 @@ public class Cita {
     }
 
     public void setMedico(Medico medico) {
-        this.medico = medico;
+        if (medico.getEspecialidad().equals(this.especialidad)) {
+            this.medico = medico;
+        } else {
+            throw new IllegalArgumentException("El médico no tiene la especialidad adecuada.");
+        }
+
     }
 
     public void setFecha(LocalDateTime fecha) {
