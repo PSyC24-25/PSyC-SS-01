@@ -7,7 +7,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         let data = {
             "nombre": document.getElementById("nombre").value,
-            "apellido": document.getElementById("apellido").value,
+            "apellidos": document.getElementById("apellidos").value,
             "contrasena": document.getElementById("contrasena").value,
             "dni": document.getElementById("dni").value,
             "tipo": document.getElementById("tipo").value,

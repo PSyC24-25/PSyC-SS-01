@@ -7,6 +7,11 @@ public class Medico extends Usuario {
 
     private Especialidad especialidad;
 
+    public Medico() {}
+    public Medico(Especialidad especialidad) {
+        this.especialidad = especialidad;
+    }
+
     public Especialidad getEspecialidad() {
         return especialidad;
     }

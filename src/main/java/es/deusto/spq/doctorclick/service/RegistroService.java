@@ -3,6 +3,7 @@ package es.deusto.spq.doctorclick.service;
 import es.deusto.spq.doctorclick.model.Especialidad;
 import es.deusto.spq.doctorclick.model.Medico;
 import es.deusto.spq.doctorclick.model.Paciente;
+import es.deusto.spq.doctorclick.model.Usuario;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,24 +21,24 @@ public class RegistroService {
         this.pacienteService = pacienteService;
     }
 
-    public void registrar(String nombre, String apellido, String contrasenia, String dni, String tipo, String especialidad) {
-        if (tipo.equals("medico")) {
-            Medico medico = new Medico();
-            medico.setNombre(nombre);
-            medico.setApellido(apellido);
-            medico.setDni(dni);
-            medico.setContrasenia(contrasenia);
-            medico.setEspecialidad(Especialidad.valueOf(especialidad.toUpperCase()));
-            medicoService.registrarMedico(medico);
+    public void registrarUsuario(String nombre, String apellidos, String contrasenia, String dni, String tipo, String especialidad) {
+        Usuario usuario = null;
+
+        if(tipo.equals("medico")) {
+            usuario = new Medico(Especialidad.valueOf(especialidad.toUpperCase()));
+        } else if(tipo.equals("paciente")) {
+            usuario = new Paciente();
         }
-        else if (tipo.equals("paciente")) {
-            Paciente paciente = new Paciente();
-            paciente.setNombre(nombre);
-            paciente.setApellido(apellido);
-            paciente.setDni(dni);
-            paciente.setContrasenia(contrasenia);
-            paciente.setDni(dni);
-            pacienteService.registrarPaciente(paciente);
+
+        usuario.setNombre(nombre);
+        usuario.setApellidos(apellidos);
+        usuario.setDni(dni);
+        usuario.setContrasenia(contrasenia);
+
+        if(tipo.equals("medico")) {
+            medicoService.registrarMedico((Medico)usuario);
+        } else {
+            pacienteService.registrarPaciente((Paciente)usuario);
         }
     }
 }

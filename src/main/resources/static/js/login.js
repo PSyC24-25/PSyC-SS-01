@@ -21,9 +21,13 @@ document.addEventListener("DOMContentLoaded", function(){
                   },
             body: JSON.stringify(data)
         })
-            .then(response => response.json())
-            .then(data => {
-                console.log("Usuario registrado con éxito: ", data)
+            .then(async (response) => {
+                if(response.ok) {
+                    window.location.href = (data.tipoUsuario === "paciente" ? "/paciente/" : "/medico/");
+                } else {
+                    let data = await response.json();
+                    console.log("Error al loguear usuario: ", data)
+                }
         })
             .catch(error => {
                 console.log("Error en el registro:", error)
