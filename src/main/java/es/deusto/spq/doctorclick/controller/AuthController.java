@@ -85,12 +85,7 @@ public class AuthController {
         }
 
         try {
-            String tokenJwt = AuthService.CrearTokenJWT(dni, tipoUsuario);
-            Cookie cookie = new Cookie("JWT", tokenJwt);
-            cookie.setHttpOnly(true);
-            cookie.setMaxAge(60 * 60); // 1 hora
-            cookie.setPath("/");
-            response.addCookie(cookie);
+            response.addCookie(crearCookieSession(AuthService.CrearTokenJWT(dni, tipoUsuario)));
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
@@ -100,18 +95,63 @@ public class AuthController {
     }
 
     @PostMapping("registro")
-    public ResponseEntity<Map<String, String>> registrarUsuario(@RequestBody Map<String, String> requestData) {
+    public ResponseEntity<Map<String, String>> registrarUsuario(@RequestBody Map<String, String> requestData, HttpServletResponse response) {
+        Map<String, String> responseMap = new HashMap<>();
+
         String nombre = requestData.get("nombre");
         String dni = requestData.get("dni");
-        String tipo = requestData.get("tipo");
+        String tipoUsuario = requestData.get("tipo");
         String apellidos = requestData.get("apellidos");
         String contrasena = requestData.get("contrasena");
         String especialidad = requestData.get("especialidad");
 
-        registroService.registrarUsuario(nombre, apellidos, contrasena, dni, tipo, especialidad);
+        if(!tipoUsuario.equals("paciente") && !tipoUsuario.equals("medico")) {
+            System.out.println("Tipo de usuario invalido.");
+            responseMap.put("error", "Tipo de usuario invalido.");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(responseMap);
+        }
 
-        Map<String, String> response = new HashMap<>();
-        response.put("message", "Usuario registrado con éxito");
-        return ResponseEntity.ok(response);
+        if(!isDniValido(dni)) {
+            responseMap.put("error", "El DNI no es valido.");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseMap);
+        }
+
+        boolean registroExitoso = registroService.registrarUsuario(nombre, apellidos, contrasena, dni, tipoUsuario, especialidad);
+        if(!registroExitoso) {
+            responseMap.put("error", "Error al registrar el usuario en la base de datos. Probablemente el DNI ya esta en uso.");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseMap);
+        }
+
+        try {
+            response.addCookie(crearCookieSession(AuthService.CrearTokenJWT(dni, tipoUsuario)));
+        } catch (Exception e) {
+            responseMap.put("error", "Error al crear la sesion. Intentalo mas tarde.");
+            return ResponseEntity.ok(responseMap);
+        }
+
+        responseMap.put("message", "Usuario registrado con éxito");
+        return ResponseEntity.ok(responseMap);
+    }
+
+    private static byte[] letrasDni = "TRWAGMYFPDXBNJZSQVHLCKE".getBytes();
+    private boolean isDniValido(String dni) {
+        if(dni == null) return false;
+        if(dni.length() != 9) return false;
+
+        byte letraIntroducida = dni.getBytes()[8];
+
+        int numero = Integer.valueOf(dni.substring(0, 8));
+        byte letraEsperada = letrasDni[numero % letrasDni.length];
+
+        return letraIntroducida == letraEsperada;
+    }
+
+    private Cookie crearCookieSession(String tokenJwt) {
+        Cookie cookie = new Cookie("JWT", tokenJwt);
+        cookie.setHttpOnly(true);
+        cookie.setMaxAge(60 * 60); // 1 hora
+        cookie.setPath("/");
+
+        return cookie;
     }
 }

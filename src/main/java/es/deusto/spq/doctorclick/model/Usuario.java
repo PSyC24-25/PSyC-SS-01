@@ -8,10 +8,8 @@ import jakarta.persistence.Id;
 @Entity
 public abstract class Usuario {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
-
     private String dni;
+
     private String nombre;
     private String apellidos;
 

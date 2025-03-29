@@ -21,7 +21,7 @@ public class RegistroService {
         this.pacienteService = pacienteService;
     }
 
-    public void registrarUsuario(String nombre, String apellidos, String contrasenia, String dni, String tipo, String especialidad) {
+    public boolean registrarUsuario(String nombre, String apellidos, String contrasenia, String dni, String tipo, String especialidad) {
         Usuario usuario = null;
 
         if(tipo.equals("medico")) {
@@ -35,10 +35,11 @@ public class RegistroService {
         usuario.setDni(dni);
         usuario.setContrasenia(contrasenia);
 
+
         if(tipo.equals("medico")) {
-            medicoService.registrarMedico((Medico)usuario);
+            return medicoService.registrarMedico((Medico)usuario);
         } else {
-            pacienteService.registrarPaciente((Paciente)usuario);
+            return pacienteService.registrarPaciente((Paciente)usuario);
         }
     }
 }
