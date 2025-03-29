@@ -22,13 +22,16 @@ public class Cita {
     @Enumerated(EnumType.STRING)
     private Especialidad especialidad;
 
+    private String resumen;
+
     public Cita() {}
 
-    public Cita(Paciente paciente, Medico medico, LocalDateTime fecha, Especialidad especialidad) {
+    public Cita(Paciente paciente, Medico medico, LocalDateTime fecha, Especialidad especialidad, String resumen) {
         this.paciente = paciente;
         this.medico = medico;
         this.fecha = fecha;
         this.especialidad = especialidad;
+        this.resumen = resumen;
     }
 
     public long getId() {
@@ -49,6 +52,10 @@ public class Cita {
 
     public Especialidad getEspecialidad() {
         return especialidad;
+    }
+
+    public String getResumen() {
+        return resumen;
     }
 
     public void setId(long id) {
@@ -74,5 +81,9 @@ public class Cita {
 
     public void setEspecialidad(Especialidad especialidad) {
         this.especialidad = especialidad;
+    }
+
+    public void setResumen(String resumen){
+        this.resumen = resumen;
     }
 }

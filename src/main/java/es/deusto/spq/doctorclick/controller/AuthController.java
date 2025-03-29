@@ -28,7 +28,6 @@ public class AuthController {
 
     @PostMapping("registro")
     public ResponseEntity<Map<String, String>> registrarUsuario(@RequestBody Map<String, String> requestData) {
-        System.out.println(requestData);
 
         String nombre = requestData.get("nombre");
         String dni = requestData.get("dni");
@@ -40,9 +39,7 @@ public class AuthController {
         registroService.registrar(nombre,apellido,contrasena,dni,tipo,especialidad);
 
         Map<String, String> response = new HashMap<>();
-
         response.put("message", "Usuario registrado con éxito");
         return ResponseEntity.ok(response);
-
     }
 }

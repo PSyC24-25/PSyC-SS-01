@@ -3,6 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
+    <meta name="csrf-token" content="${_csrf.token}">
     <title>Log in | DoctorClick</title>
 </head>
 
@@ -15,19 +16,21 @@
         <div th:if="${param.logout}">Se ha cerrado la sesión.</div>
         <fieldset>
             <form th:action="@{/login}" method="post">
-                <label for="nombre">Nombre de usuario</label>
-                <input type="text" id="nombre" name="username" required>
+                <input type="hidden" name="_csrf" value="${_csrf.token}"> <!-- Token CSRF generado por Spring -->
+
+                <label for="username">Nombre de usuario</label>
+                <input type="text" id="username" name="username" required>
                 <br>
-                <label for="contrasena">Contrasena</label>
-                <input type="password" id="contrasena" name="password" required>
+                <label for="password">Contrasena</label>
+                <input type="password" id="password" name="password" required>
                 <br>
                 <label for="usuario">Iniciar sesión como:</label>
-                <select id="usuario">
+                <select id="usuario" name="usuario">
                     <option value="paciente">Paciente</option>
                     <option value="medico">Médico</option>
                 </select>
                 <br>
-                <button type="submit">Iniciar sesión</button>
+                <button type="submit" id="enviar">Iniciar sesión</button>
                 <br>
                 <p>¿Es tu primera vez aquí?
                 <p>
@@ -38,6 +41,7 @@
     <footer>
         <p>Esto es el footer</p>
     </footer>
+    <script src="/js/login.js"></script>
 </body>
 
 </html>

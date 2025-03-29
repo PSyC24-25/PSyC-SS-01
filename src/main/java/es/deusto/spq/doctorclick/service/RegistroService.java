@@ -25,6 +25,8 @@ public class RegistroService {
             Medico medico = new Medico();
             medico.setNombre(nombre);
             medico.setApellido(apellido);
+            medico.setDni(dni);
+            medico.setContrasenia(contrasenia);
             medico.setEspecialidad(Especialidad.valueOf(especialidad.toUpperCase()));
             medicoService.registrarMedico(medico);
         }
@@ -32,6 +34,8 @@ public class RegistroService {
             Paciente paciente = new Paciente();
             paciente.setNombre(nombre);
             paciente.setApellido(apellido);
+            paciente.setDni(dni);
+            paciente.setContrasenia(contrasenia);
             paciente.setDni(dni);
             pacienteService.registrarPaciente(paciente);
         }
