@@ -1,14 +1,12 @@
 package es.deusto.spq.doctorclick.controller;
 
-import es.deusto.spq.doctorclick.model.Paciente;
 import es.deusto.spq.doctorclick.model.Usuario;
 import es.deusto.spq.doctorclick.repository.MedicoRepository;
 import es.deusto.spq.doctorclick.repository.PacienteRepository;
 import es.deusto.spq.doctorclick.service.AuthService;
-import es.deusto.spq.doctorclick.service.MedicoService;
-import es.deusto.spq.doctorclick.service.PacienteService;
 import es.deusto.spq.doctorclick.service.RegistroService;
 import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -38,6 +37,16 @@ public class AuthController {
     @GetMapping("registro")
     public String registro(){
         return "registro";
+    }
+
+    @GetMapping("logout")
+    public void logout(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        Cookie cookie = new Cookie("JWT", null);
+        cookie.setHttpOnly(true);
+        cookie.setMaxAge(0);
+        cookie.setPath("/");
+        response.addCookie(cookie);
+        response.sendRedirect(request.getContextPath() + "/");
     }
 
     @PostMapping("login")

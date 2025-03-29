@@ -1,6 +1,5 @@
 package es.deusto.spq.doctorclick.filters;
 
-import com.nimbusds.jwt.JWTClaimsSet;
 import es.deusto.spq.doctorclick.service.AuthService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -27,18 +26,17 @@ public class FiltroMedico extends OncePerRequestFilter {
         assert token != null; // Sabemos que no es null
 
         try {
-            JWTClaimsSet claims = AuthService.ObtenerClaimsJWT(token);
-
-            String tipo = (String)claims.getClaim("tipo");
-            if(!tipo.equals("medico")) {
-                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                response.getWriter().write("No autorizado.");
+            if(AuthService.ObtenerClaimsJWT(token).getClaim("tipo").equals("medico")){
+                chain.doFilter(request, response);
                 return;
             }
+
+            response.sendRedirect(request.getContextPath() + "/login");
+            // Esto se usara para la api
+            // response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            // response.getWriter().write("No autorizado.");
         } catch (ParseException e) {
             System.out.println("Error al obtener claims del JWT.");
         }
-
-        chain.doFilter(request, response);
     }
 }
