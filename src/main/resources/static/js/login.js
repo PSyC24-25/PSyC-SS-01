@@ -9,7 +9,6 @@ document.addEventListener("DOMContentLoaded", function(){
             'password' : document.getElementById("password").value,
             'tipoUsuario': document.getElementById("usuario").value
         }
-        console.log(data)
 
         let csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 

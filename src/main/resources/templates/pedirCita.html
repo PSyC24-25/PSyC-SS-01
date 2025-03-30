@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Crear Cita | DoctorClick</title>
+    <style>
+        * {
+            margin: 5px
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>Pide tu cita aquí</h1>
+    </header>
+    <main>
+        <fieldset>
+            <legend>Introduzca los datos</legend>
+            <form action="/paciente/pedirCita" method="post" th:action="@{/pedirCita}">
+                <input type="hidden" name="_csrf" value="${_csrf.token}"> <!-- Token CSRF generado por Spring -->
+
+                <label for="especialidad">Especialidad</label>
+                <select id="especialidad" name="especialidad">
+                    <option value="cardiologia">Cardiología</option>
+                    <option value="neurologia">Neurología</option>
+                    <option value="oncologia">Oncología</option>
+                    <option value="pediatria">Pediatria</option>
+                    <option value="psiquiatria">Psiquiatria</option>
+                </select>
+                <br>
+                <label for="fecha">Introduzca el día de la cita</label>
+                <input type="date" id="fecha" name="fecha">
+                <br>
+                <label for="hora">Introduzca la hora de la cita</label>
+                <input type="time" id="hora" name="hora">
+                <br>
+                <label for="resumen">Escribe aqui la información básica sobre la cita</label>
+                <br>
+                <textarea id="resumen" name="resumen"></textarea>
+                <br>
+                <input type="submit" id="enviar" value="Pedir cita">
+            </form>
+        </fieldset>
+    </main>
+    <footer>
+        <p>Esto es el footer</p>
+    </footer>
+    <script src="/js/pedirCita.js"></script>
+</body>
+
+</html>

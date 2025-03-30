@@ -6,7 +6,9 @@
     <meta name="csrf-token" content="${_csrf.token}">
     <title>Registro | DoctorClick</title>
     <style>
-        * {margin: 5px;}
+        * {
+            margin: 5px;
+        }
     </style>
 </head>
 
@@ -15,7 +17,8 @@
         <h1>Pantalla registro</h1>
     </header>
     <main>
-        <fieldset> <legend>Introduzca sus datos</legend>
+        <fieldset>
+            <legend>Introduzca sus datos</legend>
             <form id="formulario" method="post" th:action="@{/registro}">
                 <input type="hidden" name="_csrf" value="${_csrf.token}"> <!-- Token CSRF generado por Spring -->
 

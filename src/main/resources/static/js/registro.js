@@ -13,8 +13,6 @@ document.addEventListener("DOMContentLoaded", function () {
             "tipo": document.getElementById("tipo").value,
             "especialidad": document.getElementById("especialidad").value
         }
-        alert(JSON.stringify(data))
-
 
         let csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
