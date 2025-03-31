@@ -1,6 +1,10 @@
 package es.deusto.spq.doctorclick.controller;
 
+import com.nimbusds.jwt.JWTClaimsSet;
+import es.deusto.spq.doctorclick.service.AuthService;
 import es.deusto.spq.doctorclick.service.PacienteService;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -29,10 +33,26 @@ public class PacienteController {
     }
 
     @PostMapping("/pedirCita")
-    public ResponseEntity<Map<String,String>> pedirCita(@RequestBody Map<String,String> requestData) {
+    public ResponseEntity<Map<String,String>> pedirCita(@RequestBody Map<String,String> requestData, HttpServletRequest request) {
+        String token = null;
+        String dni = null;
+        Cookie[] cookies = request.getCookies();
+        if(cookies != null) {
+            for(Cookie cookie : cookies){
+                if(cookie.getName().equals("JWT")){
+                    token = cookie.getValue();
+                }
+            }
+        }
+        try {
+            JWTClaimsSet claims = AuthService.ObtenerClaimsJWT(token);
+            dni = (String) claims.getClaim("dni");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         Map<String, String> responseMap = new HashMap<>();
-        if (pacienteService.crearCita(requestData)){
+        if (pacienteService.crearCita(requestData, dni)){
             responseMap.put("mensaje", "Cita creada correctamente");
             return ResponseEntity.ok(responseMap);
         }

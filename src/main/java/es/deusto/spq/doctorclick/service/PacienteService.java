@@ -33,8 +33,11 @@ public class PacienteService {
         return true;
     }
 
-    public boolean crearCita(Map<String, String> requestData) {
-
+    public boolean crearCita(Map<String, String> requestData, String dni) {
+        Paciente paciente = null;
+        if ((paciente = pacienteRepository.findByDni(dni)) == null) {
+            return false;
+        }
         StringBuffer sb = new StringBuffer();
         sb.append(requestData.get("fecha"));
         sb.append(" ");
@@ -42,12 +45,13 @@ public class PacienteService {
 
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         LocalDateTime fecha = LocalDateTime.parse(sb.toString(), dtf);
-        //TODO: Falta relacionar la cita con el paciente (cita.setPaciente())
+
         Cita cita = new Cita();
+        cita.setPaciente(paciente);
         cita.setFecha(fecha);
-        cita.setEspecialidad(Especialidad.valueOf(requestData.get("especialidad")));
+        cita.setEspecialidad(Especialidad.valueOf(requestData.get("especialidad").toUpperCase()));
         cita.setResumen(requestData.get("resumen"));
         citaRepository.save(cita);
-        return false;
+        return true;
     }
 }
