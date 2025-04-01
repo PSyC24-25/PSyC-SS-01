@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -53,5 +54,10 @@ public class PacienteService {
         cita.setResumen(requestData.get("resumen"));
         citaRepository.save(cita);
         return true;
+    }
+
+    public List<Cita> obtenerCitasPorDni(String dni) {
+        Paciente paciente = pacienteRepository.findByDni(dni);
+        return citaRepository.findByPaciente(paciente);
     }
 }
