@@ -2,6 +2,7 @@ package es.deusto.spq.doctorclick.service;
 
 import es.deusto.spq.doctorclick.model.Cita;
 import es.deusto.spq.doctorclick.model.Especialidad;
+import es.deusto.spq.doctorclick.model.Medico;
 import es.deusto.spq.doctorclick.model.Paciente;
 import es.deusto.spq.doctorclick.repository.CitaRepository;
 import es.deusto.spq.doctorclick.repository.PacienteRepository;
@@ -18,11 +19,13 @@ public class PacienteService {
 
     private final PacienteRepository pacienteRepository;
     private final CitaRepository citaRepository;
+    private final MedicoService medicoService;
 
     @Autowired
-    public PacienteService(PacienteRepository pacienteRepository, CitaRepository citaRepository) {
+    public PacienteService(PacienteRepository pacienteRepository, CitaRepository citaRepository, MedicoService medicoService) {
         this.pacienteRepository = pacienteRepository;
         this.citaRepository = citaRepository;
+        this.medicoService = medicoService;
     }
 
     public boolean registrarPaciente(Paciente paciente){
@@ -50,7 +53,14 @@ public class PacienteService {
         Cita cita = new Cita();
         cita.setPaciente(paciente);
         cita.setFecha(fecha);
-        cita.setEspecialidad(Especialidad.valueOf(requestData.get("especialidad").toUpperCase()));
+
+        // Por ahora asignar la cita al medico que se desea sin verificaciones.
+        // En un futuro esto tendria que tener en cuenta las franjas libres del medico.
+        Long idMedico = Long.valueOf(requestData.get("idMedico"));
+        Medico medicoEncargado = medicoService.getMedico(idMedico).get();
+        cita.setEspecialidad(medicoEncargado.getEspecialidad());
+        cita.setMedico(medicoEncargado);
+
         cita.setResumen(requestData.get("resumen"));
         citaRepository.save(cita);
         return true;

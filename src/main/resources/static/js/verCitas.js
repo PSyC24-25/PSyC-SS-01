@@ -18,7 +18,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     <tr>
                         <td class="border p-2">${fecha}</td>
                         <td class="border p-2">${hora}</td>
-                        <td class="border p-2">${cita.medico}</td>
+                        <td class="border p-2">${cita.medico.nombre} ${cita.medico.apellidos}</td>
                         <td class="border p-2">${cita.especialidad}</td>
                         <td class="border p-2">${cita.resumen}</td>
                     </tr>`;

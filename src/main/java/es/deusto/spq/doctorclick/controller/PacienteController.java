@@ -2,7 +2,9 @@ package es.deusto.spq.doctorclick.controller;
 
 import com.nimbusds.jwt.JWTClaimsSet;
 import es.deusto.spq.doctorclick.model.Cita;
+import es.deusto.spq.doctorclick.model.Medico;
 import es.deusto.spq.doctorclick.service.AuthService;
+import es.deusto.spq.doctorclick.service.MedicoService;
 import es.deusto.spq.doctorclick.service.PacienteService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
@@ -14,9 +16,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 
 @Controller
 @RequestMapping("paciente/")
@@ -24,14 +29,33 @@ public class PacienteController {
 
     @Autowired
     PacienteService pacienteService;
+    @Autowired
+    MedicoService medicoService;
 
     @GetMapping("")
     public String indice() {
         return "pacienteIndice";
     }
 
+    public static class Par {
+        public String nombreVisual;
+        public Long idMedico;
+    }
+
     @GetMapping("/pedirCita")
-    public String pedirCita() {
+    public String pedirCita(Model model) {
+        List<Medico> medicos = medicoService.getMedicos();
+
+        List<Par> medicosEspecialidades = new ArrayList<>();
+        for(Medico medico : medicos) {
+            Par par = new Par();
+            par.nombreVisual = medico.getEspecialidad() + " (" + medico.getNombre() + " " + medico.getApellidos() + ")";
+            par.idMedico = medico.getId();
+
+            medicosEspecialidades.add(par);
+        }
+
+        model.addAttribute("especialidades", medicosEspecialidades);
         return "pedirCita";
     }
 

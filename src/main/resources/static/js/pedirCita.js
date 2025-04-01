@@ -8,7 +8,7 @@ document.addEventListener("DOMContentLoaded", function(){
         let data = {
             "fecha": document.getElementById("fecha").value,
             "hora": document.getElementById("hora").value,
-            "especialidad": document.getElementById("especialidad").value,
+            "idMedico": document.getElementById("medicoEspecialidad").value,
             "resumen": document.getElementById("resumen").value
         }
 

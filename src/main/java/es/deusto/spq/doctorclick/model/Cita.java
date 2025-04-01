@@ -11,11 +11,11 @@ public class Cita {
     private long id;
 
     @ManyToOne
-    @JoinColumn(name = "paciente_dni", referencedColumnName = "dni", nullable = false)
+    @JoinColumn(name = "paciente_id", referencedColumnName = "id", nullable = false)
     private Paciente paciente;
 
     @ManyToOne
-    @JoinColumn(name = "medico_id")
+    @JoinColumn(name = "medico_id", referencedColumnName = "id", nullable = false)
     private Medico medico;
     private LocalDateTime fecha;
 

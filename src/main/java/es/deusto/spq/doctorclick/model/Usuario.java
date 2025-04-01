@@ -1,13 +1,15 @@
 package es.deusto.spq.doctorclick.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+import jakarta.validation.Constraint;
 
 @Entity
 public abstract class Usuario {
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private long id;
+
+    @Column(unique = true, nullable = false)
     private String dni;
 
     private String nombre;
@@ -37,6 +39,10 @@ public abstract class Usuario {
 
     public void setContrasenia(String contrasenia) {
         this.contrasenia = contrasenia;
+    }
+
+    public long getId() {
+        return id;
     }
 
     public String getDni() {
