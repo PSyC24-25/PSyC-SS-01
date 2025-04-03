@@ -1,19 +1,47 @@
-#(Encender servidor bd)
+# Proyecto DoctorClick
 
-#COMANDOS PARA GESTIONAR LA BASE DE DATOS
+Este es un proyecto que utiliza una base de datos y un servidor para gestionar la información. El siguiente README contiene las instrucciones necesarias para configurar la base de datos y ejecutar la aplicación.
 
-DROP SCHEMA IF exists doctorclick;
+## Configuración de la base de datos
 
-create schema doctorclick;
+A continuación, se detallan los comandos necesarios para configurar la base de datos:
 
-DROP USER IF EXISTS 'spq'@'%';
+1. **Eliminar el esquema y el usuario si existen:**
 
-CREATE USER 'spq'@'%' IDENTIFIED BY 'spq';
+    ```sql
+    DROP SCHEMA IF EXISTS doctorclick;
+    DROP USER IF EXISTS 'spq'@'%';
+    ```
 
-GRANT ALL PRIVILEGES ON doctorclick.* TO 'spq'@'%' WITH GRANT OPTION;
+2. **Crear un nuevo esquema (base de datos):**
 
-#(Ejecución del programa)
+    ```sql
+    CREATE SCHEMA doctorclick;
+    ```
 
-mvn compile
+3. **Crear un usuario con los privilegios necesarios:**
 
-mvn spring-boot:run
+    ```sql
+    CREATE USER 'spq'@'%' IDENTIFIED BY 'spq';
+    GRANT ALL PRIVILEGES ON doctorclick.* TO 'spq'@'%' WITH GRANT OPTION;
+    ```
+
+Con estos pasos, habrás configurado correctamente la base de datos `doctorclick` y el usuario `spq` con los permisos necesarios.
+
+## Ejecución del programa
+
+Para ejecutar el proyecto, sigue los siguientes pasos:
+
+1. **Compilar el proyecto con Maven:**
+
+    ```bash
+    mvn compile
+    ```
+
+2. **Iniciar el servidor Spring Boot:**
+
+    ```bash
+    mvn spring-boot:run
+    ```
+
+Esto iniciará el servidor y podrás acceder a la aplicación en el puerto configurado.
