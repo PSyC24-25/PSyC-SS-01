@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Mis Citas | DoctorClick</title>
+</head>
+
+<body>
+    <header>
+        <h1>Pantalla de citas programadas</h1>
+        <nav>
+            <a href="/medico/">Volver</a>
+        </nav>
+    </header>
+    <main>
+        <table id="tabla">
+            <tr>
+                <th>Fecha</th>
+                <th>Medico</th>
+                <th>Especialidad</th>
+                <th>Resumen</th>
+            </tr>
+            <tr th:each="cita : ${citas}">
+                <td class="fecha" th:text="${cita.fecha}"></td> <!-- Formato de hora -->
+                <td th:text="${cita.medico.nombre}"></td>
+                <td th:text="${cita.especialidad}"></td>
+                <td th:text="${cita.resumen}"></td>
+            </tr>
+        </table>
+    </main>
+    <footer>
+        <p>Esto es el footer</p>
+    </footer>
+    <script src="/js/verCitasMedico.js"></script>
+</body>
+
+</html>

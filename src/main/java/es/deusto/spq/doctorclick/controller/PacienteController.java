@@ -1,6 +1,7 @@
 package es.deusto.spq.doctorclick.controller;
 
 import com.nimbusds.jwt.JWTClaimsSet;
+import es.deusto.spq.doctorclick.Utility;
 import es.deusto.spq.doctorclick.model.Cita;
 import es.deusto.spq.doctorclick.model.Medico;
 import es.deusto.spq.doctorclick.service.AuthService;
@@ -61,46 +62,24 @@ public class PacienteController {
 
     @PostMapping("/pedirCita")
     public ResponseEntity<Map<String, String>> pedirCita(@RequestBody Map<String, String> requestData, HttpServletRequest request) {
-        String token = null;
-        String dni = null;
-        Cookie[] cookies = request.getCookies();
-        if (cookies != null) {
-            for (Cookie cookie : cookies) {
-                if (cookie.getName().equals("JWT")) {
-                    token = cookie.getValue();
-                }
-            }
-        }
+        Map<String, String> responseMap = new HashMap<>();
         try {
-            JWTClaimsSet claims = AuthService.ObtenerClaimsJWT(token);
-            dni = (String) claims.getClaim("dni");
+            String dni = Utility.obtenerDni(request);
+            if (pacienteService.crearCita(requestData, dni)) {
+                responseMap.put("mensaje", "Cita creada correctamente");
+                return ResponseEntity.ok(responseMap);
+            }
         } catch (Exception e) {
             e.printStackTrace();
+            responseMap.put("mensaje", "No se pudo crear cita");
         }
-
-        Map<String, String> responseMap = new HashMap<>();
-        if (pacienteService.crearCita(requestData, dni)) {
-            responseMap.put("mensaje", "Cita creada correctamente");
-            return ResponseEntity.ok(responseMap);
-        }
-        responseMap.put("mensaje", "No se pudo crear cita");
         return ResponseEntity.badRequest().body(responseMap);
     }
 
     @GetMapping("/verCitasJson")
     public ResponseEntity<?> verCitasJson(HttpServletRequest request) {
-        String token = null;
-        Cookie[] cookies = request.getCookies();
-        if (cookies != null) {
-            for (Cookie cookie : cookies) {
-                if ("JWT".equals(cookie.getName())) {
-                    token = cookie.getValue();
-                }
-            }
-        }
         try {
-            JWTClaimsSet claims = AuthService.ObtenerClaimsJWT(token);
-            String dni = (String) claims.getClaim("dni");
+            String dni = Utility.obtenerDni(request);
             List<Cita> citas = pacienteService.obtenerCitasPorDni(dni);
             return ResponseEntity.ok(citas);
         } catch (Exception e) {
