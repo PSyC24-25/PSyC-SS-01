@@ -1,4 +1,4 @@
-package es.deusto.spq.doctorclick.controller;
+package es.deusto.spq.doctorclick.controller.web;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -11,6 +11,6 @@ import java.io.IOException;
 public class BaseController {
     @GetMapping("/")
     public void indice(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        response.sendRedirect(request.getContextPath() + "/login");
+        response.sendRedirect(request.getContextPath() + "/auth/login");
     }
 }

@@ -38,8 +38,10 @@ public class FilterConfig {
 
         // Endpoints que requieren explicitamente no estar autenticado
         registrationBean.addUrlPatterns("/"); // Indice redirigira al login o a la pagina por defecto segun el rol
-        registrationBean.addUrlPatterns("/login");
-        registrationBean.addUrlPatterns("/registro");
+        registrationBean.addUrlPatterns("/auth/login");
+        registrationBean.addUrlPatterns("/auth/registro");
+        registrationBean.addUrlPatterns("/api/auth/login");
+        registrationBean.addUrlPatterns("/api/auth/registro");
 
         registrationBean.setOrder(1);
 

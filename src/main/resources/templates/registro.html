@@ -19,7 +19,7 @@
     <main>
         <fieldset>
             <legend>Introduzca sus datos</legend>
-            <form id="formulario" method="post" th:action="@{/registro}">
+            <form id="formulario" method="post" th:action="@{/api/auth/registro}">
                 <input type="hidden" name="_csrf" value="${_csrf.token}"> <!-- Token CSRF generado por Spring -->
 
                 <label for="nombre">Nombre</label>
@@ -50,7 +50,7 @@
                 </select>
                 <br>
                 <input type="submit" id="enviar" value="Registrarse">
-                <a href="/login">
+                <a href="/auth/login">
                     <button type="button">Cancelar</button>
                 </a>
             </form>

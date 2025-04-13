@@ -26,7 +26,7 @@ public class FiltroJWT extends OncePerRequestFilter {
             if(AuthService.EsJWTValido(token)) {
                 chain.doFilter(request, response);
             } else {
-                response.sendRedirect(request.getContextPath() + "/login");
+                response.sendRedirect(request.getContextPath() + "/auth/login");
                 // Esto se usara para la api
                 // response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                 // response.getWriter().write("No autorizado. El token de sesion no es valido.");

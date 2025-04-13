@@ -1,4 +1,4 @@
-package es.deusto.spq.doctorclick.controller;
+package es.deusto.spq.doctorclick.controller.api;
 
 import es.deusto.spq.doctorclick.model.Medico;
 import es.deusto.spq.doctorclick.model.Paciente;
@@ -13,7 +13,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
@@ -21,30 +20,18 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-@Controller
-@RequestMapping("/")
-public class AuthController {
+@RestController
+@RequestMapping("/api/auth")
+public class ApiAuthController {
     @Autowired
     private PacienteRepository pacienteRepository;
     @Autowired
-    private MedicoRepository medicoRespository;
+    private MedicoRepository medicoRepository;
 
     @Autowired
     private RegistroService registroService;
-    @Autowired
-    private MedicoRepository medicoRepository;
 
-    @GetMapping("login")
-    public String login(){
-        return "login";
-    }
-
-    @GetMapping("registro")
-    public String registro(){
-        return "registro";
-    }
-
-    @GetMapping("logout")
+    @GetMapping("/logout")
     public void logout(HttpServletRequest request, HttpServletResponse response) throws IOException {
         Cookie cookie = new Cookie("JWT", null);
         cookie.setHttpOnly(true);
@@ -54,7 +41,7 @@ public class AuthController {
         response.sendRedirect(request.getContextPath() + "/");
     }
 
-    @PostMapping("login")
+    @PostMapping("/login")
     public ResponseEntity<Map<String, String>> loginUsuario(@RequestBody Map<String, String> requestData, HttpServletResponse response) {
         Map<String, String> responseMap = new HashMap<>();
 
@@ -101,7 +88,7 @@ public class AuthController {
         return ResponseEntity.ok(responseMap);
     }
 
-    @PostMapping("registro")
+    @PostMapping("/registro")
     public ResponseEntity<Map<String, String>> registrarUsuario(@RequestBody Map<String, String> requestData, HttpServletResponse response) {
         Map<String, String> responseMap = new HashMap<>();
 
@@ -160,5 +147,8 @@ public class AuthController {
         cookie.setPath("/");
 
         return cookie;
+    }
+
+    public static class PacienteController {
     }
 }

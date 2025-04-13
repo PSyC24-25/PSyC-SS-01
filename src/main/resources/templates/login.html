@@ -15,7 +15,7 @@
         <div th:if="${param.error}">Usuario o contraseña inválidos.</div>
         <div th:if="${param.logout}">Se ha cerrado la sesión.</div>
         <fieldset>
-            <form th:action="@{/login}" method="post">
+            <form th:action="@{/api/auth/login}" method="post">
                 <input type="hidden" name="_csrf" value="${_csrf.token}"> <!-- Token CSRF generado por Spring -->
 
                 <label for="username">Nombre de usuario</label>
@@ -34,7 +34,7 @@
                 <br>
                 <p>¿Es tu primera vez aquí?
                 <p>
-                    <a href="/registro">Registrate aquí</a>
+                    <a href="/auth/registro">Registrate aquí</a>
             </form>
         </fieldset>
     </main>

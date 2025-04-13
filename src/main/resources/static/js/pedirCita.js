@@ -47,7 +47,7 @@ const actualizarCalendario = () => {
         const horasDiv = document.createElement("div");
         horasDiv.classList.add("horas");
 
-        fetch(`/paciente/api/citas/disponibles?anyo=${fecha.getFullYear()}&mes=${fecha.getMonth()+1}&dia=${fecha.getDate()}&medico=${idMedico}`)
+        fetch(`/api/paciente/citas/disponibles?anyo=${fecha.getFullYear()}&mes=${fecha.getMonth()+1}&dia=${fecha.getDate()}&medico=${idMedico}`)
             .then(async (response) => {
                 let horasDisponibles = await response.json();
                 if(horasDisponibles.length === 0) {
@@ -94,7 +94,7 @@ const enviarFormulario = () => {
     if(idMedico < 0 || fechaSeleccionada === null)
         return;
 
-    fetch("/paciente/api/citas", {
+    fetch("/api/paciente/citas", {
         method: "POST",
         headers: {
             'Content-Type': 'application/json'

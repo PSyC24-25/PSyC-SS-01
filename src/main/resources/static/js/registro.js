@@ -16,7 +16,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         let csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
-        fetch('/registro', {
+        fetch('/api/auth/registro', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

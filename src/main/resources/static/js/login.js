@@ -12,7 +12,7 @@ document.addEventListener("DOMContentLoaded", function(){
 
         let csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
-        fetch('/login', {
+        fetch('/api/auth/login', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

@@ -6,6 +6,11 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 
 public class Utility {
+    public static class ParMedicoEspecialidad {
+        public String nombreVisual;
+        public Long idMedico;
+    }
+
 
     public static String obtenerDni(HttpServletRequest request) throws Exception {
         String token = obtenerTokenDeCookies(request);

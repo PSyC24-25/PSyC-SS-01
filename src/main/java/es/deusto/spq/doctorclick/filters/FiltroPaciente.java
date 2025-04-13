@@ -31,7 +31,7 @@ public class FiltroPaciente extends OncePerRequestFilter {
                 return;
             }
 
-            response.sendRedirect(request.getContextPath() + "/login");
+            response.sendRedirect(request.getContextPath() + "/auth/login");
             // Esto se usara para la api
             // response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             // response.getWriter().write("No autorizado.");
