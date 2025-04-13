@@ -3,6 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="/css/pedirCita.css" />
     <title>Crear Cita | DoctorClick</title>
     <style>
         * {
@@ -21,17 +22,98 @@
             <form action="/paciente/pedirCita" method="post" th:action="@{/pedirCita}">
                 <input type="hidden" name="_csrf" value="${_csrf.token}"> <!-- Token CSRF generado por Spring -->
 
-                <label for="medicoEspecialidad">Especialidad</label>
-                <select id="medicoEspecialidad" name="especialidad">
-                    <option th:each="par : ${especialidades}" th:value="${par.idMedico}" th:text="${par.nombreVisual}"></option>
-                </select>
-                <br>
-                <label for="fecha">Introduzca el día de la cita</label>
-                <input type="date" id="fecha" name="fecha">
-                <br>
-                <label for="hora">Introduzca la hora de la cita</label>
-                <input type="time" id="hora" name="hora">
-                <br>
+                <fieldset>
+                    <legend>Especialidad, medico y fecha</legend>
+                    <label for="medicoEspecialidad">Especialidad</label>
+                    <label for="medicoEspecialidad">Especialidad</label>
+                    <select id="medicoEspecialidad" name="especialidad">
+                        <option th:each="par : ${especialidades}" th:value="${par.idMedico}" th:text="${par.nombreVisual}"></option>
+                    </select>
+                    <br>
+
+                    <div class="dias">
+                        <div class="dia">
+                            <div class="titulo">15/04/2025, Martes</div>
+                            <div class="horas">
+                                <div class="hora">
+                                    <span>16:10</span>
+                                    <input type="radio" name="franja" />
+                                </div>
+                                <div class="hora">
+                                    <span>16:20</span>
+                                    <input type="radio" name="franja" />
+                                </div>
+                                <div class="hora">
+                                    <span>16:30</span>
+                                    <input type="radio" name="franja" />
+                                </div>
+                                <div class="hora">
+                                    <span>16:40</span>
+                                    <input type="radio" name="franja" />
+                                </div>
+                                <div class="hora">
+                                    <span>16:50</span>
+                                    <input type="radio" name="franja" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="dia">
+                            <div class="titulo">16/04/2025, Miercoles</div>
+                            <div class="horas">
+                                <div class="hora">
+                                    <span>16:10</span>
+                                    <input type="radio" name="franja" />
+                                </div>
+                                <div class="hora">
+                                    <span>16:20</span>
+                                    <input type="radio" name="franja" />
+                                </div>
+                                <div class="hora">
+                                    <span>16:30</span>
+                                    <input type="radio" name="franja" />
+                                </div>
+                                <div class="hora">
+                                    <span>16:40</span>
+                                    <input type="radio" name="franja" />
+                                </div>
+                                <div class="hora">
+                                    <span>16:50</span>
+                                    <input type="radio" name="franja" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="dia">
+                            <div class="titulo">17/04/2025, Jueves</div>
+                            <div class="horas">
+                                <div class="hora">
+                                    <span>16:10</span>
+                                    <input type="radio" name="franja" />
+                                </div>
+                                <div class="hora">
+                                    <span>16:20</span>
+                                    <input type="radio" name="franja" />
+                                </div>
+                                <div class="hora">
+                                    <span>16:30</span>
+                                    <input type="radio" name="franja" />
+                                </div>
+                                <div class="hora ocupada">
+                                    <span>16:40</span>
+                                    <input type="radio" name="franja" disabled />
+                                </div>
+                                <div class="hora">
+                                    <span>16:50</span>
+                                    <input type="radio" name="franja" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="navegadorCalendario">
+                        <button type="button" name="izquierda" disabled>&lt;&lt; Dias previos</button>
+                        <button type="button" name="derecha">Dias siguientes &gt;&gt;</button>
+                    </div>
+                </fieldset>
+
                 <label for="resumen">Escribe aqui la información básica sobre la cita</label>
                 <br>
                 <textarea id="resumen" name="resumen"></textarea>

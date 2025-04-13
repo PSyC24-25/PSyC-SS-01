@@ -1,0 +1,49 @@
+.dias {
+    display: flex;
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.dias > .dia {
+    flex:1;
+    margin: 0;
+    border-left: 1px solid black;
+}
+
+.dias > .dia > .titulo {
+    background: #065591;
+    color: white;
+    text-align: center;
+    font-weight: bold;
+    margin: 0;
+    padding: 2px 0;
+}
+
+.dias > .dia > .horas {
+    background: #b8d9f2;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    margin: 0;
+}
+
+.dias > .dia > .horas > .hora {
+    margin: 0;
+    border-right: 1px solid black;
+    border-bottom: 1px solid black;
+    text-align: center;
+}
+
+.dias > .dia > .horas > .hora.ocupada {
+    background: #e04848;
+    color: white;
+}
+
+.navegadorCalendario {
+    width: 100%;
+    display:flex;
+    justify-content: space-between;
+}
+
+.navegadorCalendario > button {
+
+}
