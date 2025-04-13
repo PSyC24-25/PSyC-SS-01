@@ -1,5 +1,7 @@
 package es.deusto.spq.doctorclick.controller;
 
+import es.deusto.spq.doctorclick.model.Medico;
+import es.deusto.spq.doctorclick.model.Paciente;
 import es.deusto.spq.doctorclick.model.Usuario;
 import es.deusto.spq.doctorclick.repository.MedicoRepository;
 import es.deusto.spq.doctorclick.repository.PacienteRepository;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/")
@@ -28,6 +31,8 @@ public class AuthController {
 
     @Autowired
     private RegistroService registroService;
+    @Autowired
+    private MedicoRepository medicoRepository;
 
     @GetMapping("login")
     public String login(){
@@ -64,11 +69,13 @@ public class AuthController {
         }
 
 
-        Usuario usuario;
+        Usuario usuario = null;
         if(tipoUsuario.equals("paciente")) {
-            usuario = pacienteRepository.findByDni(dni);
+            Optional<Paciente> paciente = pacienteRepository.findByDni(dni);
+            if(paciente.isPresent()) { usuario = paciente.get(); }
         } else {
-            usuario = medicoRespository.findByDni(dni);
+            Optional<Medico> medico = medicoRepository.findByDni(dni);
+            if(medico.isPresent()) { usuario = medico.get(); }
         }
 
         if(usuario == null) {

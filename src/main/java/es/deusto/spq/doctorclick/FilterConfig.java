@@ -1,15 +1,21 @@
 package es.deusto.spq.doctorclick;
 
-import es.deusto.spq.doctorclick.filters.FiltroJWT;
-import es.deusto.spq.doctorclick.filters.FiltroMedico;
-import es.deusto.spq.doctorclick.filters.FiltroPaciente;
-import es.deusto.spq.doctorclick.filters.FiltroRequerirNoAutenticado;
+import es.deusto.spq.doctorclick.filters.*;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class FilterConfig {
+    @Bean
+    public FilterRegistrationBean<FiltroSlash> filtroSlash() {
+        FilterRegistrationBean<FiltroSlash> registrationBean = new FilterRegistrationBean<>();
+        registrationBean.setFilter(new FiltroSlash());
+
+        registrationBean.setOrder(0);
+
+        return registrationBean;
+    }
 
     @Bean
     public FilterRegistrationBean<FiltroJWT> filtroJwt() {

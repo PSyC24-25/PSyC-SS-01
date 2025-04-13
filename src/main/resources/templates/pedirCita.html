@@ -19,104 +19,36 @@
     <main>
         <fieldset>
             <legend>Introduzca los datos</legend>
-            <form action="/paciente/pedirCita" method="post" th:action="@{/pedirCita}">
+            <form id="formulario" autocomplete="off">
                 <input type="hidden" name="_csrf" value="${_csrf.token}"> <!-- Token CSRF generado por Spring -->
 
                 <fieldset>
                     <legend>Especialidad, medico y fecha</legend>
                     <label for="medicoEspecialidad">Especialidad</label>
-                    <label for="medicoEspecialidad">Especialidad</label>
                     <select id="medicoEspecialidad" name="especialidad">
+                        <option value="-1" selected>-- SELECCIONA UNO --</option>
                         <option th:each="par : ${especialidades}" th:value="${par.idMedico}" th:text="${par.nombreVisual}"></option>
                     </select>
                     <br>
 
-                    <div class="dias">
-                        <div class="dia">
-                            <div class="titulo">15/04/2025, Martes</div>
-                            <div class="horas">
-                                <div class="hora">
-                                    <span>16:10</span>
-                                    <input type="radio" name="franja" />
-                                </div>
-                                <div class="hora">
-                                    <span>16:20</span>
-                                    <input type="radio" name="franja" />
-                                </div>
-                                <div class="hora">
-                                    <span>16:30</span>
-                                    <input type="radio" name="franja" />
-                                </div>
-                                <div class="hora">
-                                    <span>16:40</span>
-                                    <input type="radio" name="franja" />
-                                </div>
-                                <div class="hora">
-                                    <span>16:50</span>
-                                    <input type="radio" name="franja" />
-                                </div>
-                            </div>
+                    <div class="calendario" id="calendario">
+                        <div class="dias" id="dias">
                         </div>
-                        <div class="dia">
-                            <div class="titulo">16/04/2025, Miercoles</div>
-                            <div class="horas">
-                                <div class="hora">
-                                    <span>16:10</span>
-                                    <input type="radio" name="franja" />
-                                </div>
-                                <div class="hora">
-                                    <span>16:20</span>
-                                    <input type="radio" name="franja" />
-                                </div>
-                                <div class="hora">
-                                    <span>16:30</span>
-                                    <input type="radio" name="franja" />
-                                </div>
-                                <div class="hora">
-                                    <span>16:40</span>
-                                    <input type="radio" name="franja" />
-                                </div>
-                                <div class="hora">
-                                    <span>16:50</span>
-                                    <input type="radio" name="franja" />
-                                </div>
-                            </div>
-                        </div>
-                        <div class="dia">
-                            <div class="titulo">17/04/2025, Jueves</div>
-                            <div class="horas">
-                                <div class="hora">
-                                    <span>16:10</span>
-                                    <input type="radio" name="franja" />
-                                </div>
-                                <div class="hora">
-                                    <span>16:20</span>
-                                    <input type="radio" name="franja" />
-                                </div>
-                                <div class="hora">
-                                    <span>16:30</span>
-                                    <input type="radio" name="franja" />
-                                </div>
-                                <div class="hora ocupada">
-                                    <span>16:40</span>
-                                    <input type="radio" name="franja" disabled />
-                                </div>
-                                <div class="hora">
-                                    <span>16:50</span>
-                                    <input type="radio" name="franja" />
-                                </div>
-                            </div>
+                        <div class="navegadorCalendario">
+                            <button type="button" id="calendarioIzquierda" disabled>&lt;&lt; Dias previos</button>
+                            <button type="button" id="calendarioDerecha">Dias siguientes &gt;&gt;</button>
                         </div>
                     </div>
-                    <div class="navegadorCalendario">
-                        <button type="button" name="izquierda" disabled>&lt;&lt; Dias previos</button>
-                        <button type="button" name="derecha">Dias siguientes &gt;&gt;</button>
+
+                    <div class="sugerenciaCalendario mostrar" id="sugerencia-calendario">
+                        Elige una especialidad y medico.
                     </div>
+
                 </fieldset>
 
-                <label for="resumen">Escribe aqui la información básica sobre la cita</label>
+                <label for="razon">Escribe aqui la razon de la cita</label>
                 <br>
-                <textarea id="resumen" name="resumen"></textarea>
+                <textarea id="razon" name="razon"></textarea>
                 <br>
                 <input type="submit" id="enviar" value="Pedir cita">
             </form>

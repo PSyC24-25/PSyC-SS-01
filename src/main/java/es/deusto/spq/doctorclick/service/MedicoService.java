@@ -22,10 +22,11 @@ public class MedicoService {
     }
 
     public boolean registrarMedico(Medico medico){
-        Medico user = medicoRepository.findByDni( medico.getDni() );
-        if ( user != null ){
+        Optional<Medico> medicoExistente = medicoRepository.findByDni(medico.getDni());
+        if (medicoExistente.isPresent()){
             return false;
         }
+
         medicoRepository.save(medico);
         return true;
     }
@@ -34,6 +35,10 @@ public class MedicoService {
         return medicoRepository.findAll();
     }
 
+
+    public Optional<Medico> getMedico(String dni) {
+        return medicoRepository.findByDni(dni);
+    }
     public Optional<Medico> getMedico(Long id) {
         return medicoRepository.findById(id);
     }

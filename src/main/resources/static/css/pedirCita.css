@@ -1,3 +1,19 @@
+.calendario, .sugerenciaCalendario {
+    width: 100%;
+    display: none;
+}
+
+.sugerenciaCalendario {
+    padding: 10px 0;
+    text-align: center;
+    color: white;
+    background: #065591;
+}
+
+.calendario.mostrar, .sugerenciaCalendario.mostrar {
+    display: block;
+}
+
 .dias {
     display: flex;
     width: 100%;
@@ -5,9 +21,12 @@
 }
 
 .dias > .dia {
-    flex:1;
+    background: #b8d9f2;
+    flex: 1;
     margin: 0;
     border-left: 1px solid black;
+    display: flex;
+    flex-direction: column;
 }
 
 .dias > .dia > .titulo {
@@ -20,7 +39,6 @@
 }
 
 .dias > .dia > .horas {
-    background: #b8d9f2;
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr;
     margin: 0;
@@ -33,9 +51,13 @@
     text-align: center;
 }
 
-.dias > .dia > .horas > .hora.ocupada {
-    background: #e04848;
-    color: white;
+.dias > .dia > .noHoras {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-sizing: content-box;
+    padding: 10px;
 }
 
 .navegadorCalendario {

@@ -11,8 +11,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Service
 public class PacienteService {
@@ -29,45 +31,29 @@ public class PacienteService {
     }
 
     public boolean registrarPaciente(Paciente paciente){
-        Paciente user = pacienteRepository.findByDni(paciente.getDni());
-        if(user != null){
+        Optional<Paciente> pacienteExistente = pacienteRepository.findByDni(paciente.getDni());
+        if(pacienteExistente.isPresent()){
             return false;
         }
+
         pacienteRepository.save(paciente);
         return true;
     }
 
-    public boolean crearCita(Map<String, String> requestData, String dni) {
-        Paciente paciente = null;
-        if ((paciente = pacienteRepository.findByDni(dni)) == null) {
-            return false;
+    public List<Cita> obtenerCitasPorDni(String dni) {
+        Optional<Paciente> paciente = pacienteRepository.findByDni(dni);
+        if(paciente.isEmpty()){
+            return new ArrayList<>();
         }
-        StringBuffer sb = new StringBuffer();
-        sb.append(requestData.get("fecha"));
-        sb.append(" ");
-        sb.append(requestData.get("hora"));
 
-        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-        LocalDateTime fecha = LocalDateTime.parse(sb.toString(), dtf);
-
-        Cita cita = new Cita();
-        cita.setPaciente(paciente);
-        cita.setFecha(fecha);
-
-        // Por ahora asignar la cita al medico que se desea sin verificaciones.
-        // En un futuro esto tendria que tener en cuenta las franjas libres del medico.
-        Long idMedico = Long.valueOf(requestData.get("idMedico"));
-        Medico medicoEncargado = medicoService.getMedico(idMedico).get();
-        cita.setEspecialidad(medicoEncargado.getEspecialidad());
-        cita.setMedico(medicoEncargado);
-
-        cita.setResumen(requestData.get("resumen"));
-        citaRepository.save(cita);
-        return true;
+        return citaRepository.findByPaciente(paciente.get());
     }
 
-    public List<Cita> obtenerCitasPorDni(String dni) {
-        Paciente paciente = pacienteRepository.findByDni(dni);
-        return citaRepository.findByPaciente(paciente);
+    public Optional<Paciente> getPaciente(String dni) {
+        return pacienteRepository.findByDni(dni);
+    }
+
+    public Optional<Paciente> getPaciente(Long id) {
+        return pacienteRepository.findById(id);
     }
 }

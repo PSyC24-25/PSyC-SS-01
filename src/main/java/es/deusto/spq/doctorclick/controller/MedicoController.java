@@ -14,12 +14,13 @@ import java.util.List;
 import java.util.Optional;
 
 @Controller
-@RequestMapping("medico/")
+@RequestMapping("medico")
 public class MedicoController {
 
     @Autowired
     MedicoService medicoService;
 
+    /* ### RUTAS PARA VISTAS ### */
     @GetMapping("")
     public String indice(){
         return "medicoIndice";
@@ -38,7 +39,8 @@ public class MedicoController {
         }
     }
 
-    @GetMapping("/citas/{id}")
+    /* ### RUTAS API REST ### */
+    @GetMapping("/api/citas/{id}")
     public String citasId(@PathVariable("id") Long id, HttpServletRequest request, Model model){
         try {
             String dni = Utility.obtenerDni(request);

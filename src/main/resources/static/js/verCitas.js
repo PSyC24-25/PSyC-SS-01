@@ -1,7 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
     const citasTableBody = document.getElementById("citasTableBody");
 
-    fetch("/paciente/verCitasJson")
+    fetch("/paciente/api/citas")
         .then(response => response.json())
         .then(citas => {
             citasTableBody.innerHTML = "";
