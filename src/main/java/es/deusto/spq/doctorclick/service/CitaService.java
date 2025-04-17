@@ -1,7 +1,6 @@
 package es.deusto.spq.doctorclick.service;
 
 import es.deusto.spq.doctorclick.model.Cita;
-import es.deusto.spq.doctorclick.model.Especialidad;
 import es.deusto.spq.doctorclick.model.Medico;
 import es.deusto.spq.doctorclick.model.Paciente;
 import es.deusto.spq.doctorclick.repository.CitaRepository;
@@ -10,12 +9,10 @@ import es.deusto.spq.doctorclick.repository.PacienteRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.sql.Time;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 @Service
@@ -112,5 +109,28 @@ public class CitaService {
             return new ArrayList<>();
 
         return citaRepository.findByPaciente(paciente.get());
+    }
+
+    public enum CitaEliminadaResultado {
+        CITA_ELIMINADA,
+        ERROR_MEDICO,
+        ERROR_CITA_ID,
+        ERROR_ELIMINACION
+    }
+    public CitaEliminadaResultado cancelarCitaMedico(String dni, Long id){
+        Optional<Medico> medico = medicoService.getMedico(dni);
+        Optional<Cita> cita = citaRepository.findById(id);
+
+        if (medico.isEmpty()) {
+            return CitaEliminadaResultado.ERROR_MEDICO;
+        }
+        if (cita.isEmpty()) {
+            return CitaEliminadaResultado.ERROR_CITA_ID;
+        }
+        if (cita.get().getMedico().getDni().equals(dni)) {
+            citaRepository.delete(cita.get());
+            return CitaEliminadaResultado.CITA_ELIMINADA;
+        }
+        return CitaEliminadaResultado.ERROR_ELIMINACION;
     }
 }
