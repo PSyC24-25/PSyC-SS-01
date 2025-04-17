@@ -1,47 +1,45 @@
-<!DOCTYPE html>
-<html lang="en">
+<html lang="es" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{headerFooter.html}">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="csrf-token" content="${_csrf.token}">
-    <title>Log in | DoctorClick</title>
+    <title layout:fragment="titulo">Login | DoctorClick</title>
+    <link rel="stylesheet" href="/css/login.css">
 </head>
 
-<body>
-    <header>
-        <h1>Pantalla login</h1>
-    </header>
-    <main>
+    <main layout:fragment="content">
         <div th:if="${param.error}">Usuario o contraseña inválidos.</div>
         <div th:if="${param.logout}">Se ha cerrado la sesión.</div>
         <fieldset>
+            <legend>Introduzca sus datos</legend>
             <form th:action="@{/api/auth/login}" method="post">
                 <input type="hidden" name="_csrf" value="${_csrf.token}"> <!-- Token CSRF generado por Spring -->
-
-                <label for="username">Nombre de usuario</label>
-                <input type="text" id="username" name="username" required>
-                <br>
-                <label for="password">Contrasena</label>
-                <input type="password" id="password" name="password" required>
-                <br>
-                <label for="usuario">Iniciar sesión como:</label>
-                <select id="usuario" name="usuario">
-                    <option value="paciente">Paciente</option>
-                    <option value="medico">Médico</option>
-                </select>
-                <br>
+                <div>
+                    <label for="username">DNI</label>
+                    <input type="text" id="username" name="username" required>
+                </div>
+                <div>
+                    <label for="password">Contrasena</label>
+                    <input type="password" id="password" name="password" required>
+                </div>
+                <div>
+                    <label for="usuario">Iniciar sesión como:</label>
+                    <select id="usuario" name="usuario">
+                        <option value="paciente">Paciente</option>
+                        <option value="medico">Médico</option>
+                    </select>
+                </div>
                 <button type="submit" id="enviar">Iniciar sesión</button>
                 <br>
-                <p>¿Es tu primera vez aquí?
-                <p>
-                    <a href="/auth/registro">Registrate aquí</a>
+                <div id="registro">
+                    <p>¿Es tu primera vez aquí?</p>
+                    <p>
+                        <a href="/auth/registro">Registrate aquí</a>
+                    </p>
+                </div>
             </form>
         </fieldset>
+        <script src="/js/login.js"></script>
     </main>
-    <footer>
-        <p>Esto es el footer</p>
-    </footer>
-    <script src="/js/login.js"></script>
-</body>
 
 </html>

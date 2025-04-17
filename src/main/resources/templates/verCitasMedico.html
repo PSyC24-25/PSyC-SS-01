@@ -1,22 +1,17 @@
-<!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org">
-<head>
+<html lang="es"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{headerFooter.html}">
 
-    <meta charset="UTF-8">
-    <meta name="viewport"
-        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Mis Citas | DoctorClick</title>
+<head>
+    <title layout:fragment="titulo">Mis Citas | DoctorClick</title>
 </head>
 
-<body>
-    <header>
-        <h1>Pantalla de citas programadas</h1>
+    <main layout:fragment="content">
+
         <nav>
             <a href="/medico/">Volver</a>
         </nav>
-    </header>
-    <main>
         <table id="tabla">
             <tr>
                 <th>Fecha</th>
@@ -31,11 +26,7 @@
                 <td th:text="${cita.resumen}"></td>
             </tr>
         </table>
+        <script src="/js/verCitasMedico.js"></script>
     </main>
-    <footer>
-        <p>Esto es el footer</p>
-    </footer>
-    <script src="/js/verCitasMedico.js"></script>
-</body>
 
 </html>
