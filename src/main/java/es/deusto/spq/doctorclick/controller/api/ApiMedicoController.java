@@ -3,7 +3,6 @@ package es.deusto.spq.doctorclick.controller.api;
 import es.deusto.spq.doctorclick.Utility;
 import es.deusto.spq.doctorclick.model.Cita;
 import es.deusto.spq.doctorclick.service.CitaService;
-import es.deusto.spq.doctorclick.service.MedicoService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -17,15 +16,13 @@ import java.util.Optional;
 public class ApiMedicoController {
 
     @Autowired
-    MedicoService medicoService;
-    @Autowired
     private CitaService citaService;
 
     @GetMapping("/citas/{id}")
     public String citasId(@PathVariable("id") Long id, HttpServletRequest request, Model model) {
         try {
             String dni = Utility.obtenerDni(request);
-            Optional<Cita> cita = medicoService.getCita(id);
+            Optional<Cita> cita = citaService.getCita(id);
             if (cita.isEmpty()) {
                 model.addAttribute("mensaje", "No se ha encontrado la cita");
                 return "verCitasMedico";
@@ -44,7 +41,7 @@ public class ApiMedicoController {
     }
 
     @DeleteMapping("/citas/{id}")
-    public ResponseEntity<?> cancelarCita(@PathVariable("id") Long id, HttpServletRequest request, Model model) {
+    public ResponseEntity<?> cancelarCita(@PathVariable("id") Long id, HttpServletRequest request) {
         try {
             String dni = Utility.obtenerDni(request);
             CitaService.CitaEliminadaResultado resultado = citaService.cancelarCitaMedico(dni,id);

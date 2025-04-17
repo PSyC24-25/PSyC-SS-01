@@ -4,7 +4,6 @@ import es.deusto.spq.doctorclick.model.Cita;
 import es.deusto.spq.doctorclick.model.Medico;
 import es.deusto.spq.doctorclick.model.Paciente;
 import es.deusto.spq.doctorclick.repository.CitaRepository;
-import es.deusto.spq.doctorclick.repository.MedicoRepository;
 import es.deusto.spq.doctorclick.repository.PacienteRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,15 +22,13 @@ public class CitaService {
 
     private final CitaRepository citaRepository;
     private final PacienteRepository pacienteRepository;
-    private final MedicoRepository medicoRepository;
     private final MedicoService medicoService;
     private final PacienteService pacienteService;
 
     @Autowired
-    public CitaService(CitaRepository citaRepository, PacienteRepository pacienteRepository, MedicoRepository medicoRepository, MedicoService medicoService, PacienteService pacienteService) {
+    public CitaService(CitaRepository citaRepository, PacienteRepository pacienteRepository, MedicoService medicoService, PacienteService pacienteService) {
         this.citaRepository = citaRepository;
         this.pacienteRepository = pacienteRepository;
-        this.medicoRepository = medicoRepository;
         this.medicoService = medicoService;
         this.pacienteService = pacienteService;
     }
@@ -44,7 +41,7 @@ public class CitaService {
     }
 
     public List<LocalDateTime> obtenerHorasDisponibles(Long idMedico, LocalDate fecha) {
-        if(fecha.getDayOfWeek().equals(DayOfWeek.SATURDAY) || fecha.getDayOfWeek().equals(DayOfWeek.SATURDAY) || fecha.isBefore(LocalDate.now())) {
+        if(fecha.getDayOfWeek().equals(DayOfWeek.SATURDAY) || fecha.getDayOfWeek().equals(DayOfWeek.SUNDAY) || fecha.isBefore(LocalDate.now())) {
             return new ArrayList<>();
         }
 
@@ -133,4 +130,11 @@ public class CitaService {
         }
         return CitaEliminadaResultado.ERROR_ELIMINACION;
     }
+    public List<Cita> getCitas(String dni){
+        return citaRepository.findByMedico_Dni(dni);
+    }
+    public Optional<Cita> getCita(Long id){
+        return citaRepository.findById(id);
+    }
+
 }

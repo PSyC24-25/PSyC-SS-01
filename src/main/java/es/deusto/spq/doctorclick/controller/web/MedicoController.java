@@ -2,7 +2,7 @@ package es.deusto.spq.doctorclick.controller.web;
 
 import es.deusto.spq.doctorclick.Utility;
 import es.deusto.spq.doctorclick.model.Cita;
-import es.deusto.spq.doctorclick.service.MedicoService;
+import es.deusto.spq.doctorclick.service.CitaService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,7 +16,7 @@ import java.util.List;
 @RequestMapping("/medico")
 public class MedicoController {
     @Autowired
-    MedicoService medicoService;
+    private CitaService citaService;
 
     @GetMapping("")
     public String indice(){
@@ -27,7 +27,7 @@ public class MedicoController {
     public String citas(HttpServletRequest request, Model model){
         try {
             String dni = Utility.obtenerDni(request);
-            List<Cita> citas = medicoService.getCitas(dni);
+            List<Cita> citas = citaService.getCitas(dni);
             model.addAttribute("citas", citas);
             return "verCitasMedico";
         } catch (Exception e) {
