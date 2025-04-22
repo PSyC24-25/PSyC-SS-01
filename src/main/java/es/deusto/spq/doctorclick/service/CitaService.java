@@ -136,5 +136,9 @@ public class CitaService {
     public Optional<Cita> getCita(Long id){
         return citaRepository.findById(id);
     }
-
+    public Optional<Cita> obtenerCitaPorIdYPaciente(Long id, String dni) {
+        return citaRepository.findByIdAndPacienteDni(id, dni);
+    }
 }
+
+
