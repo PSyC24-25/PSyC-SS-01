@@ -78,34 +78,7 @@
             <artifactId>jackson-datatype-jsr310</artifactId>
             <version>2.18.3</version>
         </dependency>
-        <!-- TESTS -->
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-api</artifactId>
-            <version>5.12.1</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-engine</artifactId>
-            <version>5.12.1</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.mockito</groupId>
-            <artifactId>mockito-core</artifactId>
-            <version>5.16.1</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.mockito</groupId>
-            <artifactId>mockito-junit-jupiter</artifactId>
-            <version>5.16.1</version>
-            <scope>test</scope>
-        </dependency>
-        <!-- FIN TEST -->
     </dependencies>
-
 
     <build>
         <plugins>
@@ -113,7 +86,17 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>3.5.2</version>
+                <configuration>
+                    <useModulePath>false</useModulePath> <!-- Evita conflictos con Java 17+ -->
+                </configuration>
+            </plugin>
         </plugins>
+
     </build>
 
 </project>
