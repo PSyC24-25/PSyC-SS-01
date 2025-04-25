@@ -67,4 +67,19 @@ public class PacienteServiceTest {
         assertTrue(resultado.isPresent());
         assertEquals("Pedro", resultado.get().getNombre());
     }
+
+
+    @Test
+    @DisplayName("Obtener paciente por ID")
+    void obtenerPacientePorId() {
+        Paciente paciente = new Paciente("55817720D", "Lucía", "Mora", "pass123");
+        Long id = paciente.getId();
+
+        when(pacienteRepository.findById(id)).thenReturn(Optional.of(paciente));
+
+        Optional<Paciente> resultado = pacienteService.getPaciente(id);
+
+        assertTrue(resultado.isPresent());
+        assertEquals("Lucía", resultado.get().getNombre());
+    }
 }

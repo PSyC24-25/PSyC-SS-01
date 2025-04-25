@@ -2,6 +2,7 @@ package es.deusto.spq.doctorclick.service;
 
 import es.deusto.spq.doctorclick.model.Medico;
 import es.deusto.spq.doctorclick.model.Especialidad;
+import es.deusto.spq.doctorclick.model.Paciente;
 import es.deusto.spq.doctorclick.repository.MedicoRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -83,6 +84,20 @@ class MedicoServiceTest {
 
         assertTrue(resultado.isPresent());
         assertEquals("19689791C", resultado.get().getDni());
+    }
+
+    @Test
+    @DisplayName("Obtener médico por ID")
+    void obtenerMedicoPorId() {
+        Medico medico = new Medico("55817720D", "Juan", "Maroto", "pass123", Especialidad.NEUROLOGIA);
+        Long id = medico.getId();
+
+        when(medicoRepository.findById(id)).thenReturn(Optional.of(medico));
+
+        Optional<Medico> resultado = medicoService.getMedico(id);
+
+        assertTrue(resultado.isPresent());
+        assertEquals("Juan", resultado.get().getNombre());
     }
 
 }
