@@ -4,7 +4,6 @@ import es.deusto.spq.doctorclick.model.Cita;
 import es.deusto.spq.doctorclick.model.Medico;
 import es.deusto.spq.doctorclick.model.Paciente;
 import es.deusto.spq.doctorclick.repository.CitaRepository;
-import es.deusto.spq.doctorclick.repository.PacienteRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -21,14 +20,12 @@ public class CitaService {
     final int CITAS_HORA_FIN = 17;
 
     private final CitaRepository citaRepository;
-    private final PacienteRepository pacienteRepository;
     private final MedicoService medicoService;
     private final PacienteService pacienteService;
 
     @Autowired
-    public CitaService(CitaRepository citaRepository, PacienteRepository pacienteRepository, MedicoService medicoService, PacienteService pacienteService) {
+    public CitaService(CitaRepository citaRepository, MedicoService medicoService, PacienteService pacienteService) {
         this.citaRepository = citaRepository;
-        this.pacienteRepository = pacienteRepository;
         this.medicoService = medicoService;
         this.pacienteService = pacienteService;
     }
@@ -101,7 +98,7 @@ public class CitaService {
     }
 
     public List<Cita> obtenerCitasPorDni(String dni) {
-        Optional<Paciente> paciente = pacienteRepository.findByDni(dni);
+        Optional<Paciente> paciente = pacienteService.getPaciente(dni);
         if(paciente.isEmpty())
             return new ArrayList<>();
 

@@ -2,48 +2,98 @@ package es.deusto.spq.doctorclick.service;
 
 import es.deusto.spq.doctorclick.model.*;
 import es.deusto.spq.doctorclick.repository.CitaRepository;
-import es.deusto.spq.doctorclick.repository.MedicoRepository;
-import es.deusto.spq.doctorclick.repository.PacienteRepository;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDateTime;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
-//TODO: ESTÁ UN POCO MAL XD (optimizar para que instanciar sea sencillo)
+
+@ExtendWith(MockitoExtension.class)
 public class CitaServiceTest {
 
+    @Mock
     private CitaRepository citaRepository;
-    private PacienteRepository pacienteRepository;
-    private MedicoRepository medicoRepository;
-
+    @Mock
     private MedicoService medicoService;
+    @Mock
     private PacienteService pacienteService;
 
-    //@InjectMocks
+    @InjectMocks
     private CitaService citaService;
 
-    //TODO: Añadir registros de médicos y paciente en los repositorios
+    private Paciente paciente;
+    private Medico medico;
+    private Cita cita;
+    private LocalDateTime fecha1;
+
     @BeforeEach
     void setUp() {
-        citaRepository = mock(CitaRepository.class);
-        pacienteRepository = mock(PacienteRepository.class);
-        medicoService = mock(MedicoService.class);
-        pacienteService = mock(PacienteService.class);
-        citaService = new CitaService(citaRepository,pacienteRepository, medicoService, pacienteService);
+
+        paciente = new Paciente("73275435B", "Juan", "Rodriguez Sebastian", "1234");
+        medico = new Medico("72839150J", "Miguel", "Sanchez", "1234", Especialidad.CARDIOLOGIA);
+        fecha1 = LocalDateTime.of(2025,10,10,10,0);
+        cita = new Cita(paciente, medico, fecha1, Especialidad.CARDIOLOGIA, "Este es el resumen");
+        lenient().when(medicoService.getMedico(medico.getId())).thenReturn(Optional.of(medico));
+        lenient().when(pacienteService.getPaciente(paciente.getDni())).thenReturn(Optional.of(paciente));
+
+        lenient().when(citaRepository.findByMedicoDniAndFechaInDay(medico.getId(), fecha1.toLocalDate().atStartOfDay(), fecha1.toLocalDate().plusDays(1).atStartOfDay()))
+                .thenReturn(Collections.emptyList());
+
     }
 
     @Test
     @DisplayName("Añadir una cita")
     void testAnadirCita() {
-        Paciente paciente = new Paciente("73275435B","Juan","Rodriguez Sebastian","1234");
-        Medico medico = new Medico("72839150J","Miguel","Sanchez","1234", Especialidad.CARDIOLOGIA);
-        LocalDateTime now = LocalDateTime.now();
-        Cita cita = new Cita(paciente, medico, now, Especialidad.CARDIOLOGIA,"Este es el resumen");
-        //citaService.crearCita(cita);
+
+        CitaService.CitaCreacionResultado resultado = citaService.crearCita(medico.getId(), paciente.getDni(), fecha1, cita.getResumen());
+
+        verify(medicoService, times(1)).getMedico(medico.getId());
+        verify(pacienteService, times(1)).getPaciente(paciente.getDni());
+        verify(citaRepository, times(1)).save(any(Cita.class));
+
+        assertEquals(CitaService.CitaCreacionResultado.CITA_CREADA, resultado);
     }
 
+    @Test
+    @DisplayName("Cita por DNI")
+    void testCitaPorDni() {
+        when(citaRepository.findByPaciente(paciente)).thenReturn(List.of(cita));
 
+        List<Cita> resultado = citaService.obtenerCitasPorDni(paciente.getDni());
+
+        assertEquals(List.of(cita), resultado);
+    }
+
+    @Test
+    @DisplayName("Cita por DNI que no tiene cita")
+    void testCitaPorDniSinCita() {
+        when(citaRepository.findByPaciente(paciente)).thenReturn(List.of());
+
+        List<Cita> resultado = citaService.obtenerCitasPorDni(paciente.getDni());
+        assertEquals(List.of(), resultado);
+    }
+
+    @Test
+    @DisplayName("Eliminar cita")
+    void testEliminarCita() {
+
+        when(citaRepository.findById(cita.getId())).thenReturn(Optional.of(cita));
+        when(medicoService.getMedico(medico.getDni())).thenReturn(Optional.of(medico));
+
+        CitaService.CitaEliminadaResultado resultado = citaService.cancelarCitaMedico(medico.getDni(), cita.getId());
+        verify(citaRepository, times(1)).delete(cita);
+
+        assertEquals(CitaService.CitaEliminadaResultado.CITA_ELIMINADA, resultado);
+    }
 }

@@ -15,7 +15,6 @@ import java.util.Optional;
 public interface CitaRepository extends JpaRepository<Cita, Long> {
     List<Cita> findByPaciente(Paciente paciente);
     List<Cita> findByMedico_Dni(String medicoDni);
-    Optional<Cita> findById(long id);
     Optional<Cita> findByIdAndPacienteDni(Long id, String dni);
 
 
