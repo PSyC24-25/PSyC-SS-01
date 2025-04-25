@@ -15,9 +15,9 @@ import java.util.*;
 
 @Service
 public class CitaService {
-    final int CITAS_POR_HORA = 2; // 30 min cada una
-    final int CITAS_HORA_INICIO = 8;
-    final int CITAS_HORA_FIN = 17;
+    public static final int CITAS_POR_HORA = 2; // 30 min cada una
+    static final int CITAS_HORA_INICIO = 8;
+    static final int CITAS_HORA_FIN = 17;
 
     private final CitaRepository citaRepository;
     private final MedicoService medicoService;

@@ -5,28 +5,32 @@
 
 <head>
     <title layout:fragment="titulo">Mis Citas | DoctorClick</title>
+
+    <script src='/js/externo/FullCalendar/fullcalendar@6.1.17.min.js'></script>
+    <script src='/js/externo/FullCalendar/es.global.min.js'></script>
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+            let eventos = [
+                /*[# th:each="cita : ${citas}"]*/
+                    {
+                        title: "Cita con " + [[${cita.paciente.nombre}]],
+                        start: [[${cita.fecha}]],
+                        url: "/medico/cita/" + [[${cita.id}]],
+                        end: new Date(new Date([[${cita.fecha}]]).getTime() + [[${citasDuracionMinutos}]] * 60000),
+                     },
+                /*[/]*/
+            ]
+        /*]]>*/
+    </script>
+    <script src="/js/verCitasMedico.js"></script>
 </head>
-
     <main layout:fragment="content">
-
         <nav>
             <a href="/medico/">Volver</a>
         </nav>
-        <table id="tabla">
-            <tr>
-                <th>Fecha</th>
-                <th>Medico</th>
-                <th>Especialidad</th>
-                <th>Resumen</th>
-            </tr>
-            <tr th:each="cita : ${citas}">
-                <td class="fecha" th:text="${cita.fecha}"></td> <!-- Formato de hora -->
-                <td th:text="${cita.medico.nombre}"></td>
-                <td th:text="${cita.especialidad}"></td>
-                <td th:text="${cita.resumen}"></td>
-            </tr>
-        </table>
-        <script src="/js/verCitasMedico.js"></script>
+        <div style="width:1050px;height:862px;margin:auto;font-family:Arial;">
+            <div id='calendar'></div>
+        </div>
     </main>
 
 </html>

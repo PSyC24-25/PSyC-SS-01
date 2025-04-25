@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
 
+import static es.deusto.spq.doctorclick.service.CitaService.CITAS_POR_HORA;
+
 @Controller
 @RequestMapping("/medico")
 public class MedicoController {
@@ -29,6 +31,7 @@ public class MedicoController {
             String dni = Utility.obtenerDni(request);
             List<Cita> citas = citaService.getCitas(dni);
             model.addAttribute("citas", citas);
+            model.addAttribute("citasDuracionMinutos", 60 / CITAS_POR_HORA);
             return "verCitasMedico";
         } catch (Exception e) {
             e.printStackTrace();
