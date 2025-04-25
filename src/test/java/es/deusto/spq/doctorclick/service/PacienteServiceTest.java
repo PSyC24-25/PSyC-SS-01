@@ -28,12 +28,12 @@ public class PacienteServiceTest {
     }
 
     @Test
-    @DisplayName("Registrar paciente nuevo correctamenete")
+    @DisplayName("Registrar paciente nuevo")
     void registrarPaciente() {
         Paciente paciente = new Paciente("97147611G","Sara","García","pass123");
 
         //Simular que no existe el paciente
-        when(pacienteRepository.findByDni("12345678A")).thenReturn(Optional.empty());
+        when(pacienteRepository.findByDni("97147611G")).thenReturn(Optional.empty());
 
         boolean resultado = pacienteService.registrarPaciente(paciente);
         assertTrue(resultado);
@@ -41,5 +41,30 @@ public class PacienteServiceTest {
 
     }
 
+    @Test
+    @DisplayName("No registrar si el paciente existe")
+    void noRegistrarPacienteExistente() {
+        Paciente paciente = new Paciente("03982869M", "Ana", "López", "pass123");
 
+        // Simula que existe paciente
+        when(pacienteRepository.findByDni("03982869M")).thenReturn(Optional.of(paciente));
+
+        boolean resultado = pacienteService.registrarPaciente(paciente);
+
+        assertFalse(resultado);
+        verify(pacienteRepository, never()).save(any());
+    }
+
+
+    @Test
+    @DisplayName("Obtener paciente por DNI")
+    void obtenerPacientePorDni() {
+        Paciente paciente = new Paciente("57343262F", "Pedro", "Rodríguez", "pass123");
+        when(pacienteRepository.findByDni("57343262F")).thenReturn(Optional.of(paciente));
+
+        Optional<Paciente> resultado = pacienteService.getPaciente("57343262F");
+
+        assertTrue(resultado.isPresent());
+        assertEquals("Pedro", resultado.get().getNombre());
+    }
 }
