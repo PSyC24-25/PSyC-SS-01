@@ -1,63 +1,55 @@
-<!DOCTYPE html>
-<html lang="en">
+<html lang="es"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{headerFooter.html}">
 
 <head>
-    <meta charset="UTF-8">
+    <title layout:fragment="titulo">Crear cita | DoctorClick</title>
     <link rel="stylesheet" href="/css/pedirCita.css" />
-    <title>Crear Cita | DoctorClick</title>
-    <style>
-        * {
-            margin: 5px
-        }
-    </style>
 </head>
 
-<body>
-    <header>
-        <h1>Pide tu cita aquí</h1>
-    </header>
-    <main>
-        <fieldset>
-            <legend>Introduzca los datos</legend>
-            <form id="formulario" autocomplete="off">
-                <input type="hidden" name="_csrf" value="${_csrf.token}"> <!-- Token CSRF generado por Spring -->
+<main layout:fragment="content">
+    <h1>Pide tu cita aquí</h1>
+    <nav>
+        <a href="/paciente/">Volver</a>
+    </nav>
 
-                <fieldset>
-                    <legend>Especialidad, medico y fecha</legend>
-                    <label for="medicoEspecialidad">Especialidad</label>
-                    <select id="medicoEspecialidad" name="especialidad">
-                        <option value="-1" selected>-- SELECCIONA UNO --</option>
-                        <option th:each="par : ${especialidades}" th:value="${par.idMedico}" th:text="${par.nombreVisual}"></option>
-                    </select>
-                    <br>
+    <fieldset>
+        <legend>Introduzca los datos</legend>
+        <form id="formulario" autocomplete="off">
+            <input type="hidden" name="_csrf" value="${_csrf.token}"> <!-- Token CSRF generado por Spring -->
 
-                    <div class="calendario" id="calendario">
-                        <div class="dias" id="dias">
-                        </div>
-                        <div class="navegadorCalendario">
-                            <button type="button" id="calendarioIzquierda" disabled>&lt;&lt; Dias previos</button>
-                            <button type="button" id="calendarioDerecha">Dias siguientes &gt;&gt;</button>
-                        </div>
-                    </div>
-
-                    <div class="sugerenciaCalendario mostrar" id="sugerencia-calendario">
-                        Elige una especialidad y medico.
-                    </div>
-
-                </fieldset>
-
-                <label for="razon">Escribe aqui la razon de la cita</label>
+            <fieldset>
+                <legend>Especialidad, medico y fecha</legend>
+                <label for="medicoEspecialidad">Especialidad</label>
+                <select id="medicoEspecialidad" name="especialidad">
+                    <option value="-1" selected>-- SELECCIONA UNO --</option>
+                    <option th:each="par : ${especialidades}" th:value="${par.idMedico}" th:text="${par.nombreVisual}">
+                    </option>
+                </select>
                 <br>
-                <textarea id="razon" name="razon"></textarea>
-                <br>
-                <input type="submit" id="enviar" value="Pedir cita">
-            </form>
-        </fieldset>
-    </main>
-    <footer>
-        <p>Esto es el footer</p>
-    </footer>
+
+                <div class="calendario" id="calendario">
+                    <div class="dias" id="dias">
+                    </div>
+                    <div class="navegadorCalendario">
+                        <button type="button" id="calendarioIzquierda" disabled>&lt;&lt; Dias previos</button>
+                        <button type="button" id="calendarioDerecha">Dias siguientes &gt;&gt;</button>
+                    </div>
+                </div>
+
+                <div class="sugerenciaCalendario mostrar" id="sugerencia-calendario">
+                    Elige una especialidad y medico.
+                </div>
+
+            </fieldset>
+
+            <label for="razon">Escribe aqui la razon de la cita</label>
+            <br>
+            <textarea id="razon" name="razon"></textarea>
+            <br>
+            <input type="submit" id="enviar" value="Pedir cita">
+        </form>
+    </fieldset>
     <script src="/js/pedirCita.js"></script>
-</body>
-
-</html>
+</main>

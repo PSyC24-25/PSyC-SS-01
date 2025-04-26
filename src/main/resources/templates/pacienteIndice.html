@@ -1,29 +1,18 @@
-<!doctype html>
-<html lang="en">
+<html lang="es"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{headerFooter.html}">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Índice paciente</title>
+    <title layout:fragment="titulo">Paciente | DoctorClick</title>
 </head>
 
-<body>
-    <header>
-        <h1> Bienvenido </h1>
-        <nav>
-            <a href="/paciente/citas/pedir">Pedir cita</a>
-            <a href="/paciente/citas/">Ver citas</a>
-            <a href="/auth/logout">Cerrar sesión</a>
-
-        </nav>
-    </header>
-    <main></main>
-    <footer>
-        <p>Esto es el footer</p>
-    </footer>
-
-</body>
+<main layout:fragment="content">
+    <nav>
+        <a href="/paciente/citas/pedir">Pedir cita</a>
+        <a href="/paciente/citas/">Ver citas</a>
+        <a href="/auth/logout">Cerrar sesión</a>
+    </nav>
+</main>
 
 </html>

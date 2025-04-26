@@ -1,13 +1,17 @@
-<!DOCTYPE html>
-<html lang="es">
+<html lang="es"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{headerFooter.html}">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Ver Citas</title>
+  <title layout:fragment="titulo">Crear cita | DoctorClick</title>
   <script defer src="/js/verCitas.js"></script>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
+<main layout:fragment="content">
+  <nav>
+    <a href="paciente/citas">Volver</a>
+  </nav>
   <div>
     <h1>Mis Citas</h1>
     <table>
@@ -21,9 +25,12 @@
         </tr>
       </thead>
       <tbody id="citasTableBody">
-          <tr><td class="text-center p-4">Cargando...</td></tr>
+        <tr>
+          <td class="text-center p-4">Cargando...</td>
+        </tr>
       </tbody>
     </table>
   </div>
-</body>
+</main>
+
 </html>
