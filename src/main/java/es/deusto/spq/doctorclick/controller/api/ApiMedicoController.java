@@ -18,28 +18,6 @@ public class ApiMedicoController {
     @Autowired
     private CitaService citaService;
 
-    @GetMapping("/citas/{id}")
-    public String citasId(@PathVariable("id") Long id, HttpServletRequest request, Model model) {
-        try {
-            String dni = Utility.obtenerDni(request);
-            Optional<Cita> cita = citaService.getCita(id);
-            if (cita.isEmpty()) {
-                model.addAttribute("mensaje", "No se ha encontrado la cita");
-                return "verCitasMedico";
-            } else if (!cita.get().getMedico().getDni().equals(dni)) {
-                model.addAttribute("mensaje", "No tiene permiso para esta cita");
-                return "citaDetalladaMedico";
-            } else {
-                model.addAttribute("cita", cita.get());
-                return "verCitasMedico";
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            model.addAttribute("mensaje", "error");
-            return "citaDetalladaMedico";
-        }
-    }
-
     @DeleteMapping("/citas/{id}")
     public ResponseEntity<?> cancelarCita(@PathVariable("id") Long id, HttpServletRequest request) {
         try {

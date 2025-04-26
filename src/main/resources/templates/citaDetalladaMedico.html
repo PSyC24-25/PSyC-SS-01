@@ -1,24 +1,32 @@
-<!doctype html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<html lang="es"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{headerFooter.html}">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Cita Detallada</title>
+    <title layout:fragment="titulo">Cita Detallada | DoctorClick</title>
+    <link rel="stylesheet" href="/css/citaDetalladaMedico.css">
+
 </head>
-<body>
-    <header>
+
+    <main layout:fragment="content">
         <nav>
             <a href="/medico/citas">Volver</a>
         </nav>
-    </header>
-    <main>
-
+        <div>
+            <table>
+            <tr>
+                <td class="fecha" th:text="${cita.fecha}"></td> <!-- Formato de hora -->
+                <td th:text="${cita.medico.nombre}"></td>
+                <td th:text="${cita.especialidad}"></td>
+                <td th:text="${cita.resumen}"></td>
+                <td id="idCita" th:text="${cita.id}"></td> <!-- Ahora tiene id="idCita" -->
+            </tr>
+            </table>
+        </div>
+        <button>Modificar</button>
+        <button id="cancelar">Cancelar</button>
+        <script src="/js/citaDetalladaMedico.js"></script>
     </main>
-    <footer>
-        <p>Esto es el footer</p>
-    </footer>
 
-</body>
 </html>
