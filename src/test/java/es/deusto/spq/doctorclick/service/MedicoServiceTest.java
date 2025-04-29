@@ -100,4 +100,12 @@ class MedicoServiceTest {
         assertEquals("Juan", resultado.get().getNombre());
     }
 
+    @Test
+    @DisplayName("Test sencillo medico")
+    void crearMedico() {
+        Medico medico = new Medico();
+        medico.setEspecialidad(Especialidad.NEUROLOGIA);
+        assertEquals(Especialidad.NEUROLOGIA, medico.getEspecialidad());
+    }
+
 }

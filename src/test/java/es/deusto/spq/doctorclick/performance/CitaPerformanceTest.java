@@ -10,7 +10,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
 @ExtendWith(JUnitPerfInterceptor.class)
-public class PerformanceTest {
+public class CitaPerformanceTest {
 
     @Autowired
     CitaService citaService;

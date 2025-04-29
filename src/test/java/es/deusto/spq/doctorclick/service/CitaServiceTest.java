@@ -105,4 +105,14 @@ public class CitaServiceTest {
         verify(citaRepository, times(1)).deleteById(cita.getId());
         assertTrue(resultado);
     }
+
+    @Test
+    @DisplayName("Test de cita sencillo")
+    void testCitaSencillo() {
+        assertEquals(paciente, cita.getPaciente());
+        assertEquals(Especialidad.CARDIOLOGIA, cita.getEspecialidad());
+        assertEquals(fecha1, cita.getFecha());
+    }
+
+
 }

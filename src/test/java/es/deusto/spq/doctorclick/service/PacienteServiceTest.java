@@ -66,6 +66,8 @@ public class PacienteServiceTest {
 
         assertTrue(resultado.isPresent());
         assertEquals("Pedro", resultado.get().getNombre());
+        assertEquals("Rodríguez", resultado.get().getApellidos());
+        assertEquals("pass123", resultado.get().getContrasenia());
     }
 
 
