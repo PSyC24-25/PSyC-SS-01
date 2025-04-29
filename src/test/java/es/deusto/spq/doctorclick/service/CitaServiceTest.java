@@ -16,7 +16,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -85,7 +85,7 @@ public class CitaServiceTest {
     }
 
     @Test
-    @DisplayName("Eliminar cita")
+    @DisplayName("Eliminar cita médico")
     void testEliminarCita() {
 
         when(citaRepository.findById(cita.getId())).thenReturn(Optional.of(cita));
@@ -95,5 +95,14 @@ public class CitaServiceTest {
         verify(citaRepository, times(1)).delete(cita);
 
         assertEquals(CitaService.CitaEliminadaResultado.CITA_ELIMINADA, resultado);
+    }
+
+    @Test
+    @DisplayName("Eliminar cita paciente")
+    void testEliminarCitaPaciente() {
+        when(citaRepository.findByIdAndPacienteDni(cita.getId(), paciente.getDni())).thenReturn(Optional.of(cita));
+        boolean resultado = citaService.cancelarCita(cita.getId(), paciente.getDni());
+        verify(citaRepository, times(1)).deleteById(cita.getId());
+        assertTrue(resultado);
     }
 }
