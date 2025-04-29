@@ -136,6 +136,15 @@ public class CitaService {
     public Optional<Cita> obtenerCitaPorIdYPaciente(Long id, String dni) {
         return citaRepository.findByIdAndPacienteDni(id, dni);
     }
+
+    public boolean cancelarCita(Long idCita, String dniPaciente) {
+        Optional<Cita> optCita = obtenerCitaPorIdYPaciente(idCita, dniPaciente);
+        if (optCita.isPresent()) {
+            citaRepository.deleteById(idCita);
+            return true;
+        }
+        return false;
+    }
 }
 
 

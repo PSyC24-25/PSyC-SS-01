@@ -6,6 +6,7 @@
 <head>
   <title layout:fragment="titulo">Detalle de cita | DoctorClick</title>
   <script defer src="/js/verCitas.js"></script>
+  <script defer src="/js/cancelarCitaPaciente.js"></script>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
@@ -20,6 +21,10 @@
     <p><strong>Resumen:</strong> <span th:text="${cita.resumen}"></span></p>
     <!-- añade aquí más campos si tu modelo los tiene -->
   </div>
+  <button id="cancelarBtn"
+          class="mt-4 bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded">
+    Cancelar cita
+  </button>
 </main>
 
 </html>

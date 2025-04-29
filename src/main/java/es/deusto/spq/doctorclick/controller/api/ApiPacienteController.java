@@ -95,4 +95,20 @@ public class ApiPacienteController {
         mapper.registerModule(new JavaTimeModule());
         mapper.writeValue(response.getWriter(), horasDisponibles);
     }
+
+    @DeleteMapping("/citas/{id}")
+    public ResponseEntity<?> cancelarCita(@PathVariable Long id, HttpServletRequest request) {
+        try {
+            String dni = Utility.obtenerDni(request);
+            boolean borrada = citaService.cancelarCita(id, dni);
+
+            if (borrada) {
+                return ResponseEntity.ok().build();
+            } else {
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).body("No puedes cancelar esta cita o no existe.");
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al cancelar la cita: " + e.getMessage());
+        }
+    }
 }
