@@ -15,7 +15,7 @@
                     {
                         title: "Cita con " + [[${cita.paciente.nombre}]],
                         start: [[${cita.fecha}]],
-                        url: "/medico/cita/" + [[${cita.id}]],
+                        url: "/medico/citas/" + [[${cita.id}]],
                         end: new Date(new Date([[${cita.fecha}]]).getTime() + [[${citasDuracionMinutos}]] * 60000),
                      },
                 /*[/]*/
