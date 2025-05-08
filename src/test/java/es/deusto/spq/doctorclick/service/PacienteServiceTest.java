@@ -2,7 +2,6 @@ package es.deusto.spq.doctorclick.service;
 
 import es.deusto.spq.doctorclick.model.Paciente;
 import es.deusto.spq.doctorclick.repository.PacienteRepository;
-import es.deusto.spq.doctorclick.service.PacienteService;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

@@ -1,6 +1,5 @@
 package es.deusto.spq.doctorclick.service;
 
-import es.deusto.spq.doctorclick.model.Especialidad;
 import es.deusto.spq.doctorclick.model.Medico;
 import es.deusto.spq.doctorclick.model.Paciente;
 import org.junit.jupiter.api.BeforeEach;

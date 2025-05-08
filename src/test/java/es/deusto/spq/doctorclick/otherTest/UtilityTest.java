@@ -11,10 +11,10 @@ import org.mockito.MockedStatic;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-public class UtilityTest {
+class UtilityTest {
 
     @Test
-    public void testObtenerDniConTokenValido() throws Exception {
+    void testObtenerDniConTokenValido() throws Exception {
         // Arrange
         HttpServletRequest request = mock(HttpServletRequest.class);
         Cookie[] cookies = { new Cookie("JWT", "fake-jwt-token") };
@@ -37,7 +37,7 @@ public class UtilityTest {
     }
 
     @Test
-    public void testObtenerDniSinCookie() {
+    void testObtenerDniSinCookie() {
         HttpServletRequest request = mock(HttpServletRequest.class);
         when(request.getCookies()).thenReturn(null);
 
@@ -49,7 +49,7 @@ public class UtilityTest {
     }
 
     @Test
-    public void testObtenerDniSinDniEnToken() throws Exception {
+    void testObtenerDniSinDniEnToken() {
         HttpServletRequest request = mock(HttpServletRequest.class);
         Cookie[] cookies = { new Cookie("JWT", "token-sin-dni") };
         when(request.getCookies()).thenReturn(cookies);

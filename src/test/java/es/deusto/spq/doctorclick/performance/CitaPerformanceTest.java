@@ -10,27 +10,27 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
 @ExtendWith(JUnitPerfInterceptor.class)
-public class CitaPerformanceTest {
+class CitaPerformanceTest {
 
     @Autowired
     CitaService citaService;
 
     @Test
     @JUnitPerfTest(threads = 10, durationMs = 10000, warmUpMs = 2000)
-    public void getCitasDniYPaciente(){
+    void getCitasDniYPaciente(){
         citaService.obtenerCitaPorIdYPaciente(0L,"73275435B");
     }
 
     @Test
     @JUnitPerfTest(threads = 10, durationMs = 10000, warmUpMs = 2000)
-    public void getCitasDni(){
+    void getCitasDni(){
         citaService.getCitas("73275435B");
 
     }
 
     @Test
     @JUnitPerfTest(threads = 10, durationMs = 10000, warmUpMs = 2000)
-    public void getCitaId(){
+    void getCitaId(){
         citaService.getCita(0L);
 
     }

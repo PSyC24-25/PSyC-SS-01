@@ -10,20 +10,20 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
 @ExtendWith(JUnitPerfInterceptor.class)
-public class PacientePerformanceTest {
+class PacientePerformanceTest {
 
     @Autowired
     PacienteService pacienteService;
 
     @Test
     @JUnitPerfTest(threads = 10, durationMs = 10000, warmUpMs = 2000)
-    public void testGetPacienteByDniPerformance() {
+    void testGetPacienteByDniPerformance() {
         pacienteService.getPaciente("73275435B");
     }
 
     @Test
     @JUnitPerfTest(threads = 10, durationMs = 10000, warmUpMs = 2000)
-    public void testGetPacienteByIdPerformance() {
+    void testGetPacienteByIdPerformance() {
         pacienteService.getPaciente(1L);
     }
 }

@@ -7,8 +7,6 @@ import es.deusto.spq.doctorclick.model.Usuario;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Locale;
-
 @Service
 public class RegistroService {
 

@@ -19,6 +19,11 @@ import static es.deusto.spq.doctorclick.service.CitaService.CITAS_POR_HORA;
 @Controller
 @RequestMapping("/medico")
 public class MedicoController {
+
+    private static final String VISTA_CITA_DETALLADA_MEDICO = "citaDetalladaMedico";
+    private static final String VISTA_VER_CITAS_MEDICO = "verCitasMedico";
+
+
     @Autowired
     private CitaService citaService;
 
@@ -34,11 +39,11 @@ public class MedicoController {
             List<Cita> citas = citaService.getCitas(dni);
             model.addAttribute("citas", citas);
             model.addAttribute("citasDuracionMinutos", 60 / CITAS_POR_HORA);
-            return "verCitasMedico";
+            return VISTA_VER_CITAS_MEDICO;
         } catch (Exception e) {
             e.printStackTrace();
-            model.addAttribute("verCitasMedico", "No se han encontrado las citas");
-            return "verCitasMedico";
+            model.addAttribute(VISTA_VER_CITAS_MEDICO, "No se han encontrado las citas");
+            return VISTA_VER_CITAS_MEDICO;
         }
     }
 
@@ -49,18 +54,18 @@ public class MedicoController {
             Optional<Cita> cita = citaService.getCita(id);
             if (cita.isEmpty()) {
                 model.addAttribute("mensaje", "No se ha encontrado la cita");
-                return "verCitasMedico";
+                return VISTA_VER_CITAS_MEDICO;
             } else if (!cita.get().getMedico().getDni().equals(dni)) {
                 model.addAttribute("mensaje", "No tiene permiso para esta cita");
-                return "citaDetalladaMedico";
+                return VISTA_CITA_DETALLADA_MEDICO;
             } else {
                 model.addAttribute("cita", cita.get());
-                return "citaDetalladaMedico";
+                return VISTA_CITA_DETALLADA_MEDICO;
             }
         } catch (Exception e) {
             e.printStackTrace();
             model.addAttribute("mensaje", "error");
-            return "citaDetalladaMedico";
+            return VISTA_CITA_DETALLADA_MEDICO;
         }
     }
 }
