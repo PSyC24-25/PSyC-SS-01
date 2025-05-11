@@ -18,6 +18,9 @@ public interface CitaRepository extends JpaRepository<Cita, Long> {
     Optional<Cita> findByIdAndPacienteDni(Long id, String dni);
     void deleteById(Long id);
 
+    @Query("SELECT c FROM Cita c WHERE c.paciente.dni = :dni AND c.fecha < now()")
+    List<Cita> findByPacienteDniAndFechaBefore(@Param("dni") String dni);
+
     @Query("SELECT c FROM Cita c " +
             "WHERE c.medico.id = :id " +
             "AND c.fecha >= :startOfDay " +

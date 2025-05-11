@@ -13,13 +13,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.web.bind.annotation.PathVariable;
 
-
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
-
 
 @Controller
 @RequestMapping("paciente")
@@ -33,6 +29,11 @@ public class PacienteController {
     @GetMapping("")
     public String indice() {
         return "pacienteIndice";
+    }
+
+    @GetMapping("/citasPasadas")
+    public String citasPasadas(){
+        return "verCitasPasadasPaciente";
     }
 
     @GetMapping("/citas")

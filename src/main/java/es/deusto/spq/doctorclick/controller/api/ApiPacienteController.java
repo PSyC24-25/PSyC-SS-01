@@ -11,6 +11,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
@@ -30,6 +31,21 @@ public class ApiPacienteController {
 
     // ===== RUTAS DE CITAS =====
 
+    @GetMapping("/citasPasadas")
+    public ResponseEntity<?> citasPasadas(HttpServletRequest request, Model model) {
+        try {
+            String dni = Utility.obtenerDni(request);
+            List<Cita> citas = citaService.obtenerCitaPacientePasado(dni);
+            model.addAttribute("citas", citas);
+            for (Cita cita : citas) {
+                System.out.println(cita.getResumen());
+            }
+            return ResponseEntity.status(HttpStatus.OK).body(citas);
+        } catch (Exception e){
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+    }
     @GetMapping("/citas")
     public ResponseEntity<?> apiCitas(HttpServletRequest request) {
         try {
