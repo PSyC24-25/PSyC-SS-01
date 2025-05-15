@@ -11,14 +11,14 @@ form {
     min-width: 350px;
 }
 
-form > h1 {
+form h1 {
     font-weight: bold;
     width: 100%;
     text-align: center;
     margin-bottom: 10px;
 }
 
-form > input {
+form input {
     border: 1px solid black;
     border-radius: 5px;
     min-width: 200px;
@@ -38,7 +38,7 @@ form > .tipoPaciente {
     font-size: 14px;
 }
 
-form > button {
+form button {
     padding: 5px 10px;
     color: white;
     background-color: var(--acento);
@@ -50,7 +50,7 @@ form > button {
     transition: all .2s linear;
 }
 
-form > button:hover {
+form button:hover {
     opacity: .9;
     cursor:pointer;
 }
@@ -70,7 +70,7 @@ form > .nota > a {
     display: none !important;
 }
 
-form > input.error {
+form input.error, form textarea.error {
     border-color: red;
     border-width: 2px;
     color: red;
@@ -80,7 +80,7 @@ form > input.error {
     color: red;
 }
 
-form > .mensajeError {
+form .mensajeError {
     background-color: red;
     color: white;
     display: flex;
@@ -93,7 +93,7 @@ form > .mensajeError {
     max-width: 350px;
 }
 
-form > .mensajeError > svg {
+form .mensajeError > svg {
     width: 30px;
     height: 30px;
     fill: white;

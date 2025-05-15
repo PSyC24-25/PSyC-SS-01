@@ -6,50 +6,49 @@
 <head>
     <title layout:fragment="titulo">Crear cita | DoctorClick</title>
     <link rel="stylesheet" href="/css/pedirCita.css" />
+    <link rel="stylesheet" href="/css/loginRegistro.css" />
 </head>
 
 <main layout:fragment="content">
-    <h1>Pide tu cita aquí</h1>
-    <nav>
-        <a href="/paciente/">Volver</a>
-    </nav>
+    <form id="formulario" autocomplete="off">
+        <h1>Pide tu cita aquí</h1>
+        <input type="hidden" name="_csrf" value="${_csrf.token}"> <!-- Token CSRF generado por Spring -->
 
-    <fieldset>
-        <legend>Introduzca los datos</legend>
-        <form id="formulario" autocomplete="off">
-            <input type="hidden" name="_csrf" value="${_csrf.token}"> <!-- Token CSRF generado por Spring -->
+        <div class="paso" id="paso1">
+            <div class="mensajeError esconder">
+                <svg clip-rule="evenodd" fill-rule="evenodd" stroke-linejoin="round" stroke-miterlimit="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="m12.002 21.534c5.518 0 9.998-4.48 9.998-9.998s-4.48-9.997-9.998-9.997c-5.517 0-9.997 4.479-9.997 9.997s4.48 9.998 9.997 9.998zm0-8c-.414 0-.75-.336-.75-.75v-5.5c0-.414.336-.75.75-.75s.75.336.75.75v5.5c0 .414-.336.75-.75.75zm-.002 3c-.552 0-1-.448-1-1s.448-1 1-1 1 .448 1 1-.448 1-1 1z" fill-rule="nonzero"/></svg>
+                <span class="texto"></span>
+            </div>
+            <h2>Especialidad, médico y fecha</h2>
 
-            <fieldset>
-                <legend>Especialidad, medico y fecha</legend>
-                <label for="medicoEspecialidad">Especialidad</label>
+            <div id="parentEspecialidad">
+                <label for="medicoEspecialidad">Especialidad:</label>
                 <select id="medicoEspecialidad" name="especialidad">
                     <option value="-1" selected>-- SELECCIONA UNO --</option>
                     <option th:each="par : ${especialidades}" th:value="${par.idMedico}" th:text="${par.nombreVisual}">
                     </option>
                 </select>
-                <br>
-
-                <div class="calendario" id="calendario">
-                    <div class="dias" id="dias">
-                    </div>
-                    <div class="navegadorCalendario">
-                        <button type="button" id="calendarioIzquierda" disabled>&lt;&lt; Dias previos</button>
-                        <button type="button" id="calendarioDerecha">Dias siguientes &gt;&gt;</button>
-                    </div>
-                </div>
-
-                <div class="sugerenciaCalendario mostrar" id="sugerencia-calendario">
-                    Elige una especialidad y medico.
-                </div>
-
-            </fieldset>
-
-            <label for="razon">Escribe aqui la razon de la cita</label>
+            </div>
             <br>
-            <textarea id="razon" name="razon"></textarea>
-            <br>
-            <input type="submit" id="enviar" value="Pedir cita">
-        </form>
-    </fieldset>
+
+            <div class="calendario" id="calendario">
+                <div class="dias" id="dias">
+                </div>
+                <div class="navegadorCalendario">
+                    <button type="button" id="calendarioIzquierda" disabled>&lt;&lt; Dias previos</button>
+                    <button type="button" id="calendarioDerecha">Dias siguientes &gt;&gt;</button>
+                </div>
+            </div>
+            <div class="sugerenciaCalendario mostrar" id="sugerencia-calendario">
+                Elige una especialidad y medico.
+            </div>
+        </div>
+        <div class="paso" style="margin-top: 10px;">
+            <h2>Razón de la cita</h2>
+            <textarea id="razon" name="razon" placeholder="Explique aquí el motivo de su cita, en al menos 5 palabras."></textarea>
+        </div>
+
+        <button type="submit" id="enviar">Pedir cita</button>
+    </form>
     <script src="/js/pedirCita.js"></script>
 </main>

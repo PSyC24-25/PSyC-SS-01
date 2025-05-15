@@ -1,4 +1,15 @@
-
+button#baja {
+    background-color: red;
+    font-weight: bold;
+    color: white;
+    border-radius: 5px;
+    padding: 5px 10px;
+    transition: all .2s linear;
+}
+button#baja:hover {
+    opacity: .9;
+    cursor:pointer;
+}
 tr {
     margin: 50px;
     display:grid;

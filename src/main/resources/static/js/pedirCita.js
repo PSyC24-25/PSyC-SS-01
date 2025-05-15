@@ -71,6 +71,7 @@ const actualizarCalendario = () => {
                     `
 
                     horaDiv.addEventListener("click", () => {
+                        horaDiv.querySelector("input").checked = true;
                         fechaSeleccionada = fecha;
                     })
 
@@ -89,10 +90,24 @@ const navegarCalendario = (offset) => {
     actualizarCalendario();
 }
 
+const mostrarError = (mensaje, campos) => {
+    document.querySelector(".mensajeError").classList.remove("esconder");
+    document.querySelector(".mensajeError > .texto").textContent = mensaje;
+
+    for(const campo of campos) {
+        document.querySelector(`[id=${campo}]`).classList.add("error")
+    }
+}
+
 const enviarFormulario = () => {
     const idMedico = +medicoEspecialidadSelect.value;
-    if(idMedico < 0 || fechaSeleccionada === null)
+    if(fechaSeleccionada === null) {
+        mostrarError("Debes de seleccionar una fecha y hora.", ["paso1"])
         return;
+    }
+
+    document.querySelectorAll(`.error`).forEach((input) => input.classList.remove("error"))
+    document.querySelector(".mensajeError").classList.add("esconder");
 
     fetch("/api/paciente/citas", {
         method: "POST",
@@ -115,7 +130,8 @@ const enviarFormulario = () => {
                 window.location.href = "/paciente/citas"
             } else {
                 let data = await response.json();
-                console.log("Error al crear la cita: ", data)
+
+                mostrarError(data.error, data.campos)
             }
         })
         .catch(error => {

@@ -53,13 +53,19 @@ public class ApiPacienteController {
 
     @PostMapping("/citas")
     public ResponseEntity apiCitasCrear(@RequestBody Map<String, String> formData, HttpServletRequest request) {
-        Map<String, String> responseMap = new HashMap<>();
+        Map<String, Object> responseMap = new HashMap<>();
 
         try {
             String dni = Utility.obtenerDni(request);
 
             Long idMedico = Long.parseLong(formData.get("idMedico"));
+
             String razon = formData.get("razon");
+            if(razon.trim().split(" ").length < 5) {
+                responseMap.put("error", "Explica el motivo de tu cita en al menos 5 palabras.");
+                responseMap.put("campos", List.of("razon"));
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(responseMap);
+            }
 
             int anyo = Integer.parseInt(formData.get("anyo"));
             int mes = Integer.parseInt(formData.get("mes"));
@@ -74,8 +80,13 @@ public class ApiPacienteController {
                 return ResponseEntity.status(HttpStatus.OK).body(responseMap);
             } else {
                 switch(citaResultado) {
-                    case ERROR_HORA_NO_VALIDA -> responseMap.put("error", "No se pudo crear la cita. La hora no es valida.");
-                    case ERROR_MEDICO_PACIENTE -> responseMap.put("error", "No se pudo crear la cita. El medico o paciente no existen.");
+                    case ERROR_HORA_NO_VALIDA -> {
+                        responseMap.put("error", "No se pudo crear la cita. La hora no es valida.");
+                    }
+                    case ERROR_MEDICO_PACIENTE -> {
+                        responseMap.put("error", "No se pudo crear la cita. El medico o paciente no existen.");
+                        responseMap.put("campos", List.of("parentEspecialidad"));
+                    }
                 }
 
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseMap);

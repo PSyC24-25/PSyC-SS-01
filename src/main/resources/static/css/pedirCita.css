@@ -1,3 +1,7 @@
+form {
+    min-width: 100% !important;
+}
+
 .calendario, .sugerenciaCalendario {
     width: 100%;
     display: none;
@@ -8,6 +12,7 @@
     text-align: center;
     color: white;
     background: #065591;
+    opacity: .4;
 }
 
 .calendario.mostrar, .sugerenciaCalendario.mostrar {
@@ -42,6 +47,7 @@
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr;
     margin: 0;
+    max-width: 100%;
 }
 
 .dias > .dia > .horas > .hora {
@@ -49,6 +55,13 @@
     border-right: 1px solid black;
     border-bottom: 1px solid black;
     text-align: center;
+
+    transition: all .2s linear;
+}
+
+.dias > .dia > .horas > .hora:hover {
+    background-color: #83c2f2;
+    cursor: pointer;
 }
 
 .dias > .dia > .noHoras {
@@ -66,6 +79,42 @@
     justify-content: space-between;
 }
 
-.navegadorCalendario > button {
+h1 {
+    font-size: 30px;
+}
 
+h2 {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.paso {
+    padding: 5px;
+    border: 1px solid black;
+    margin-bottom: 10px;
+    border-radius: 5px;
+}
+
+textarea {
+    border: 1px solid black;
+    width: 100%;
+    padding: 5px
+}
+
+input {
+    width: unset !important;
+    min-width: unset !important;
+}
+
+.mensajeError {
+    width: 100%;
+    max-width: unset !important;
+}
+
+.paso.error {
+    border: 2px solid red;
+}
+
+.paso.error > h1 {
+    color: red;
 }
