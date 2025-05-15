@@ -1,7 +1,6 @@
 package es.deusto.spq.doctorclick.controller.api;
 
 import es.deusto.spq.doctorclick.Utility;
-import es.deusto.spq.doctorclick.model.Cita;
 import es.deusto.spq.doctorclick.model.Medico;
 import es.deusto.spq.doctorclick.service.CitaService;
 import es.deusto.spq.doctorclick.service.MedicoService;
@@ -9,7 +8,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;

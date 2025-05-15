@@ -22,8 +22,8 @@ import static es.deusto.spq.doctorclick.service.CitaService.CITAS_POR_HORA;
 @RequestMapping("/medico")
 public class MedicoController {
 
-    private static final String VISTA_CITA_DETALLADA_MEDICO = "citaDetalladaMedico";
-    private static final String VISTA_VER_CITAS_MEDICO = "verCitasMedico";
+    private static final String VISTA_CITA_DETALLADA_MEDICO = "general/citaDetalladaMedico";
+    private static final String VISTA_VER_CITAS_MEDICO = "general/verCitasMedico";
 
 
     @Autowired
