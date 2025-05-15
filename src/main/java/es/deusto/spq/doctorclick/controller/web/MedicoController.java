@@ -24,6 +24,7 @@ public class MedicoController {
 
     private static final String VISTA_CITA_DETALLADA_MEDICO = "general/citaDetalladaMedico";
     private static final String VISTA_VER_CITAS_MEDICO = "general/verCitasMedico";
+    private static final String VISTA_PERFIL_MEDICO = "medico/miPerfilMedico";
 
 
     @Autowired
@@ -80,20 +81,20 @@ public class MedicoController {
           
             if(medico.isEmpty()){
                 model.addAttribute("medico", "No se han cargado los datos");
-                return "miperfilmedico";
+                return VISTA_PERFIL_MEDICO;
 
             }else if(!medico.get().getDni().equals(dni)){
                 model.addAttribute("medico", "No tiene permiso para acceder a los datos de este perfil ");
-                return "miperfilmedico";
+                return VISTA_PERFIL_MEDICO;
 
             }else{
                 model.addAttribute("medico", medico.get());
-                return "miperfilmedico";
+                return VISTA_PERFIL_MEDICO;
             }
         } catch (Exception e) {
             e.printStackTrace();
             model.addAttribute("medico", "error");
-            return "miperfilmedico";
+            return VISTA_PERFIL_MEDICO;
         }
 
     }
