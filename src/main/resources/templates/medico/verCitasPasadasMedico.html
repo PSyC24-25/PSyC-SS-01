@@ -1,0 +1,33 @@
+<html lang="es"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{general/headerFooter.html}">
+
+<head>
+    <title layout:fragment="titulo">Ver citas pasadas | DoctorClick</title>
+    <link rel="stylesheet" href="/css/verCitasPasadasPaciente.css">
+
+</head>
+<main layout:fragment="content">
+    <nav>
+        <a href="/paciente">Volver</a>
+    </nav>
+    <div>
+        <table>
+            <thead>
+            <tr>
+                <th>Fecha</th>
+                <th>Paciente</th>
+                <th>Especialidad</th>
+                <th>Resumen</th>
+                <th>ID</th>
+            </tr>
+            </thead>
+            <tbody id="tabla-citas"></tbody>
+        </table>
+    </div>
+    <script src="/js/verCitasPasadasPaciente.js"></script>
+
+</main>
+
+</html>

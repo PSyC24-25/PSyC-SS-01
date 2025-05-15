@@ -148,6 +148,10 @@ public class CitaService {
         }
         return false;
     }
+
+    public List<Cita> obtenerCitaMedicoPasado(String dni){
+        return citaRepository.findbyMedicoDniAndFechaBefore(dni);
+    }
 }
 
 

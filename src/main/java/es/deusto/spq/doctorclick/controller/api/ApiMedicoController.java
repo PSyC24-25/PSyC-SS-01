@@ -1,6 +1,7 @@
 package es.deusto.spq.doctorclick.controller.api;
 
 import es.deusto.spq.doctorclick.Utility;
+import es.deusto.spq.doctorclick.model.Cita;
 import es.deusto.spq.doctorclick.model.Medico;
 import es.deusto.spq.doctorclick.service.CitaService;
 import es.deusto.spq.doctorclick.service.MedicoService;
@@ -10,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -53,6 +55,18 @@ public class ApiMedicoController {
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al procesar la baja: " + e.getMessage());
         }
-}
+    }
+
+    @GetMapping("/citasPasadas")
+    public ResponseEntity<?> citasPasadas(HttpServletRequest request) {
+        try {
+            String dni = Utility.obtenerDni(request);
+            List<Cita> citas = citaService.obtenerCitaMedicoPasado(dni);
+            return ResponseEntity.status(HttpStatus.OK).body(citas);
+        } catch (Exception e){
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+    }
 
 }

@@ -33,9 +33,6 @@ public class ApiPacienteController {
         try {
             String dni = Utility.obtenerDni(request);
             List<Cita> citas = citaService.obtenerCitaPacientePasado(dni);
-            for (Cita cita : citas) {
-                System.out.println(cita.getResumen());
-            }
             return ResponseEntity.status(HttpStatus.OK).body(citas);
         } catch (Exception e){
             e.printStackTrace();

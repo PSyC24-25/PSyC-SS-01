@@ -22,8 +22,8 @@ import static es.deusto.spq.doctorclick.service.CitaService.CITAS_POR_HORA;
 @RequestMapping("/medico")
 public class MedicoController {
 
-    private static final String VISTA_CITA_DETALLADA_MEDICO = "general/citaDetalladaMedico";
-    private static final String VISTA_VER_CITAS_MEDICO = "general/verCitasMedico";
+    private static final String VISTA_CITA_DETALLADA_MEDICO = "medico/citaDetalladaMedico";
+    private static final String VISTA_VER_CITAS_MEDICO = "medico/verCitasMedico";
     private static final String VISTA_PERFIL_MEDICO = "medico/miPerfilMedico";
 
 
@@ -34,7 +34,7 @@ public class MedicoController {
 
     @GetMapping("")
     public String indice(){
-        return "medicoIndice";
+        return "medico/medicoIndice";
     }
 
     @GetMapping("/citas")
@@ -97,5 +97,10 @@ public class MedicoController {
             return VISTA_PERFIL_MEDICO;
         }
 
+    }
+
+    @GetMapping("/citasPasadas")
+    public String citasPasadas(){
+        return "medico/verCitasPasadasMedico";
     }
 }
