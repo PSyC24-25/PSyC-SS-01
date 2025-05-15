@@ -52,9 +52,9 @@ public class ApiAuthController {
         if(!tipoUsuario.equals("paciente") && !tipoUsuario.equals("medico")) {
             System.out.println("Tipo de usuario invalido.");
             responseMap.put("error", "Tipo de usuario invalido.");
+            responseMap.put("campos", List.of("tipoUsuario"));
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(responseMap);
         }
-
 
         Usuario usuario = null;
         if(tipoUsuario.equals("paciente")) {
