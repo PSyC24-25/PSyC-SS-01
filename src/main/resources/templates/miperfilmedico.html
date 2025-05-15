@@ -1,0 +1,33 @@
+<html lang="es"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{headerFooter.html}">
+      
+
+<head>
+    <link rel="stylesheet" th:href="@{/css/miperfilmedico.css}" />
+
+    <title layout:fragment="titulo">Mi perfil</title>
+
+</head>
+
+    <main layout:fragment="content">
+        <nav>
+            <a href="/medico">Volver</a>
+        </nav>
+        <div>
+            <table>
+            <tr>
+                <td id="dni" th:text="${medico.dni}"></td>
+                <td th:text="${medico.nombre}"></td>
+                <td th:text="${medico.apellidos}"></td>
+                <td th:text="${medico.especialidad}"></td>
+            </tr>
+            </table>
+        </div>
+        <button id="baja">dar de baja</button>
+        <script src="/js/darDeBajaMedico.js"></script>
+
+    </main>
+
+</html>

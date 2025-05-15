@@ -2,7 +2,9 @@ package es.deusto.spq.doctorclick.controller.web;
 
 import es.deusto.spq.doctorclick.Utility;
 import es.deusto.spq.doctorclick.model.Cita;
+import es.deusto.spq.doctorclick.model.Medico;
 import es.deusto.spq.doctorclick.service.CitaService;
+import es.deusto.spq.doctorclick.service.MedicoService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -26,6 +28,8 @@ public class MedicoController {
 
     @Autowired
     private CitaService citaService;
+    @Autowired
+    private MedicoService medicoService;
 
     @GetMapping("")
     public String indice(){
@@ -67,5 +71,30 @@ public class MedicoController {
             model.addAttribute("mensaje", "error");
             return VISTA_CITA_DETALLADA_MEDICO;
         }
+    }
+    @GetMapping("/miperfil")
+    public String miperfil(HttpServletRequest request, Model model){
+        try {
+            String dni = Utility.obtenerDni(request);
+            Optional<Medico> medico = medicoService.getMedico(dni);
+          
+            if(medico.isEmpty()){
+                model.addAttribute("medico", "No se han cargado los datos");
+                return "miperfilmedico";
+
+            }else if(!medico.get().getDni().equals(dni)){
+                model.addAttribute("medico", "No tiene permiso para acceder a los datos de este perfil ");
+                return "miperfilmedico";
+
+            }else{
+                model.addAttribute("medico", medico.get());
+                return "miperfilmedico";
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            model.addAttribute("medico", "error");
+            return "miperfilmedico";
+        }
+
     }
 }
