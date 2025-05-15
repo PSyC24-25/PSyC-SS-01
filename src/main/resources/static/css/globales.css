@@ -48,7 +48,7 @@ header > div {
     align-items: center;
 }
 
-header > div > .izquierda, header > .div > .derecha {
+header > div > .izquierda, header > div > .derecha {
     display: flex;
 }
 
@@ -89,6 +89,12 @@ header > div > .izquierda > .enlaces > a.activo {
     cursor: default !important;
 }
 
+
+header > div > .derecha  {
+    max-height: 30px;
+    gap: 5px;
+}
+
 header > div > .derecha > a {
     padding: 5px 10px;
     color: black;
@@ -103,4 +109,18 @@ header > div > .derecha > a {
 header > div > .derecha > a:hover {
     opacity: .9;
     cursor:pointer;
+}
+
+header > div > .derecha > .perfilDerecho {
+    display: flex;
+    align-items: center;
+    gap: 3px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+header > div > .derecha > .perfilDerecho > svg {
+    height: 20px;
 }
