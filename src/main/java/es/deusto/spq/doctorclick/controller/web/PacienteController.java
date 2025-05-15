@@ -27,22 +27,27 @@ public class PacienteController {
     CitaService citaService;
 
     @GetMapping("")
-    public String indice() {
+    public String indice(Model model) {
+        model.addAttribute("tipoCuenta", "paciente");
         return "paciente/pacienteIndice";
     }
 
     @GetMapping("/citasPasadas")
-    public String citasPasadas(){
+    public String citasPasadas(Model model){
+        model.addAttribute("tipoCuenta", "paciente");
         return "paciente/verCitasPasadasPaciente";
     }
 
     @GetMapping("/citas")
-    public String citas() {
+    public String citas(Model model) {
+        model.addAttribute("tipoCuenta", "paciente");
         return "verCitas";
     }
 
     @GetMapping("/citas/pedir")
     public String citasPedir(Model model) {
+        model.addAttribute("tipoCuenta", "paciente");
+
         List<Medico> medicos = medicoService.getMedicos();
 
         List<Utility.ParMedicoEspecialidad> medicosEspecialidades = new ArrayList<>();
@@ -60,6 +65,8 @@ public class PacienteController {
 
     @GetMapping("/citas/{id}")
     public String verCitaDetalle(@PathVariable Long id, Model model, HttpServletRequest request) throws Exception {
+        model.addAttribute("tipoCuenta", "paciente");
+
         String dni = Utility.obtenerDni(request);
         System.out.println("DNI del paciente: " + dni);
         Optional<Cita> optCita = citaService.obtenerCitaPorIdYPaciente(id, dni);

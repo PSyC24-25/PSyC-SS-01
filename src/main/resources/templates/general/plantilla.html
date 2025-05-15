@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="es"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="csrf-token" content="${_csrf.token}">
+    <title layout:fragment="titulo"></title>
+    <link rel="stylesheet" th:href="@{/css/globales.css}" />
+    <link rel="icon" href="/images/logo.PNG">
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+</head>
+<!-- <div th:case="'medico'" th:replace="general/headers/medico :: header"></div>
+<div th:case="'paciente'" th:replace="general/headers/paciente :: header"></div>
+<div th:case="*" th:replace="general/headers/noAutenticado :: header"></div> -->
+
+<body>
+    <header>
+        <div class="recortado">
+            <th:block th:switch="${tipoCuenta}">
+                <th:block th:case="'medico'" th:insert="general/headers/medico.html"></th:block>
+                <th:block th:case="'paciente'" th:insert="general/headers/paciente.html"></th:block>
+                <th:block th:case="*" th:insert="general/headers/noAutenticado.html"></th:block>
+            </th:block>
+        </div>
+    </header>
+    <main layout:fragment="content" class="contenido recortado">
+    </main>
+    <footer>
+        <div class="recortado">
+            <h1>DOCTORCLICK</h1>
+            <p id="rights">2025-2026 DoctorClick Corp. Todos los derechos reservados</p>
+            <div class="info">
+                <p>Telefono de contacto <strong>+34 943 59 31 50</strong></p>
+                <p>Correo electrónico <strong>doctorclick@gmail.com</strong></p>
+                <p>Ubicacion <strong>Av. Los Pinos 2384, Nueva Esperanza, San Matías, Terranova del Sur</strong></p>
+            </div>
+        </div>
+    </footer>
+</body>
+
+</html>

@@ -43,14 +43,15 @@ document.addEventListener("DOMContentLoaded", function () {
     let userType = document.getElementById("tipo")
     userType.addEventListener('change', function() {
         let valor = userType.value
+        let especialidadParent = document.getElementById("especialidadParent")
         let selection = document.getElementById("especialidad")
 
         if (valor === "medico") {
-            selection.style.visibility = "visible";
+            especialidadParent.classList.remove("esconder");
             selection.disabled = false;
 
         } else {
-            selection.style.visibility = "hidden";
+            especialidadParent.classList.add("esconder");
             selection.disabled = true;
         }
     });

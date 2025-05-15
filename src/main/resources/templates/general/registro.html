@@ -1,41 +1,28 @@
 <html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-    layout:decorate="~{general/headerFooter.html}">
+    layout:decorate="~{general/plantilla.html}">
 
 <head>
     <title layout:fragment="titulo">Registro | DoctorClick</title>
-    <link rel="stylesheet" href="/css/registro.css">
+    <link rel="stylesheet" href="/css/loginRegistro.css">
 </head>
 
 <main layout:fragment="content">
-    <fieldset>
-        <legend>Introduzca sus datos</legend>
         <form id="formulario" method="post" th:action="@{/api/auth/registro}">
+            <h1>Formulario de registro</h1>
             <input type="hidden" name="_csrf" value="${_csrf.token}"> <!-- Token CSRF generado por Spring -->
-            <div>
-                <label for="nombre">Nombre</label>
-                <input type="text" id="nombre" name="nombre" required>
-            </div>
-            <div>
-                <label for="apellidos">Apellidos</label>
-                <input type="text" id="apellidos" name="apellidos" required>
-            </div>
-            <div>
-                <label for="contrasena">Contrasena</label>
-                <input type="password" id="contrasena" name="contrasena" required>
-            </div>
-            <div>
-                <label for="dni">DNI</label>
-                <input type="text" id="dni" name="dni">
-            </div>
-            <div>
-                <label for="tipo">Registrarse como</label>
+            <input type="text" id="nombre" name="nombre" placeholder="Tu nombre" required>
+            <input type="text" id="apellidos" name="apellidos" placeholder="Tus dos apellidos" required>
+            <input type="password" id="contrasena" name="contrasena" placeholder="Una contraseña" required>
+            <input type="text" id="dni" name="dni" placeholder="Tu DNI">
+            <div class="tipoPaciente">
+                <label for="tipo">Registrarse como: </label>
                 <select id="tipo" name="tipo">
                     <option value="medico">Médico</option>
                     <option value="paciente">Paciente</option>
                 </select>
             </div>
-            <div>
-                <label for="especialidad"></label>
+            <div id="especialidadParent" class="tipoPaciente">
+                <label for="especialidad">Especialidad: </label>
                 <select id="especialidad" name="especialidad">
                     <option value="cardiologia">Cardiología</option>
                     <option value="neurologia">Neurología</option>
@@ -44,14 +31,8 @@
                     <option value="psiquiatria">Psiquiatria</option>
                 </select>
             </div>
-            <div id="decision">
-                <a href="/auth/login" id="cancelar">
-                    <button type="button">Cancelar</button>
-                </a>
-                <input type="submit" id="enviar" value="Registrarse">
-            </div>
+            <button type="submit" id="enviar">Registrarse</button>
         </form>
-    </fieldset>
     <script src="/js/registro.js"></script>
 </main>
 

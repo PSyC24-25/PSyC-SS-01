@@ -33,12 +33,15 @@ public class MedicoController {
     private MedicoService medicoService;
 
     @GetMapping("")
-    public String indice(){
+    public String indice(Model model){
+        model.addAttribute("tipoCuenta", "medico");
         return "medico/medicoIndice";
     }
 
     @GetMapping("/citas")
     public String citas(HttpServletRequest request, Model model){
+        model.addAttribute("tipoCuenta", "medico");
+
         try {
             String dni = Utility.obtenerDni(request);
             List<Cita> citas = citaService.getCitas(dni);
@@ -54,6 +57,8 @@ public class MedicoController {
 
     @GetMapping("/citas/{id}")
     public String citasId(@PathVariable("id") Long id, HttpServletRequest request, Model model) {
+        model.addAttribute("tipoCuenta", "medico");
+
         try {
             String dni = Utility.obtenerDni(request);
             Optional<Cita> cita = citaService.getCita(id);
@@ -75,6 +80,8 @@ public class MedicoController {
     }
     @GetMapping("/miperfil")
     public String miperfil(HttpServletRequest request, Model model){
+        model.addAttribute("tipoCuenta", "medico");
+
         try {
             String dni = Utility.obtenerDni(request);
             Optional<Medico> medico = medicoService.getMedico(dni);
@@ -100,7 +107,8 @@ public class MedicoController {
     }
 
     @GetMapping("/citasPasadas")
-    public String citasPasadas(){
+    public String citasPasadas(Model model){
+        model.addAttribute("tipoCuenta", "medico");
         return "medico/verCitasPasadasMedico";
     }
 }

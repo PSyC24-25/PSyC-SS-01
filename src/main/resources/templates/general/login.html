@@ -1,44 +1,34 @@
 <html lang="es" xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{general/headerFooter.html}">
+      layout:decorate="~{general/plantilla.html}">
 
 <head>
     <title layout:fragment="titulo">Login | DoctorClick</title>
-    <link rel="stylesheet" href="/css/login.css">
+    <link rel="stylesheet" href="/css/loginRegistro.css">
 </head>
 
     <main layout:fragment="content">
         <div th:if="${param.error}">Usuario o contraseña inválidos.</div>
         <div th:if="${param.logout}">Se ha cerrado la sesión.</div>
-        <fieldset>
-            <legend>Introduzca sus datos</legend>
-            <form th:action="@{/api/auth/login}" method="post">
-                <input type="hidden" name="_csrf" value="${_csrf.token}"> <!-- Token CSRF generado por Spring -->
-                <div>
-                    <label for="username">DNI</label>
-                    <input type="text" id="username" name="username" required>
-                </div>
-                <div>
-                    <label for="password">Contrasena</label>
-                    <input type="password" id="password" name="password" required>
-                </div>
-                <div>
-                    <label for="usuario">Iniciar sesión como:</label>
-                    <select id="usuario" name="usuario">
-                        <option value="paciente">Paciente</option>
-                        <option value="medico">Médico</option>
-                    </select>
-                </div>
-                <button type="submit" id="enviar">Iniciar sesión</button>
-                <br>
-                <div id="registro">
-                    <p>¿Es tu primera vez aquí?</p>
-                    <p>
-                        <a href="/auth/registro">Registrate aquí</a>
-                    </p>
-                </div>
-            </form>
-        </fieldset>
+        <form th:action="@{/api/auth/login}" method="post">
+            <h1>Iniciar sesión</h1>
+            <input type="hidden" name="_csrf" value="${_csrf.token}"> <!-- Token CSRF generado por Spring -->
+            <input type="text" id="username" name="username" placeholder="DNI" required>
+            <input type="password" id="password" name="password" placeholder="Contraseña" required>
+            <div class="tipoPaciente">
+                <label for="usuario">Iniciar sesión como:</label>
+                <select id="usuario" name="usuario">
+                    <option value="paciente">Paciente</option>
+                    <option value="medico">Médico</option>
+                </select>
+            </div>
+            <button type="submit" id="enviar">Iniciar sesión</button>
+            <br>
+            <div class="nota">
+                <span>¿Es tu primera vez aquí?</span>
+                <a href="/auth/registro">Registrate aquí</a>
+            </div>
+        </form>
         <script src="/js/login.js"></script>
     </main>
 

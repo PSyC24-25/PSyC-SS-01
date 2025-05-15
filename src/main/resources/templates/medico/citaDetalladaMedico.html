@@ -1,32 +1,28 @@
 <html lang="es"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{general/headerFooter.html}">
+      layout:decorate="~{general/plantilla.html}">
 
 <head>
     <title layout:fragment="titulo">Cita Detallada | DoctorClick</title>
     <link rel="stylesheet" href="/css/citaDetalladaMedico.css">
-
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
-
     <main layout:fragment="content">
         <nav>
-            <a href="/medico/citas">Volver</a>
+            <a href="/medico/citas" class="text-blue-600 hover:underline mb-4 block">&larr; Volver</a>
         </nav>
-        <div>
-            <table>
-            <tr>
-                <td class="fecha" th:text="${cita.fecha}"></td> <!-- Formato de hora -->
-                <td th:text="${cita.medico.nombre}"></td>
-                <td th:text="${cita.especialidad}"></td>
-                <td th:text="${cita.resumen}"></td>
-                <td id="idCita" th:text="${cita.id}"></td>
-            </tr>
-            </table>
+        <h1 class="text-2xl font-bold mb-4">Cita con el paciente <span
+                th:text="${cita.paciente.nombre} + ' ' + ${cita.paciente.apellidos}"></span></h1>
+        <div class="space-y-2">
+            <p><strong>Fecha:</strong> <span th:text="${#temporals.format(cita.fecha, 'yyyy-MM-dd')}"></span></p>
+            <p><strong>Hora:</strong> <span th:text="${#temporals.format(cita.fecha, 'HH:mm')}"></span></p>
+            <p><strong>Resumen:</strong> <span th:text="${cita.resumen}"></span></p>
+            <!-- añade aquí más campos si tu modelo los tiene -->
         </div>
-        <button>Modificar</button>
-        <button id="cancelar">Cancelar</button>
-        <script src="/js/citaDetalladaMedico.js"></script>
+        <button id="cancelarBtn"
+                class="mt-4 bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded">
+            Cancelar cita
+        </button>
     </main>
-
 </html>

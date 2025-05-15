@@ -1,0 +1,94 @@
+* {
+    font-family: "Inter", sans-serif;
+
+    --acento: #065591;
+}
+
+body {
+    width: 100%;
+    min-height: 100dvh;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.recortado {
+    max-width: 1024px;
+}
+
+.contenido {
+    flex: 1;
+}
+
+header, footer {
+    background: var(--acento);
+    width: 100dvw;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+
+    color: white;
+}
+
+footer {
+    display: none;
+}
+
+header > div {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    justify-content: space-between;
+    align-items: center;
+}
+
+header > div > .izquierda, header > .div > .derecha {
+    display: flex;
+}
+
+header > div > .izquierda > .logo {
+    font-size: 20px;
+    font-weight: bold;
+    margin-right: 25px;
+}
+
+header > div > .izquierda > .enlaces {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+header > div > .izquierda > .enlaces > a {
+    transition: all .2s linear;
+    border-bottom: 1px solid transparent;
+}
+
+header > div > .izquierda > .enlaces > a:not(.activo):hover {
+    opacity: .9;
+    cursor:pointer;
+    border-bottom-color: white;
+}
+
+header > div > .izquierda > .enlaces > a.activo {
+    font-weight: bold;
+    border-bottom-color: white;
+    cursor: default !important;
+}
+
+header > div > .derecha > a {
+    padding: 5px 10px;
+    color: black;
+    background-color: white;
+    border-radius: 5px;
+    font-size:13px;
+    font-weight: bold;
+
+    transition: all .2s linear;
+}
+
+header > div > .derecha > a:hover {
+    opacity: .9;
+    cursor:pointer;
+}
