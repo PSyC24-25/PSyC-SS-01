@@ -26,6 +26,14 @@ public class MedicoService {
         medicoRepository.save(medico);
         return true;
     }
+    public boolean bajaMedico(Medico medico){
+        Optional<Medico> medicoExistente = medicoRepository.findByDni(medico.getDni());
+        if (medicoExistente.isPresent()){
+            medicoRepository.delete(medico);
+            return true;
+        }
+        return false;
+    }
 
     public List<Medico> getMedicos() {
         return medicoRepository.findAll();
