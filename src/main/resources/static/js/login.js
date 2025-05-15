@@ -5,12 +5,15 @@ document.addEventListener("DOMContentLoaded", function(){
     function logear(event){
         event.preventDefault()
         let data = {
-            'username' : document.getElementById("username").value,
-            'password' : document.getElementById("password").value,
+            'dni' : document.getElementById("dni").value,
+            'contrasena' : document.getElementById("contrasena").value,
             'tipoUsuario': document.getElementById("usuario").value
         }
 
         let csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+        document.querySelectorAll(`input.error`).forEach((input) => input.classList.remove("error"))
+        document.querySelector(".mensajeError").classList.add("esconder");
 
         fetch('/api/auth/login', {
             method: 'POST',
@@ -25,7 +28,13 @@ document.addEventListener("DOMContentLoaded", function(){
                     window.location.href = (data.tipoUsuario === "paciente" ? "/paciente/" : "/medico/");
                 } else {
                     let data = await response.json();
-                    console.log("Error al loguear usuario: ", data)
+
+                    document.querySelector(".mensajeError").classList.remove("esconder");
+                    document.querySelector(".mensajeError > .texto").textContent = data.error;
+                    for(const campo of data.campos) {
+                        console.log(campo)
+                        document.querySelector(`input[id=${campo}]`).classList.add("error")
+                    }
                 }
         })
             .catch(error => {

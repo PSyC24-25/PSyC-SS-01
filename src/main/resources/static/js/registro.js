@@ -9,12 +9,16 @@ document.addEventListener("DOMContentLoaded", function () {
             "nombre": document.getElementById("nombre").value,
             "apellidos": document.getElementById("apellidos").value,
             "contrasena": document.getElementById("contrasena").value,
+            "contrasena2": document.getElementById("contrasena2").value,
             "dni": document.getElementById("dni").value,
             "tipo": document.getElementById("tipo").value,
             "especialidad": document.getElementById("especialidad").value
         }
 
         let csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+        document.querySelectorAll(`input.error`).forEach((input) => input.classList.remove("error"))
+        document.querySelector(".mensajeError").classList.add("esconder");
 
         fetch('/api/auth/registro', {
             method: 'POST',
@@ -29,7 +33,13 @@ document.addEventListener("DOMContentLoaded", function () {
                     window.location.href = (data.tipo === "paciente" ? "/paciente/" : "/medico/");
                 } else {
                     let data = await response.json();
-                    console.log("Error al registrar usuario: ", data)
+
+                    document.querySelector(".mensajeError").classList.remove("esconder");
+                    document.querySelector(".mensajeError > .texto").textContent = data.error;
+                    for(const campo of data.campos) {
+                        console.log(campo)
+                        document.querySelector(`[id=${campo}]`).classList.add("error")
+                    }
                 }
             })
             .catch(error => {

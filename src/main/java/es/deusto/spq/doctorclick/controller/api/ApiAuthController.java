@@ -1,5 +1,6 @@
 package es.deusto.spq.doctorclick.controller.api;
 
+import es.deusto.spq.doctorclick.model.Especialidad;
 import es.deusto.spq.doctorclick.model.Medico;
 import es.deusto.spq.doctorclick.model.Paciente;
 import es.deusto.spq.doctorclick.model.Usuario;
@@ -16,9 +17,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.sql.Array;
+import java.util.*;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -42,11 +42,11 @@ public class ApiAuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<Map<String, String>> loginUsuario(@RequestBody Map<String, String> requestData, HttpServletResponse response) {
-        Map<String, String> responseMap = new HashMap<>();
+    public ResponseEntity<Map<String, Object>> loginUsuario(@RequestBody Map<String, String> requestData, HttpServletResponse response) {
+        Map<String, Object> responseMap = new HashMap<>();
 
-        String dni = requestData.get("username");
-        String contrasenia = requestData.get("password");
+        String dni = requestData.get("dni");
+        String contrasena = requestData.get("contrasena");
         String tipoUsuario = requestData.get("tipoUsuario");
 
         if(!tipoUsuario.equals("paciente") && !tipoUsuario.equals("medico")) {
@@ -66,15 +66,15 @@ public class ApiAuthController {
         }
 
         if(usuario == null) {
-            System.out.println("Usuario no encontrado.");
-            responseMap.put("error", "Usuario no encontrado.");
+            responseMap.put("error", "No existe ningún " + tipoUsuario + " con ese DNI.");
+            responseMap.put("campos", List.of("dni"));
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(responseMap);
         }
 
         // TODO: Esto obviamente no se hara asi pues ni si quiera se esta encriptando en BD, es temporal.
-        if(!usuario.getContrasenia().equals(contrasenia)) {
-            System.out.println("Contrasena incorrecta.");
-            responseMap.put("error", "Contrasena incorrecta.");
+        if(!usuario.getContrasenia().equals(contrasena)) {
+            responseMap.put("error", "Contraseña incorrecta.");
+            responseMap.put("campos", List.of("contrasena"));
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(responseMap);
         }
 
@@ -89,30 +89,66 @@ public class ApiAuthController {
     }
 
     @PostMapping("/registro")
-    public ResponseEntity<Map<String, String>> registrarUsuario(@RequestBody Map<String, String> requestData, HttpServletResponse response) {
-        Map<String, String> responseMap = new HashMap<>();
+    public ResponseEntity<Map<String, Object>> registrarUsuario(@RequestBody Map<String, String> requestData, HttpServletResponse response) {
+        Map<String, Object> responseMap = new HashMap<>();
+
+        String dni = requestData.get("dni");
+        if(!isDniValido(dni)) {
+            responseMap.put("error", "El DNI no es valido.");
+            responseMap.put("campos", List.of("dni"));
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseMap);
+        }
 
         String nombre = requestData.get("nombre");
-        String dni = requestData.get("dni");
-        String tipoUsuario = requestData.get("tipo");
-        String apellidos = requestData.get("apellidos");
-        String contrasena = requestData.get("contrasena");
-        String especialidad = requestData.get("especialidad");
-
-        if(!tipoUsuario.equals("paciente") && !tipoUsuario.equals("medico")) {
-            System.out.println("Tipo de usuario invalido.");
-            responseMap.put("error", "Tipo de usuario invalido.");
+        if(nombre.isEmpty()) {
+            responseMap.put("error", "El nombre no puede estar vacío.");
+            responseMap.put("campos", List.of("nombre"));
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(responseMap);
         }
 
-        if(!isDniValido(dni)) {
-            responseMap.put("error", "El DNI no es valido.");
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseMap);
+        String apellidos = requestData.get("apellidos");
+        if(apellidos.isEmpty() || apellidos.trim().split(" ").length < 2) {
+            responseMap.put("error", "Introduce al menos dos apellidos.");
+            responseMap.put("campos", List.of("apellidos"));
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(responseMap);
+        }
+
+        String contrasena = requestData.get("contrasena");
+        if(contrasena.length() < 4) {
+            responseMap.put("error", "Las contraseña debe de ser al menos de 4 caracteres de largo.");
+            responseMap.put("campos", List.of("contrasena"));
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(responseMap);
+        }
+
+        String contrasena2 = requestData.get("contrasena2");
+        if(!contrasena.equals(contrasena2)) {
+            responseMap.put("error", "Las contraseñas no coinciden.");
+            responseMap.put("campos", List.of("contrasena", "contrasena2"));
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(responseMap);
+        }
+
+        String tipoUsuario = requestData.get("tipo");
+        if(!tipoUsuario.equals("paciente") && !tipoUsuario.equals("medico")) {
+            responseMap.put("error", "Tipo de usuario invalido.");
+            responseMap.put("campos", List.of("tipoUsuario"));
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(responseMap);
+        }
+
+        String especialidad = requestData.get("especialidad");
+        if(tipoUsuario.equals("medico")) {
+            try {
+                Especialidad.valueOf(especialidad);
+            } catch(IllegalArgumentException e) {
+                responseMap.put("error", "La especialidad médica no es válida.");
+                responseMap.put("campos", List.of("especialidadParent"));
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseMap);
+            }
         }
 
         boolean registroExitoso = registroService.registrarUsuario(nombre, apellidos, contrasena, dni, tipoUsuario, especialidad);
         if(!registroExitoso) {
             responseMap.put("error", "Error al registrar el usuario en la base de datos. Probablemente el DNI ya esta en uso.");
+            responseMap.put("campos", List.of("dni"));
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseMap);
         }
 

@@ -9,12 +9,17 @@
 <main layout:fragment="content">
         <form id="formulario" method="post" th:action="@{/api/auth/registro}">
             <h1>Formulario de registro</h1>
+            <div class="mensajeError esconder">
+                <svg clip-rule="evenodd" fill-rule="evenodd" stroke-linejoin="round" stroke-miterlimit="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="m12.002 21.534c5.518 0 9.998-4.48 9.998-9.998s-4.48-9.997-9.998-9.997c-5.517 0-9.997 4.479-9.997 9.997s4.48 9.998 9.997 9.998zm0-8c-.414 0-.75-.336-.75-.75v-5.5c0-.414.336-.75.75-.75s.75.336.75.75v5.5c0 .414-.336.75-.75.75zm-.002 3c-.552 0-1-.448-1-1s.448-1 1-1 1 .448 1 1-.448 1-1 1z" fill-rule="nonzero"/></svg>
+                <span class="texto"></span>
+            </div>
             <input type="hidden" name="_csrf" value="${_csrf.token}"> <!-- Token CSRF generado por Spring -->
+            <input type="text" id="dni" name="dni" placeholder="Tu DNI">
             <input type="text" id="nombre" name="nombre" placeholder="Tu nombre" required>
             <input type="text" id="apellidos" name="apellidos" placeholder="Tus dos apellidos" required>
             <input type="password" id="contrasena" name="contrasena" placeholder="Una contraseña" required>
-            <input type="text" id="dni" name="dni" placeholder="Tu DNI">
-            <div class="tipoPaciente">
+            <input type="password" id="contrasena2" name="contrasena2" placeholder="Repite la contraseña" required>
+            <div class="tipoPaciente" id="tipoUsuario">
                 <label for="tipo">Registrarse como: </label>
                 <select id="tipo" name="tipo">
                     <option value="medico">Médico</option>
