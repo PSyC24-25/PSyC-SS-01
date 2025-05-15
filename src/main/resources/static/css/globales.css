@@ -49,9 +49,17 @@ header > div > .izquierda, header > .div > .derecha {
 }
 
 header > div > .izquierda > .logo {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+
     font-size: 20px;
     font-weight: bold;
     margin-right: 25px;
+}
+
+header > div > .izquierda > .logo > img {
+    width: 30px;
 }
 
 header > div > .izquierda > .enlaces {

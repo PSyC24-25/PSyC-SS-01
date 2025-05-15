@@ -1,10 +1,13 @@
 <div class="izquierda">
-    <a class="logo" href="/">DoctorClick</a>
+    <a class="logo" href="/">
+        <img src="/images/logo.png" alt="icono" />
+        <span>DoctorClick</span>
+    </a>
     <div class="enlaces">
-        <a href="/">Inicio</a>
-        <a href="/paciente/citas/pedir">Pedir cita</a>
-        <a href="/paciente/citas">Citas programadas</a>
-        <a href="/paciente/citasPasadas">Citas pasadas</a>
+        <a href="/" th:classappend="${seccion=='indice'} ? ' activo' : ''">Inicio</a>
+        <a href="/paciente/citas/pedir" th:classappend="${seccion=='pedir'} ? ' activo' : ''">Pedir cita</a>
+        <a href="/paciente/citas" th:classappend="${seccion=='citas'} ? ' activo' : ''">Citas programadas</a>
+        <a href="/paciente/citasPasadas" th:classappend="${seccion=='citasPasadas'} ? ' activo' : ''">Citas pasadas</a>
     </div>
 </div>
 <div class="derecha">

@@ -29,24 +29,31 @@ public class PacienteController {
     @GetMapping("")
     public String indice(Model model) {
         model.addAttribute("tipoCuenta", "paciente");
-        return "paciente/pacienteIndice";
-    }
+        model.addAttribute("seccion", "indice");
 
-    @GetMapping("/citasPasadas")
-    public String citasPasadas(Model model){
-        model.addAttribute("tipoCuenta", "paciente");
-        return "paciente/verCitasPasadasPaciente";
+        return "paciente/pacienteIndice";
     }
 
     @GetMapping("/citas")
     public String citas(Model model) {
         model.addAttribute("tipoCuenta", "paciente");
+        model.addAttribute("seccion", "citas");
+
         return "verCitas";
+    }
+
+    @GetMapping("/citasPasadas")
+    public String citasPasadas(Model model){
+        model.addAttribute("tipoCuenta", "paciente");
+        model.addAttribute("seccion", "citasPasadas");
+
+        return "paciente/verCitasPasadasPaciente";
     }
 
     @GetMapping("/citas/pedir")
     public String citasPedir(Model model) {
         model.addAttribute("tipoCuenta", "paciente");
+        model.addAttribute("seccion", "pedir");
 
         List<Medico> medicos = medicoService.getMedicos();
 

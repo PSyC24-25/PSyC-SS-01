@@ -35,12 +35,15 @@ public class MedicoController {
     @GetMapping("")
     public String indice(Model model){
         model.addAttribute("tipoCuenta", "medico");
+        model.addAttribute("seccion", "indice");
+
         return "medico/medicoIndice";
     }
 
     @GetMapping("/citas")
     public String citas(HttpServletRequest request, Model model){
         model.addAttribute("tipoCuenta", "medico");
+        model.addAttribute("seccion", "citas");
 
         try {
             String dni = Utility.obtenerDni(request);
@@ -78,9 +81,19 @@ public class MedicoController {
             return VISTA_CITA_DETALLADA_MEDICO;
         }
     }
+
+    @GetMapping("/citasPasadas")
+    public String citasPasadas(Model model){
+        model.addAttribute("tipoCuenta", "medico");
+        model.addAttribute("seccion", "citasPasadas");
+
+        return "medico/verCitasPasadasMedico";
+    }
+
     @GetMapping("/miperfil")
     public String miperfil(HttpServletRequest request, Model model){
         model.addAttribute("tipoCuenta", "medico");
+        model.addAttribute("seccion", "perfil");
 
         try {
             String dni = Utility.obtenerDni(request);
@@ -104,11 +117,5 @@ public class MedicoController {
             return VISTA_PERFIL_MEDICO;
         }
 
-    }
-
-    @GetMapping("/citasPasadas")
-    public String citasPasadas(Model model){
-        model.addAttribute("tipoCuenta", "medico");
-        return "medico/verCitasPasadasMedico";
     }
 }
