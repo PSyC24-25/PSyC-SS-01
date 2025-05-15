@@ -11,12 +11,12 @@ import java.io.IOException;
 public class AuthController {
     @GetMapping("/login")
     public String login() {
-        return "login";
+        return "general/login";
     }
 
     @GetMapping("/registro")
     public String registro() {
-        return "registro";
+        return "general/registro";
     }
 
     @GetMapping("/logout")
