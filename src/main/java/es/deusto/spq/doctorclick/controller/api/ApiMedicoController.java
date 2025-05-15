@@ -45,11 +45,6 @@ public class ApiMedicoController {
     public ResponseEntity<String> bajaPerfil( HttpServletRequest request) {
         try {
             String dniUsuario = Utility.obtenerDni(request);
-
-            if (!dniUsuario.isEmpty()) {
-                return ResponseEntity.status(HttpStatus.FORBIDDEN).body("No tienes permiso para dar de baja este perfil.");
-            }
-
             Optional<Medico> medico = medicoService.getMedico(dniUsuario);
             if (medico.isPresent()) {
                 medicoService.bajaMedico(medico.get());
