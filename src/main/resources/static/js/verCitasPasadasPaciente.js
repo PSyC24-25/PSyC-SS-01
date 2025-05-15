@@ -13,6 +13,11 @@ fetch("http://localhost:8080/api/paciente/citasPasadas", {
             data.forEach(cita => {
                 const fila = document.createElement("tr");
 
+                fila.classList.add("cursor-pointer", "hover:bg-gray-100");
+
+                fila.addEventListener("click", () => {
+                    window.location.href = `/paciente/citas/${cita.id}`;
+                });
                 fila.innerHTML = `
                     <td>${cita.fecha}</td>
                     <td>${cita.medico.nombre}</td>

@@ -5,13 +5,11 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import es.deusto.spq.doctorclick.Utility;
 import es.deusto.spq.doctorclick.model.Cita;
 import es.deusto.spq.doctorclick.service.CitaService;
-import es.deusto.spq.doctorclick.service.PacienteService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
@@ -24,19 +22,17 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/paciente")
 public class ApiPacienteController {
-    @Autowired
-    PacienteService pacienteService;
+
     @Autowired
     CitaService citaService;
 
     // ===== RUTAS DE CITAS =====
 
     @GetMapping("/citasPasadas")
-    public ResponseEntity<?> citasPasadas(HttpServletRequest request, Model model) {
+    public ResponseEntity<?> citasPasadas(HttpServletRequest request) {
         try {
             String dni = Utility.obtenerDni(request);
             List<Cita> citas = citaService.obtenerCitaPacientePasado(dni);
-            model.addAttribute("citas", citas);
             for (Cita cita : citas) {
                 System.out.println(cita.getResumen());
             }

@@ -28,12 +28,12 @@ public class PacienteController {
 
     @GetMapping("")
     public String indice() {
-        return "pacienteIndice";
+        return "paciente/pacienteIndice";
     }
 
     @GetMapping("/citasPasadas")
     public String citasPasadas(){
-        return "verCitasPasadasPaciente";
+        return "paciente/verCitasPasadasPaciente";
     }
 
     @GetMapping("/citas")
@@ -55,7 +55,7 @@ public class PacienteController {
         }
 
         model.addAttribute("especialidades", medicosEspecialidades);
-        return "pedirCita";
+        return "paciente/pedirCita";
     }
 
     @GetMapping("/citas/{id}")
