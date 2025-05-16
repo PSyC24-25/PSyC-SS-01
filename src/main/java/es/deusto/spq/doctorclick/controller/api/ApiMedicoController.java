@@ -3,6 +3,7 @@ package es.deusto.spq.doctorclick.controller.api;
 import es.deusto.spq.doctorclick.Utility;
 import es.deusto.spq.doctorclick.model.Cita;
 import es.deusto.spq.doctorclick.model.Medico;
+import es.deusto.spq.doctorclick.repository.CitaRepository;
 import es.deusto.spq.doctorclick.service.CitaService;
 import es.deusto.spq.doctorclick.service.MedicoService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -18,10 +19,16 @@ import java.util.Optional;
 @RequestMapping("/api/medico")
 public class ApiMedicoController {
 
+    private final CitaRepository citaRepository;
+
     @Autowired
     private CitaService citaService;
     @Autowired
     private MedicoService medicoService;
+
+    ApiMedicoController(CitaRepository citaRepository) {
+        this.citaRepository = citaRepository;
+    }
 
     @DeleteMapping("/citas/{id}")
     public ResponseEntity<?> cancelarCita(@PathVariable("id") Long id, HttpServletRequest request) {
@@ -46,9 +53,16 @@ public class ApiMedicoController {
         try {
             String dniUsuario = Utility.obtenerDni(request);
             Optional<Medico> medico = medicoService.getMedico(dniUsuario);
+
+
             if (medico.isPresent()) {
+               boolean resultado =  citaService.eliminarCitasMedicos(dniUsuario);
                 medicoService.bajaMedico(medico.get());
+               if(resultado == true){
                 return ResponseEntity.ok("Baja confirmada");
+               }
+               return ResponseEntity.ok("Baja confirmada");
+               
             } else {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Médico no encontrado");
             }

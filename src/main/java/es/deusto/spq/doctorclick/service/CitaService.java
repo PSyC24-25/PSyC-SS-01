@@ -104,6 +104,13 @@ public class CitaService {
 
         return citaRepository.findByPaciente(paciente.get());
     }
+    public List<Cita> obtenerCitasPorDniMedico(String dni) {
+        Optional<Medico> medico = medicoService.getMedico(dni);
+        if(medico.isEmpty())
+            return new ArrayList<>();
+
+        return citaRepository.findByMedico_Dni(dni);
+    }
 
     public enum CitaEliminadaResultado {
         CITA_ELIMINADA,
@@ -148,7 +155,19 @@ public class CitaService {
         }
         return false;
     }
-
+    public boolean eliminarCitasMedicos( String dniMedico) {;
+       List<Cita> citasMedico = getCitas(dniMedico);
+         boolean  accion = true;
+       for (Cita cita : citasMedico) {
+        CitaEliminadaResultado resultado =  cancelarCitaMedico(dniMedico, cita.getId());
+        if(resultado.equals(CitaEliminadaResultado.CITA_ELIMINADA))    {
+            continue;
+        }else{
+            accion = false;
+        }
+       }
+       return accion;
+    }
     public List<Cita> obtenerCitaMedicoPasado(String dni){
         return citaRepository.findbyMedicoDniAndFechaBefore(dni);
     }

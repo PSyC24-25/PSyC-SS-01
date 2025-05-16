@@ -30,6 +30,11 @@ public interface CitaRepository extends JpaRepository<Cita, Long> {
             @Param("startOfDay") LocalDateTime startOfDay,
             @Param("startOfNextDay") LocalDateTime startOfNextDay
     );
+    @Query("SELECT c.id FROM Cita c " +
+    "WHERE c.medico.dni = :dni " )
+ List<Cita> getCitaMedicos(
+            @Param("dni") String dni
+    );
 
     @Query("SELECT c FROM Cita c WHERE c.medico.dni = :dni AND c.fecha < now()")
     List<Cita> findbyMedicoDniAndFechaBefore(@Param("dni") String dni);
