@@ -1,4 +1,7 @@
+version: '3.8'
+
 services:
+  # MySQL Database Service
   mysql:
     image: mysql:8.0
     container_name: mysql-container
@@ -13,6 +16,37 @@ services:
       - mysql_data:/var/lib/mysql
       - ./init:/docker-entrypoint-initdb.d
     restart: always
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "spq", "-pspq"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - doctorclick-network
+
+  # Spring Boot Application Service
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: doctorclick-app
+    depends_on:
+      mysql:
+        condition: service_healthy
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/doctorclick
+      - SPRING_DATASOURCE_USERNAME=spq
+      - SPRING_DATASOURCE_PASSWORD=spq
+    restart: always
+    networks:
+      - doctorclick-network
 
 volumes:
   mysql_data:
+    driver: local
+
+networks:
+  doctorclick-network:
+    driver: bridge
