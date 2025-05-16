@@ -4,10 +4,26 @@
 
 <head>
     <title layout:fragment="titulo">Medico | DoctorClick</title>
+    <link rel="stylesheet" href="/css/bento.css">
 </head>
 
 <main layout:fragment="content">
-    Este es el indice del medico.
+    <div>
+        <div class="grid">
+            <a class="item item-0" href="/medico/citas">
+                <img src="/images/calendario.png"/>
+                <span>Citas programadas</span>
+            </a>
+            <a class="item item-1" href="/medico/citasPasadas">
+                <img src="/images/calendario2.png"/>
+                <span>Citas pasadas</span>
+            </a>
+            <a class="item item-2" href="/medico/miperfil">
+                <img src="/images/perfil.png"/>
+                <span>Tu perfil</span>
+            </a>
+        </div>
+    </div>
 </main>
 
 </html>

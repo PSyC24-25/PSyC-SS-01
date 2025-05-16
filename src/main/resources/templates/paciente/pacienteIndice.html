@@ -2,13 +2,28 @@
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{general/plantilla.html}">
-
 <head>
     <title layout:fragment="titulo">Paciente | DoctorClick</title>
+    <link rel="stylesheet" href="/css/bento.css">
 </head>
 
 <main layout:fragment="content">
-    Este es el indice del paciente.
+    <div>
+        <div class="grid">
+            <a class="item item-0" href="/paciente/citas/pedir">
+                <img src="/images/plus.png"/>
+                <span>Nueva cita</span>
+            </a>
+            <a class="item item-1" href="/paciente/citas">
+                <img src="/images/calendario.png"/>
+                <span>Citas programadas</span>
+            </a>
+            <a class="item item-2" href="/paciente/miperfil">
+                <img src="/images/perfil.png"/>
+                <span>Tu perfil</span>
+            </a>
+        </div>
+    </div>
 </main>
 
 </html>
