@@ -137,7 +137,7 @@ public class ApiAuthController {
         String especialidad = requestData.get("especialidad");
         if(tipoUsuario.equals("medico")) {
             try {
-                Especialidad.valueOf(especialidad);
+                Especialidad.valueOf(especialidad.toUpperCase());
             } catch(IllegalArgumentException e) {
                 responseMap.put("error", "La especialidad médica no es válida.");
                 responseMap.put("campos", List.of("especialidadParent"));
