@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CitaService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DoctorClick</a> &gt; <a href="index.source.html" class="el_package">es.deusto.spq.doctorclick.service</a> &gt; <span class="el_source">CitaService.java</span></div><h1>CitaService.java</h1><pre class="source lang-java linenums">package es.deusto.spq.doctorclick.service;
+
+import es.deusto.spq.doctorclick.model.Cita;
+import es.deusto.spq.doctorclick.model.Medico;
+import es.deusto.spq.doctorclick.model.Paciente;
+import es.deusto.spq.doctorclick.repository.CitaRepository;
+import org.springframework.stereotype.Service;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.*;
+
+@Service
+public class CitaService {
+    public static final int CITAS_POR_HORA = 2; // 30 min cada una
+    static final int CITAS_HORA_INICIO = 8;
+    static final int CITAS_HORA_FIN = 17;
+
+    private final CitaRepository citaRepository;
+    private final MedicoService medicoService;
+    private final PacienteService pacienteService;
+
+    @Autowired
+<span class="fc" id="L27">    public CitaService(CitaRepository citaRepository, MedicoService medicoService, PacienteService pacienteService) {</span>
+<span class="fc" id="L28">        this.citaRepository = citaRepository;</span>
+<span class="fc" id="L29">        this.medicoService = medicoService;</span>
+<span class="fc" id="L30">        this.pacienteService = pacienteService;</span>
+<span class="fc" id="L31">    }</span>
+
+    private List&lt;Cita&gt; obtenerCitasPorDia(Long idMedico, LocalDate fecha) {
+<span class="fc" id="L34">        LocalDateTime desde = fecha.atStartOfDay();</span>
+<span class="fc" id="L35">        LocalDateTime hasta = desde.plusDays(1);</span>
+
+<span class="fc" id="L37">        return citaRepository.findByMedicoDniAndFechaInDay(idMedico, desde, hasta);</span>
+    }
+
+    public List&lt;LocalDateTime&gt; obtenerHorasDisponibles(Long idMedico, LocalDate fecha) {
+<span class="pc bpc" id="L41" title="3 of 6 branches missed.">        if(fecha.getDayOfWeek().equals(DayOfWeek.SATURDAY) || fecha.getDayOfWeek().equals(DayOfWeek.SUNDAY) || fecha.isBefore(LocalDate.now())) {</span>
+<span class="nc" id="L42">            return new ArrayList&lt;&gt;();</span>
+        }
+
+<span class="fc" id="L45">        LocalDateTime horaActual = LocalDateTime.now();</span>
+<span class="fc" id="L46">        List&lt;Cita&gt; citasPlaneadas = obtenerCitasPorDia(idMedico, fecha);</span>
+
+<span class="fc" id="L48">        ArrayList&lt;LocalDateTime&gt; horasDisponibles = new ArrayList&lt;&gt;();</span>
+<span class="fc bfc" id="L49" title="All 2 branches covered.">        for(int hora = CITAS_HORA_INICIO; hora &lt; CITAS_HORA_FIN; hora++) {</span>
+<span class="fc bfc" id="L50" title="All 2 branches covered.">            for(int numeroCita = 0; numeroCita &lt; CITAS_POR_HORA; numeroCita++) {</span>
+<span class="fc" id="L51">                int minutos = 60 / CITAS_POR_HORA * numeroCita;</span>
+<span class="fc" id="L52">                LocalDateTime horaDeseada = LocalDateTime.of(fecha, LocalTime.of(hora, minutos));</span>
+
+<span class="pc bpc" id="L54" title="2 of 4 branches missed.">                if(horaDeseada.isBefore(horaActual) || horaDeseada.isEqual(horaActual)) {</span>
+<span class="nc" id="L55">                    continue;</span>
+                }
+
+
+<span class="pc" id="L59">                boolean horaOcupada = citasPlaneadas.stream().anyMatch((citaPlaneada) -&gt; horaDeseada.equals(citaPlaneada.getFecha()));</span>
+<span class="pc bpc" id="L60" title="1 of 2 branches missed.">                if(horaOcupada) {</span>
+<span class="nc" id="L61">                    continue;</span>
+                }
+
+<span class="fc" id="L64">                horasDisponibles.add(horaDeseada);</span>
+            }
+        }
+
+<span class="fc" id="L68">        return horasDisponibles;</span>
+    }
+
+<span class="fc" id="L71">    public enum CitaCreacionResultado {</span>
+<span class="fc" id="L72">        CITA_CREADA,</span>
+<span class="fc" id="L73">        ERROR_MEDICO_PACIENTE,</span>
+<span class="fc" id="L74">        ERROR_HORA_NO_VALIDA,</span>
+    }
+    public CitaCreacionResultado crearCita(Long idMedico, String dniPaciente, LocalDateTime fecha, String razon) {
+<span class="fc" id="L77">        Optional&lt;Medico&gt; medico = medicoService.getMedico(idMedico);</span>
+<span class="fc" id="L78">        Optional&lt;Paciente&gt; paciente = pacienteService.getPaciente(dniPaciente);</span>
+
+<span class="pc bpc" id="L80" title="2 of 4 branches missed.">        if(medico.isEmpty() || paciente.isEmpty())</span>
+<span class="nc" id="L81">            return CitaCreacionResultado.ERROR_MEDICO_PACIENTE;</span>
+
+        // Esto se podria optimizar mas
+<span class="fc" id="L84">        List&lt;LocalDateTime&gt; horasDisponibles = obtenerHorasDisponibles(idMedico, fecha.toLocalDate());</span>
+<span class="fc" id="L85">        boolean horaValida = horasDisponibles.stream().anyMatch(fecha::equals);</span>
+<span class="pc bpc" id="L86" title="1 of 2 branches missed.">        if(!horaValida)</span>
+<span class="nc" id="L87">            return CitaCreacionResultado.ERROR_HORA_NO_VALIDA;</span>
+
+<span class="fc" id="L89">        Cita cita = new Cita();</span>
+<span class="fc" id="L90">        cita.setResumen(razon);</span>
+<span class="fc" id="L91">        cita.setEspecialidad(medico.get().getEspecialidad());</span>
+<span class="fc" id="L92">        cita.setMedico(medico.get());</span>
+<span class="fc" id="L93">        cita.setPaciente(paciente.get());</span>
+<span class="fc" id="L94">        cita.setFecha(fecha);</span>
+
+<span class="fc" id="L96">        citaRepository.save(cita);</span>
+<span class="fc" id="L97">        return CitaCreacionResultado.CITA_CREADA;</span>
+    }
+
+    public List&lt;Cita&gt; obtenerCitasPorDni(String dni) {
+<span class="fc" id="L101">        Optional&lt;Paciente&gt; paciente = pacienteService.getPaciente(dni);</span>
+<span class="pc bpc" id="L102" title="1 of 2 branches missed.">        if(paciente.isEmpty())</span>
+<span class="nc" id="L103">            return new ArrayList&lt;&gt;();</span>
+
+<span class="fc" id="L105">        return citaRepository.findByPaciente(paciente.get());</span>
+    }
+    public List&lt;Cita&gt; obtenerCitasPorDniMedico(String dni) {
+<span class="nc" id="L108">        Optional&lt;Medico&gt; medico = medicoService.getMedico(dni);</span>
+<span class="nc bnc" id="L109" title="All 2 branches missed.">        if(medico.isEmpty())</span>
+<span class="nc" id="L110">            return new ArrayList&lt;&gt;();</span>
+
+<span class="nc" id="L112">        return citaRepository.findByMedico_Dni(dni);</span>
+    }
+
+<span class="fc" id="L115">    public enum CitaEliminadaResultado {</span>
+<span class="fc" id="L116">        CITA_ELIMINADA,</span>
+<span class="fc" id="L117">        ERROR_MEDICO,</span>
+<span class="fc" id="L118">        ERROR_CITA_ID,</span>
+<span class="fc" id="L119">        ERROR_ELIMINACION</span>
+    }
+    public CitaEliminadaResultado cancelarCitaMedico(String dni, Long id){
+<span class="fc" id="L122">        Optional&lt;Medico&gt; medico = medicoService.getMedico(dni);</span>
+<span class="fc" id="L123">        Optional&lt;Cita&gt; cita = citaRepository.findById(id);</span>
+
+<span class="pc bpc" id="L125" title="1 of 2 branches missed.">        if (medico.isEmpty()) {</span>
+<span class="nc" id="L126">            return CitaEliminadaResultado.ERROR_MEDICO;</span>
+        }
+<span class="pc bpc" id="L128" title="1 of 2 branches missed.">        if (cita.isEmpty()) {</span>
+<span class="nc" id="L129">            return CitaEliminadaResultado.ERROR_CITA_ID;</span>
+        }
+<span class="pc bpc" id="L131" title="1 of 2 branches missed.">        if (cita.get().getMedico().getDni().equals(dni)) {</span>
+<span class="fc" id="L132">            citaRepository.delete(cita.get());</span>
+<span class="fc" id="L133">            return CitaEliminadaResultado.CITA_ELIMINADA;</span>
+        }
+<span class="nc" id="L135">        return CitaEliminadaResultado.ERROR_ELIMINACION;</span>
+    }
+    public List&lt;Cita&gt; getCitas(String dni){
+<span class="fc" id="L138">        return citaRepository.findByMedico_Dni(dni);</span>
+    }
+    public Optional&lt;Cita&gt; getCita(Long id){
+<span class="fc" id="L141">        return citaRepository.findById(id);</span>
+    }
+    public Optional&lt;Cita&gt; obtenerCitaPorIdYPaciente(Long id, String dni) {
+<span class="fc" id="L144">        return citaRepository.findByIdAndPacienteDni(id, dni);</span>
+    }
+    public List&lt;Cita&gt; obtenerCitaPacientePasado(String dni) {
+<span class="fc" id="L147">        return citaRepository.findByPacienteDniAndFechaBefore(dni);</span>
+    }
+
+    public boolean cancelarCita(Long idCita, String dniPaciente) {
+<span class="fc" id="L151">        Optional&lt;Cita&gt; optCita = obtenerCitaPorIdYPaciente(idCita, dniPaciente);</span>
+<span class="pc bpc" id="L152" title="1 of 2 branches missed.">        if (optCita.isPresent()) {</span>
+<span class="fc" id="L153">            citaRepository.deleteById(idCita);</span>
+<span class="fc" id="L154">            return true;</span>
+        }
+<span class="nc" id="L156">        return false;</span>
+    }
+    public boolean eliminarCitasMedicos( String dniMedico) {;
+<span class="fc" id="L159">       List&lt;Cita&gt; citasMedico = getCitas(dniMedico);</span>
+<span class="fc" id="L160">         boolean  accion = true;</span>
+<span class="fc bfc" id="L161" title="All 2 branches covered.">       for (Cita cita : citasMedico) {</span>
+<span class="fc" id="L162">        CitaEliminadaResultado resultado =  cancelarCitaMedico(dniMedico, cita.getId());</span>
+<span class="pc bpc" id="L163" title="1 of 2 branches missed.">        if(resultado.equals(CitaEliminadaResultado.CITA_ELIMINADA))    {</span>
+<span class="fc" id="L164">            continue;</span>
+        }else{
+<span class="nc" id="L166">            accion = false;</span>
+        }
+<span class="nc" id="L168">       }</span>
+<span class="fc" id="L169">       return accion;</span>
+    }
+    public List&lt;Cita&gt; obtenerCitaMedicoPasado(String dni){
+<span class="fc" id="L172">        return citaRepository.findbyMedicoDniAndFechaBefore(dni);</span>
+    }
+}
+
+
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

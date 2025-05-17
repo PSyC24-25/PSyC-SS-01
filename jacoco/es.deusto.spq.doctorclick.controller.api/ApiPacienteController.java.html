@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ApiPacienteController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DoctorClick</a> &gt; <a href="index.source.html" class="el_package">es.deusto.spq.doctorclick.controller.api</a> &gt; <span class="el_source">ApiPacienteController.java</span></div><h1>ApiPacienteController.java</h1><pre class="source lang-java linenums">package es.deusto.spq.doctorclick.controller.api;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import es.deusto.spq.doctorclick.Utility;
+import es.deusto.spq.doctorclick.model.Cita;
+import es.deusto.spq.doctorclick.service.CitaService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.io.IOException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+@RestController
+@RequestMapping(&quot;/api/paciente&quot;)
+<span class="fc" id="L24">public class ApiPacienteController {</span>
+
+    @Autowired
+    CitaService citaService;
+
+    // ===== RUTAS DE CITAS =====
+
+    @GetMapping(&quot;/citasPasadas&quot;)
+    public ResponseEntity&lt;?&gt; citasPasadas(HttpServletRequest request) {
+        try {
+<span class="nc" id="L34">            String dni = Utility.obtenerDni(request);</span>
+<span class="nc" id="L35">            List&lt;Cita&gt; citas = citaService.obtenerCitaPacientePasado(dni);</span>
+<span class="nc" id="L36">            return ResponseEntity.status(HttpStatus.OK).body(citas);</span>
+<span class="nc" id="L37">        } catch (Exception e){</span>
+<span class="nc" id="L38">            e.printStackTrace();</span>
+<span class="nc" id="L39">            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());</span>
+        }
+    }
+    @GetMapping(&quot;/citas&quot;)
+    public ResponseEntity&lt;?&gt; apiCitas(HttpServletRequest request) {
+        try {
+<span class="nc" id="L45">            String dni = Utility.obtenerDni(request);</span>
+<span class="nc" id="L46">            List&lt;Cita&gt; citas = citaService.obtenerCitasPorDni(dni);</span>
+<span class="nc" id="L47">            return ResponseEntity.ok(citas);</span>
+<span class="nc" id="L48">        } catch (Exception e) {</span>
+<span class="nc" id="L49">            e.printStackTrace();</span>
+<span class="nc" id="L50">            return ResponseEntity.badRequest().body(&quot;No se pudieron obtener las citas&quot;);</span>
+        }
+    }
+
+    @PostMapping(&quot;/citas&quot;)
+    public ResponseEntity apiCitasCrear(@RequestBody Map&lt;String, String&gt; formData, HttpServletRequest request) {
+<span class="nc" id="L56">        Map&lt;String, Object&gt; responseMap = new HashMap&lt;&gt;();</span>
+
+        try {
+<span class="nc" id="L59">            String dni = Utility.obtenerDni(request);</span>
+
+<span class="nc" id="L61">            Long idMedico = Long.parseLong(formData.get(&quot;idMedico&quot;));</span>
+
+<span class="nc" id="L63">            String razon = formData.get(&quot;razon&quot;);</span>
+<span class="nc bnc" id="L64" title="All 2 branches missed.">            if(razon.trim().split(&quot; &quot;).length &lt; 5) {</span>
+<span class="nc" id="L65">                responseMap.put(&quot;error&quot;, &quot;Explica el motivo de tu cita en al menos 5 palabras.&quot;);</span>
+<span class="nc" id="L66">                responseMap.put(&quot;campos&quot;, List.of(&quot;razon&quot;));</span>
+<span class="nc" id="L67">                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(responseMap);</span>
+            }
+
+<span class="nc" id="L70">            int anyo = Integer.parseInt(formData.get(&quot;anyo&quot;));</span>
+<span class="nc" id="L71">            int mes = Integer.parseInt(formData.get(&quot;mes&quot;));</span>
+<span class="nc" id="L72">            int dia = Integer.parseInt(formData.get(&quot;dia&quot;));</span>
+<span class="nc" id="L73">            int hora = Integer.parseInt(formData.get(&quot;hora&quot;));</span>
+<span class="nc" id="L74">            int minutos = Integer.parseInt(formData.get(&quot;minutos&quot;));</span>
+
+<span class="nc" id="L76">            LocalDateTime fecha = LocalDateTime.of(anyo, mes, dia, hora, minutos);</span>
+
+<span class="nc" id="L78">            CitaService.CitaCreacionResultado citaResultado = citaService.crearCita(idMedico, dni, fecha, razon);</span>
+<span class="nc bnc" id="L79" title="All 2 branches missed.">            if(citaResultado.equals(CitaService.CitaCreacionResultado.CITA_CREADA)) {</span>
+<span class="nc" id="L80">                return ResponseEntity.status(HttpStatus.OK).body(responseMap);</span>
+            } else {
+<span class="nc bnc" id="L82" title="All 3 branches missed.">                switch(citaResultado) {</span>
+                    case ERROR_HORA_NO_VALIDA -&gt; {
+<span class="nc" id="L84">                        responseMap.put(&quot;error&quot;, &quot;No se pudo crear la cita. La hora no es valida.&quot;);</span>
+<span class="nc" id="L85">                    }</span>
+                    case ERROR_MEDICO_PACIENTE -&gt; {
+<span class="nc" id="L87">                        responseMap.put(&quot;error&quot;, &quot;No se pudo crear la cita. El medico o paciente no existen.&quot;);</span>
+<span class="nc" id="L88">                        responseMap.put(&quot;campos&quot;, List.of(&quot;parentEspecialidad&quot;));</span>
+                    }
+                }
+
+<span class="nc" id="L92">                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseMap);</span>
+            }
+<span class="nc" id="L94">        } catch (Exception e) {</span>
+<span class="nc" id="L95">            responseMap.put(&quot;error&quot;, &quot;Error inesperado al crear la cita: &quot; + e.getMessage());</span>
+<span class="nc" id="L96">            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(responseMap);</span>
+        }
+    }
+
+    @GetMapping(&quot;/citas/disponibles&quot;)
+    public void apiCitasDisponibles(HttpServletRequest request, HttpServletResponse response) throws IOException {
+<span class="nc" id="L102">        int anyo = Integer.parseInt(request.getParameter(&quot;anyo&quot;));</span>
+<span class="nc" id="L103">        int mes = Integer.parseInt(request.getParameter(&quot;mes&quot;));</span>
+<span class="nc" id="L104">        int dia = Integer.parseInt(request.getParameter(&quot;dia&quot;));</span>
+
+<span class="nc" id="L106">        LocalDate fecha = LocalDate.of(anyo, mes, dia);</span>
+<span class="nc" id="L107">        Long idMedico = Long.parseLong(request.getParameter(&quot;medico&quot;));</span>
+
+<span class="nc" id="L109">        List&lt;LocalDateTime&gt; horasDisponibles = citaService.obtenerHorasDisponibles(idMedico, fecha);</span>
+
+<span class="nc" id="L111">        response.setContentType(&quot;application/json&quot;);</span>
+<span class="nc" id="L112">        response.setCharacterEncoding(&quot;UTF-8&quot;);</span>
+
+<span class="nc" id="L114">        ObjectMapper mapper = new ObjectMapper();</span>
+<span class="nc" id="L115">        mapper.registerModule(new JavaTimeModule());</span>
+<span class="nc" id="L116">        mapper.writeValue(response.getWriter(), horasDisponibles);</span>
+<span class="nc" id="L117">    }</span>
+
+    @DeleteMapping(&quot;/citas/{id}&quot;)
+    public ResponseEntity&lt;?&gt; cancelarCita(@PathVariable Long id, HttpServletRequest request) {
+        try {
+<span class="nc" id="L122">            String dni = Utility.obtenerDni(request);</span>
+<span class="nc" id="L123">            boolean borrada = citaService.cancelarCita(id, dni);</span>
+
+<span class="nc bnc" id="L125" title="All 2 branches missed.">            if (borrada) {</span>
+<span class="nc" id="L126">                return ResponseEntity.ok().build();</span>
+            } else {
+<span class="nc" id="L128">                return ResponseEntity.status(HttpStatus.FORBIDDEN).body(&quot;No puedes cancelar esta cita o no existe.&quot;);</span>
+            }
+<span class="nc" id="L130">        } catch (Exception e) {</span>
+<span class="nc" id="L131">            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(&quot;Error al cancelar la cita: &quot; + e.getMessage());</span>
+        }
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

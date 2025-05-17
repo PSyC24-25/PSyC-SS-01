@@ -1,0 +1,13 @@
+<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
+<area shape="rect" id="Node000000" title=" " alt="" coords="5,141,168,166"/>
+<area shape="rect" id="Node000001" href="$classes_1_1deusto_1_1spq_1_1doctorclick_1_1filters_1_1_filtro_j_w_t.html" title=" " alt="" coords="216,5,448,45"/>
+<area shape="poly" id="edge6_Node000000_Node000001" title=" " alt="" coords="110,129,156,91,215,55,244,43,246,48,217,60,159,96,113,133"/>
+<area shape="rect" id="Node000002" href="$classes_1_1deusto_1_1spq_1_1doctorclick_1_1filters_1_1_filtro_medico.html" title=" " alt="" coords="216,69,448,109"/>
+<area shape="poly" id="edge7_Node000000_Node000002" title=" " alt="" coords="149,134,254,107,255,112,150,140"/>
+<area shape="rect" id="Node000003" href="$classes_1_1deusto_1_1spq_1_1doctorclick_1_1filters_1_1_filtro_paciente.html" title=" " alt="" coords="216,133,448,173"/>
+<area shape="poly" id="edge8_Node000000_Node000003" title=" " alt="" coords="182,151,216,151,216,156,182,156"/>
+<area shape="rect" id="Node000004" href="$classes_1_1deusto_1_1spq_1_1doctorclick_1_1filters_1_1_filtro_requerir_no_autenticado.html" title=" " alt="" coords="216,197,448,237"/>
+<area shape="poly" id="edge9_Node000000_Node000004" title=" " alt="" coords="150,167,255,195,254,200,149,172"/>
+<area shape="rect" id="Node000005" href="$classes_1_1deusto_1_1spq_1_1doctorclick_1_1filters_1_1_filtro_slash.html" title=" " alt="" coords="216,261,448,301"/>
+<area shape="poly" id="edge10_Node000000_Node000005" title=" " alt="" coords="113,173,159,211,217,247,246,259,244,264,215,252,156,215,110,177"/>
+</map>

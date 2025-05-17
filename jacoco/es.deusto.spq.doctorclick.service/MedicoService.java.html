@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>MedicoService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DoctorClick</a> &gt; <a href="index.source.html" class="el_package">es.deusto.spq.doctorclick.service</a> &gt; <span class="el_source">MedicoService.java</span></div><h1>MedicoService.java</h1><pre class="source lang-java linenums">package es.deusto.spq.doctorclick.service;
+
+import es.deusto.spq.doctorclick.model.Medico;
+import es.deusto.spq.doctorclick.repository.MedicoRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Optional;
+
+@Service
+public class MedicoService {
+    private final MedicoRepository medicoRepository;
+
+    @Autowired
+<span class="fc" id="L16">    public MedicoService(MedicoRepository medicoRepository) {</span>
+<span class="fc" id="L17">        this.medicoRepository = medicoRepository;</span>
+<span class="fc" id="L18">    }</span>
+
+    public boolean registrarMedico(Medico medico){
+<span class="fc" id="L21">        Optional&lt;Medico&gt; medicoExistente = medicoRepository.findByDni(medico.getDni());</span>
+<span class="fc bfc" id="L22" title="All 2 branches covered.">        if (medicoExistente.isPresent()){</span>
+<span class="fc" id="L23">            return false;</span>
+        }
+
+<span class="fc" id="L26">        medicoRepository.save(medico);</span>
+<span class="fc" id="L27">        return true;</span>
+    }
+    public boolean bajaMedico(Medico medico){
+<span class="fc" id="L30">        Optional&lt;Medico&gt; medicoExistente = medicoRepository.findByDni(medico.getDni());</span>
+<span class="pc bpc" id="L31" title="1 of 2 branches missed.">        if (medicoExistente.isPresent()){</span>
+<span class="fc" id="L32">            medicoRepository.delete(medico);</span>
+<span class="fc" id="L33">            return true;</span>
+        }
+<span class="nc" id="L35">        return false;</span>
+    }
+
+    public List&lt;Medico&gt; getMedicos() {
+<span class="fc" id="L39">        return medicoRepository.findAll();</span>
+    }
+
+    public Optional&lt;Medico&gt; getMedico(String dni) {
+<span class="fc" id="L43">        return medicoRepository.findByDni(dni);</span>
+    }
+    public Optional&lt;Medico&gt; getMedico(Long id) {
+<span class="fc" id="L46">        return medicoRepository.findById(id);</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

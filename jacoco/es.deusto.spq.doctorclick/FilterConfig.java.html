@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>FilterConfig.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DoctorClick</a> &gt; <a href="index.source.html" class="el_package">es.deusto.spq.doctorclick</a> &gt; <span class="el_source">FilterConfig.java</span></div><h1>FilterConfig.java</h1><pre class="source lang-java linenums">package es.deusto.spq.doctorclick;
+
+import es.deusto.spq.doctorclick.filters.*;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+@Configuration
+<span class="fc" id="L9">public class FilterConfig {</span>
+    @Bean
+    public FilterRegistrationBean&lt;FiltroSlash&gt; filtroSlash() {
+<span class="fc" id="L12">        FilterRegistrationBean&lt;FiltroSlash&gt; registrationBean = new FilterRegistrationBean&lt;&gt;();</span>
+<span class="fc" id="L13">        registrationBean.setFilter(new FiltroSlash());</span>
+
+<span class="fc" id="L15">        registrationBean.setOrder(0);</span>
+
+<span class="fc" id="L17">        return registrationBean;</span>
+    }
+
+    @Bean
+    public FilterRegistrationBean&lt;FiltroJWT&gt; filtroJwt() {
+<span class="fc" id="L22">        FilterRegistrationBean&lt;FiltroJWT&gt; registrationBean = new FilterRegistrationBean&lt;&gt;();</span>
+<span class="fc" id="L23">        registrationBean.setFilter(new FiltroJWT());</span>
+
+        // Endpoints que requieren autenticacion obligatoriamente
+<span class="fc" id="L26">        registrationBean.addUrlPatterns(&quot;/medico/*&quot;);</span>
+<span class="fc" id="L27">        registrationBean.addUrlPatterns(&quot;/paciente/*&quot;);</span>
+
+<span class="fc" id="L29">        registrationBean.setOrder(1);</span>
+
+<span class="fc" id="L31">        return registrationBean;</span>
+    }
+
+    @Bean
+    public FilterRegistrationBean&lt;FiltroRequerirNoAutenticado&gt; filtroRequerirNoAutenticado() {
+<span class="fc" id="L36">        FilterRegistrationBean&lt;FiltroRequerirNoAutenticado&gt; registrationBean = new FilterRegistrationBean&lt;&gt;();</span>
+<span class="fc" id="L37">        registrationBean.setFilter(new FiltroRequerirNoAutenticado());</span>
+
+        // Endpoints que requieren explicitamente no estar autenticado
+<span class="fc" id="L40">        registrationBean.addUrlPatterns(&quot;/&quot;); // Indice redirigira al login o a la pagina por defecto segun el rol</span>
+<span class="fc" id="L41">        registrationBean.addUrlPatterns(&quot;/auth/login&quot;);</span>
+<span class="fc" id="L42">        registrationBean.addUrlPatterns(&quot;/auth/registro&quot;);</span>
+<span class="fc" id="L43">        registrationBean.addUrlPatterns(&quot;/api/auth/login&quot;);</span>
+<span class="fc" id="L44">        registrationBean.addUrlPatterns(&quot;/api/auth/registro&quot;);</span>
+
+<span class="fc" id="L46">        registrationBean.setOrder(1);</span>
+
+<span class="fc" id="L48">        return registrationBean;</span>
+    }
+
+    @Bean
+    public FilterRegistrationBean&lt;FiltroMedico&gt; filtroMedico() {
+<span class="fc" id="L53">        FilterRegistrationBean&lt;FiltroMedico&gt; registrationBean = new FilterRegistrationBean&lt;&gt;();</span>
+<span class="fc" id="L54">        registrationBean.setFilter(new FiltroMedico());</span>
+
+<span class="fc" id="L56">        registrationBean.addUrlPatterns(&quot;/medico/*&quot;);</span>
+
+<span class="fc" id="L58">        registrationBean.setOrder(2);</span>
+
+<span class="fc" id="L60">        return registrationBean;</span>
+    }
+
+    @Bean
+    public FilterRegistrationBean&lt;FiltroPaciente&gt; filtroPaciente() {
+<span class="fc" id="L65">        FilterRegistrationBean&lt;FiltroPaciente&gt; registrationBean = new FilterRegistrationBean&lt;&gt;();</span>
+<span class="fc" id="L66">        registrationBean.setFilter(new FiltroPaciente());</span>
+
+<span class="fc" id="L68">        registrationBean.addUrlPatterns(&quot;/paciente/*&quot;);</span>
+
+<span class="fc" id="L70">        registrationBean.setOrder(3);</span>
+
+<span class="fc" id="L72">        return registrationBean;</span>
+    }
+}
+
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>
