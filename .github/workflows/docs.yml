@@ -24,16 +24,25 @@ jobs:
     - name: Compilar el código
       run: mvn clean compile
     - name: Testing
-      run: mvn test -DargLine="-Dcontiperf.active=false"
+      run: mvn test
     - name: Instalar doxygen
       run: sudo apt-get install -y doxygen
     - name: Instalar graphviz
       run: sudo apt-get install -y graphviz
     - name: Generar documentación con doxygen
       run: mvn doxygen:report
+    - name: Generar documentacion de covertura de tests con Jacoco
+      run: mvn jacoco:report
+    - name: Configurar ficheros para GitHub pages
+      run: |
+          mkdir -p gh-pages/doxygen
+          mkdir -p gh-pages/jacoco
+          cp -r target/doxygen/html/** gh-pages/doxygen/
+          cp -r target/site/jacoco/** gh-pages/jacoco/
+          cp ghpages.index.html gh-pages/index.html
     - name: Publicar en GitHub Pages
       uses: crazy-max/ghaction-github-pages@v2.3.0
       with:
-        build_dir: target/doxygen/html
+        build_dir: gh-pages
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
