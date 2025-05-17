@@ -39,7 +39,8 @@ jobs:
           mkdir -p gh-pages/jacoco
           cp -r target/doxygen/html/** gh-pages/doxygen/
           cp -r target/site/jacoco/** gh-pages/jacoco/
-          cp ghpages.index.html gh-pages/index.html
+          cp .github/ghpages.index.html gh-pages/index.html
+          cp -r .github/img gh-pages/
     - name: Publicar en GitHub Pages
       uses: crazy-max/ghaction-github-pages@v2.3.0
       with:

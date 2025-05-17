@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8" />
+		<title>Docs</title>
+		<link rel="preconnect" href="https://fonts.googleapis.com">
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		<link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+		<style>
+			* {
+				font-family: "Inter", sans-serif;
+			}
+			body, html {
+				min-height: 100dvh;
+			}
+			.centrado {
+				position: absolute;
+				left: 50%;
+				top: 50%;
+				transform: translate(-50%, -50%);
+			}
+			.opciones {
+				width: 600px;
+				height: 200px;
+
+				display: grid;
+				grid-template-columns: repeat(2, 1fr);
+				gap: 15px;
+				margin: auto;
+			}
+			a {
+				border-radius: 5px;
+				font-size: 20px;
+				font-weight: bold;
+				text-decoration: none;
+				color: black;
+				box-shadow: 0px 10px 15px -3px rgba(0,0,0,0.1);
+				transition: all .2s linear;
+				display: flex;
+				align-items: flex-end;
+				padding: 20px;
+				position: relative;
+				overflow: hidden;
+			}
+			a:hover {
+				cursor: pointer;
+				opacity: .8;
+			}
+			img {
+				position: absolute;
+				opacity: .6;
+				width: 80%;
+				left: 50%;
+				top: 50%;
+				transform: translate(-50%, -50%);
+			}
+			h2 {
+				text-align: center;
+			}
+		</style>
+	</head>
+	<body>
+		<h1>GitHub pages de Doctorclick</h1>
+		<div class="centrado">
+			<h2>Docs disponibles</h2>
+			<div class="opciones">
+				<a class="opcion" href="/doxygen">
+					<span>
+						Documentación Doxygen
+					</span>
+					<img src="img/doxygen.jpg" />
+				</a>
+				<a class="opcion" href="/jacoco">
+					<span>
+						Reporte de Jacoco
+					</span>
+					<img src="img/jacoco.png" />
+				</a>
+			</div>
+			<div>
+	</body>
+</html>
