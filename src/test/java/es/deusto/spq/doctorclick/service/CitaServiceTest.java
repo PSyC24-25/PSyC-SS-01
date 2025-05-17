@@ -11,6 +11,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
@@ -114,5 +115,77 @@ class CitaServiceTest {
         assertEquals(fecha1, cita.getFecha());
     }
 
+    @Test
+    @DisplayName("Eliminar todas las citas de un médico")
+    void testEliminarCitasMedico() {
+        when(citaRepository.findByMedico_Dni(medico.getDni())).thenReturn(List.of(cita));
+        when(citaRepository.findById(cita.getId())).thenReturn(Optional.of(cita));
+        when(medicoService.getMedico(medico.getDni())).thenReturn(Optional.of(medico));
 
+        boolean resultado = citaService.eliminarCitasMedicos(medico.getDni());
+
+        assertTrue(resultado);
+        verify(citaRepository, times(1)).delete(cita);
+    }
+
+
+    @Test
+    @DisplayName("Obtener citas pasadas del médico")
+    void testObtenerCitaMedicoPasado() {
+        when(citaRepository.findbyMedicoDniAndFechaBefore(medico.getDni()))
+                .thenReturn(List.of(cita));
+
+        List<Cita> resultado = citaService.obtenerCitaMedicoPasado(medico.getDni());
+
+        assertEquals(1, resultado.size());
+        assertEquals(cita, resultado.get(0));
+    }
+
+
+    @Test
+    @DisplayName("Obtener citas pasadas del paciente")
+    void testObtenerCitaPacientePasado() {
+        when(citaRepository.findByPacienteDniAndFechaBefore(paciente.getDni()))
+                .thenReturn(List.of(cita));
+
+        List<Cita> resultado = citaService.obtenerCitaPacientePasado(paciente.getDni());
+
+        assertEquals(1, resultado.size());
+        assertEquals(cita, resultado.get(0));
+    }
+
+    @Test
+    @DisplayName("Obtener cita por ID y DNI del paciente")
+    void testObtenerCitaPorIdYPaciente() {
+        when(citaRepository.findByIdAndPacienteDni(cita.getId(), paciente.getDni()))
+                .thenReturn(Optional.of(cita));
+
+        Optional<Cita> resultado = citaService.obtenerCitaPorIdYPaciente(cita.getId(), paciente.getDni());
+
+        assertTrue(resultado.isPresent());
+        assertEquals(cita, resultado.get());
+    }
+
+    @Test
+    @DisplayName("Obtener cita por ID")
+    void testGetCitaPorId() {
+        when(citaRepository.findById(cita.getId())).thenReturn(Optional.of(cita));
+
+        Optional<Cita> resultado = citaService.getCita(cita.getId());
+
+        assertTrue(resultado.isPresent());
+        assertEquals(cita, resultado.get());
+    }
+
+
+    @Test
+    @DisplayName("Obtener citas por DNI de médico")
+    void testGetCitasPorDniMedico() {
+        when(citaRepository.findByMedico_Dni(medico.getDni())).thenReturn(List.of(cita));
+
+        List<Cita> citas = citaService.getCitas(medico.getDni());
+
+        assertEquals(1, citas.size());
+        assertEquals(cita, citas.get(0));
+    }
 }

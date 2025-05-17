@@ -107,4 +107,17 @@ class MedicoServiceTest {
         assertEquals(Especialidad.NEUROLOGIA, medico.getEspecialidad());
     }
 
+    @Test
+    @DisplayName("Dar de baja a un médico existente")
+    void bajaMedicoExistente() {
+        Medico medico = new Medico("11223344Z", "Nerea", "Iglesias", "pass123", Especialidad.NEUROLOGIA);
+        when(medicoRepository.findByDni("11223344Z")).thenReturn(Optional.of(medico));
+        boolean resultado = medicoService.bajaMedico(medico);
+        assertTrue(resultado, "True si el médico existe");
+        verify(medicoRepository).delete(medico);
+        verify(medicoRepository, never()).save(any());
+    }
+
+
+
 }
