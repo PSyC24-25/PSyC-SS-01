@@ -75,7 +75,6 @@ public class PacienteController {
         model.addAttribute("tipoCuenta", "paciente");
 
         String dni = Utility.obtenerDni(request);
-        System.out.println("DNI del paciente: " + dni);
         Optional<Cita> optCita = citaService.obtenerCitaPorIdYPaciente(id, dni);
         if (optCita.isEmpty()) {
             return "redirect:/paciente/citas?error=notfound";

@@ -26,8 +26,6 @@ public class ApiPacienteController {
     @Autowired
     CitaService citaService;
 
-    // ===== RUTAS DE CITAS =====
-
     @GetMapping("/citasPasadas")
     public ResponseEntity<?> citasPasadas(HttpServletRequest request) {
         try {

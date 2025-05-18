@@ -26,7 +26,6 @@ public class MedicoController {
     private static final String VISTA_VER_CITAS_MEDICO = "medico/verCitasMedico";
     private static final String VISTA_PERFIL_MEDICO = "medico/miPerfilMedico";
 
-
     @Autowired
     private CitaService citaService;
     @Autowired
@@ -116,6 +115,5 @@ public class MedicoController {
             model.addAttribute("medico", "error");
             return VISTA_PERFIL_MEDICO;
         }
-
     }
 }

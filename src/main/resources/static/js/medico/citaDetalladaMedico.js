@@ -24,11 +24,11 @@ document.addEventListener("DOMContentLoaded", function(){
                     window.location.href = (data.tipoUsuario === "paciente" ? "/paciente/" : "/medico/");
                 } else {
                     let data = await response.json();
-                    console.log("Error al loguear usuario: ", data)
+                    console.log("Error en el sistema: ", data)
                 }
             })
             .catch(error => {
-                console.log("Error en el registro:", error)
+                console.log("Error:", error)
             })
     }
     cancelar.addEventListener('click',cancelarCita)

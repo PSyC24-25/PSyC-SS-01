@@ -1,4 +1,4 @@
-fetch("http://localhost:8080/api/paciente/citasPasadas", {
+fetch("http://localhost:8080/api/medico/citasPasadas", {
     method: 'GET',
     headers: {
         'Content-Type': 'application/json'
@@ -7,7 +7,6 @@ fetch("http://localhost:8080/api/paciente/citasPasadas", {
     .then(async (response) => {
         let data = await response.json();
         if (response.ok) {
-            console.log("Datos recibidos:", data);
             const tabla = document.getElementById("tabla-citas");
 
             data.forEach(cita => {
@@ -16,7 +15,7 @@ fetch("http://localhost:8080/api/paciente/citasPasadas", {
                 fila.classList.add("cursor-pointer", "hover:bg-gray-100");
 
                 fila.addEventListener("click", () => {
-                    window.location.href = `/paciente/citas/${cita.id}`;
+                    window.location.href = `/medico/citas/${cita.id}`;
                 });
                 fila.innerHTML = `
                     <td>${cita.fecha}</td>

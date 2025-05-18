@@ -3,7 +3,6 @@ package es.deusto.spq.doctorclick.controller.api;
 import es.deusto.spq.doctorclick.Utility;
 import es.deusto.spq.doctorclick.model.Cita;
 import es.deusto.spq.doctorclick.model.Medico;
-import es.deusto.spq.doctorclick.repository.CitaRepository;
 import es.deusto.spq.doctorclick.service.CitaService;
 import es.deusto.spq.doctorclick.service.MedicoService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -19,16 +18,10 @@ import java.util.Optional;
 @RequestMapping("/api/medico")
 public class ApiMedicoController {
 
-    private final CitaRepository citaRepository;
-
     @Autowired
     private CitaService citaService;
     @Autowired
     private MedicoService medicoService;
-
-    ApiMedicoController(CitaRepository citaRepository) {
-        this.citaRepository = citaRepository;
-    }
 
     @DeleteMapping("/citas/{id}")
     public ResponseEntity<?> cancelarCita(@PathVariable("id") Long id, HttpServletRequest request) {
@@ -46,8 +39,8 @@ public class ApiMedicoController {
             e.printStackTrace();
             return ResponseEntity.status(500).body("Error en el servidor");
         }
-
     }
+
    @DeleteMapping("/miperfil")
     public ResponseEntity<String> bajaPerfil( HttpServletRequest request) {
         try {
@@ -82,5 +75,4 @@ public class ApiMedicoController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
-
 }
