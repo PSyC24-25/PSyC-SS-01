@@ -11,6 +11,7 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 
 @Service
@@ -102,7 +103,7 @@ public class CitaService {
         if(paciente.isEmpty())
             return new ArrayList<>();
 
-        return citaRepository.findByPacienteDniAndFechaAfter(paciente.get().getDni(), LocalDateTime.now());
+        return citaRepository.findByPacienteDniAndFechaAfter(paciente.get().getDni(), LocalDateTime.now().truncatedTo(ChronoUnit.HOURS));
     }
 
     public List<Cita> obtenerCitaPacientePasado(String dni) {
@@ -110,7 +111,7 @@ public class CitaService {
         if(paciente.isEmpty())
             return new ArrayList<>();
 
-        return citaRepository.findByPacienteDniAndFechaBefore(paciente.get().getDni(), LocalDateTime.now());
+        return citaRepository.findByPacienteDniAndFechaBefore(paciente.get().getDni(), LocalDateTime.now().truncatedTo(ChronoUnit.HOURS));
     }
 
     public List<Cita> obtenerCitaMedicoPasado(String dni){
@@ -118,7 +119,7 @@ public class CitaService {
         if(medico.isEmpty())
             return new ArrayList<>();
 
-        return citaRepository.findByMedicoDniAndFechaBefore(medico.get().getDni(), LocalDateTime.now());
+        return citaRepository.findByMedicoDniAndFechaBefore(medico.get().getDni(), LocalDateTime.now().truncatedTo(ChronoUnit.HOURS));
     }
 
     public List<Cita> obtenerCitasPorDniMedico(String dni) {

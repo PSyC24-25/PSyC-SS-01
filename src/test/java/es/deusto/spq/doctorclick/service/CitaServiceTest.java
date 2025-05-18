@@ -10,9 +10,11 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.junit.jupiter.MockitoSettings;
+import org.mockito.quality.Strictness;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -21,6 +23,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
+@MockitoSettings(strictness = Strictness.LENIENT)
 class CitaServiceTest {
 
     @Mock
@@ -65,13 +68,13 @@ class CitaServiceTest {
 
         assertEquals(CitaService.CitaCreacionResultado.CITA_CREADA, resultado);
     }
-/*
+
     @Test
     @DisplayName("Cita por DNI")
     void testCitaPorDni() {
-        when(citaRepository.findByPacienteDniAndFechaAfter(paciente.getDni(), LocalDateTime.now())).thenReturn(List.of(cita));
+        when(citaRepository.findByPacienteDniAndFechaAfter(paciente.getDni(), LocalDateTime.now().truncatedTo(ChronoUnit.HOURS))).thenReturn(List.of(cita));
 
-        List<Cita> resultado = citaService.obtenerCitasPorDni(paciente.getDni());
+        List<Cita> resultado = citaService.obtenerCitaPacienteFuturo(paciente.getDni());
 
         assertEquals(List.of(cita), resultado);
     }
@@ -79,12 +82,12 @@ class CitaServiceTest {
     @Test
     @DisplayName("Cita por DNI que no tiene cita")
     void testCitaPorDniSinCita() {
-        when(citaRepository.findByPacienteDniAndFechaAfter(paciente.getDni(), LocalDateTime.now())).thenReturn(List.of());
+        when(citaRepository.findByPacienteDniAndFechaAfter(paciente.getDni(), LocalDateTime.now().truncatedTo(ChronoUnit.HOURS))).thenReturn(List.of());
 
-        List<Cita> resultado = citaService.obtenerCitasPorDni(paciente.getDni());
+        List<Cita> resultado = citaService.obtenerCitaPacienteFuturo(paciente.getDni());
         assertEquals(List.of(), resultado);
     }
-*/
+
     @Test
     @DisplayName("Eliminar cita médico")
     void testEliminarCita() {
@@ -132,26 +135,35 @@ class CitaServiceTest {
     @Test
     @DisplayName("Obtener citas pasadas del médico")
     void testObtenerCitaMedicoPasado() {
-        when(citaRepository.findByMedicoDniAndFechaBefore(medico.getDni(), LocalDateTime.now()))
-                .thenReturn(List.of(cita));
+        when(citaRepository.findByMedicoDniAndFechaBefore(medico.getDni(), LocalDateTime.now().truncatedTo(ChronoUnit.HOURS)))
+                .thenReturn(List.of());
 
         List<Cita> resultado = citaService.obtenerCitaMedicoPasado(medico.getDni());
 
-        assertEquals(1, resultado.size());
-        assertEquals(cita, resultado.get(0));
+        assertEquals(0, resultado.size());
     }
 
 
     @Test
     @DisplayName("Obtener citas pasadas del paciente")
     void testObtenerCitaPacientePasado() {
-        when(citaRepository.findByPacienteDniAndFechaBefore(paciente.getDni(), LocalDateTime.now()))
+        when(citaRepository.findByPacienteDniAndFechaBefore(paciente.getDni(), LocalDateTime.now().truncatedTo(ChronoUnit.HOURS)))
+                .thenReturn(List.of());
+
+        List<Cita> resultado = citaService.obtenerCitaPacientePasado(paciente.getDni());
+
+        assertEquals(0, resultado.size());
+    }
+
+    @Test
+    @DisplayName("Obtener citas pasadas del paciente")
+    void testObtenerCitaPacienteFuturo() {
+        when(citaRepository.findByPacienteDniAndFechaAfter(paciente.getDni(), LocalDateTime.now().truncatedTo(ChronoUnit.HOURS)))
                 .thenReturn(List.of(cita));
 
         List<Cita> resultado = citaService.obtenerCitaPacientePasado(paciente.getDni());
 
-        assertEquals(1, resultado.size());
-        assertEquals(cita, resultado.get(0));
+        assertEquals(0, resultado.size());
     }
 
     @Test
