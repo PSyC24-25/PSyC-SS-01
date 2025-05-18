@@ -97,13 +97,38 @@ public class CitaService {
         return CitaCreacionResultado.CITA_CREADA;
     }
 
-    public List<Cita> obtenerCitasPorDni(String dni) {
+    public List<Cita> obtenerCitaPacienteFuturo(String dni) {
         Optional<Paciente> paciente = pacienteService.getPaciente(dni);
         if(paciente.isEmpty())
             return new ArrayList<>();
 
-        return citaRepository.findByPaciente(paciente.get());
+        return citaRepository.findByPacienteDniAndFechaAfter(paciente.get().getDni(), LocalDateTime.now());
     }
+
+    public List<Cita> obtenerCitaPacientePasado(String dni) {
+        Optional<Paciente> paciente = pacienteService.getPaciente(dni);
+        if(paciente.isEmpty())
+            return new ArrayList<>();
+
+        return citaRepository.findByPacienteDniAndFechaBefore(paciente.get().getDni(), LocalDateTime.now());
+    }
+
+    public List<Cita> obtenerCitaMedicoFuturo(String dni) {
+        Optional<Medico> medico = medicoService.getMedico(dni);
+        if(medico.isEmpty())
+            return new ArrayList<>();
+
+        return citaRepository.findByMedicoDniAndFechaAfter(medico.get().getDni(), LocalDateTime.now());
+    }
+
+    public List<Cita> obtenerCitaMedicoPasado(String dni){
+        Optional<Medico> medico = medicoService.getMedico(dni);
+        if(medico.isEmpty())
+            return new ArrayList<>();
+
+        return citaRepository.findByMedicoDniAndFechaBefore(medico.get().getDni(), LocalDateTime.now());
+    }
+
     public List<Cita> obtenerCitasPorDniMedico(String dni) {
         Optional<Medico> medico = medicoService.getMedico(dni);
         if(medico.isEmpty())
@@ -143,9 +168,7 @@ public class CitaService {
     public Optional<Cita> obtenerCitaPorIdYPaciente(Long id, String dni) {
         return citaRepository.findByIdAndPacienteDni(id, dni);
     }
-    public List<Cita> obtenerCitaPacientePasado(String dni) {
-        return citaRepository.findByPacienteDniAndFechaBefore(dni);
-    }
+
 
     public boolean cancelarCita(Long idCita, String dniPaciente) {
         Optional<Cita> optCita = obtenerCitaPorIdYPaciente(idCita, dniPaciente);
@@ -157,20 +180,12 @@ public class CitaService {
     }
     public boolean eliminarCitasMedicos( String dniMedico) {;
        List<Cita> citasMedico = getCitas(dniMedico);
-         boolean  accion = true;
        for (Cita cita : citasMedico) {
-        CitaEliminadaResultado resultado =  cancelarCitaMedico(dniMedico, cita.getId());
-        if(resultado.equals(CitaEliminadaResultado.CITA_ELIMINADA))    {
-            continue;
-        }else{
-            accion = false;
-        }
+           CitaEliminadaResultado resultado =  cancelarCitaMedico(dniMedico, cita.getId());
+           if(!resultado.equals(CitaEliminadaResultado.CITA_ELIMINADA))    {
+               return false;
+           }
        }
-       return accion;
-    }
-    public List<Cita> obtenerCitaMedicoPasado(String dni){
-        return citaRepository.findbyMedicoDniAndFechaBefore(dni);
+       return true;
     }
 }
-
-

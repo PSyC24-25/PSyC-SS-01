@@ -18,6 +18,7 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/paciente")
@@ -41,7 +42,7 @@ public class ApiPacienteController {
     public ResponseEntity<?> apiCitas(HttpServletRequest request) {
         try {
             String dni = Utility.obtenerDni(request);
-            List<Cita> citas = citaService.obtenerCitasPorDni(dni);
+            List<Cita> citas = citaService.obtenerCitaMedicoFuturo(dni);
             return ResponseEntity.ok(citas);
         } catch (Exception e) {
             e.printStackTrace();
@@ -112,6 +113,21 @@ public class ApiPacienteController {
         ObjectMapper mapper = new ObjectMapper();
         mapper.registerModule(new JavaTimeModule());
         mapper.writeValue(response.getWriter(), horasDisponibles);
+    }
+
+    @GetMapping("/citas/{id}")
+    public ResponseEntity<?> obtenerCita(@PathVariable Long id, HttpServletRequest request){
+        try {
+            String dni = Utility.obtenerDni(request);
+            Optional<Cita> cita = citaService.obtenerCitaPorIdYPaciente(id, dni);
+            if (cita.isEmpty()) {
+                return ResponseEntity.status(404).body("Cita no encontrada");
+            }
+            return ResponseEntity.status(200).body(cita.get());
+        } catch(Exception e){
+            e.printStackTrace();
+            }
+        return ResponseEntity.status(500).body("Error al obtener la cita");
     }
 
     @DeleteMapping("/citas/{id}")
