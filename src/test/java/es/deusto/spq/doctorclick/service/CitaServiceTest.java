@@ -118,7 +118,7 @@ class CitaServiceTest {
     @Test
     @DisplayName("Eliminar todas las citas de un médico")
     void testEliminarCitasMedico() {
-        when(citaRepository.findByMedico_Dni(medico.getDni())).thenReturn(List.of(cita));
+        when(citaRepository.findByMedicoDni(medico.getDni())).thenReturn(List.of(cita));
         when(citaRepository.findById(cita.getId())).thenReturn(Optional.of(cita));
         when(medicoService.getMedico(medico.getDni())).thenReturn(Optional.of(medico));
 
@@ -181,7 +181,7 @@ class CitaServiceTest {
     @Test
     @DisplayName("Obtener citas por DNI de médico")
     void testGetCitasPorDniMedico() {
-        when(citaRepository.findByMedico_Dni(medico.getDni())).thenReturn(List.of(cita));
+        when(citaRepository.findByMedicoDni(medico.getDni())).thenReturn(List.of(cita));
 
         List<Cita> citas = citaService.getCitas(medico.getDni());
 

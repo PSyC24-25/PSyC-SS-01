@@ -42,7 +42,7 @@ public class ApiPacienteController {
     public ResponseEntity<?> apiCitas(HttpServletRequest request) {
         try {
             String dni = Utility.obtenerDni(request);
-            List<Cita> citas = citaService.obtenerCitaMedicoFuturo(dni);
+            List<Cita> citas = citaService.obtenerCitasPorDniMedico(dni);
             return ResponseEntity.ok(citas);
         } catch (Exception e) {
             e.printStackTrace();

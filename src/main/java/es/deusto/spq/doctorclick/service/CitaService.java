@@ -113,14 +113,6 @@ public class CitaService {
         return citaRepository.findByPacienteDniAndFechaBefore(paciente.get().getDni(), LocalDateTime.now());
     }
 
-    public List<Cita> obtenerCitaMedicoFuturo(String dni) {
-        Optional<Medico> medico = medicoService.getMedico(dni);
-        if(medico.isEmpty())
-            return new ArrayList<>();
-
-        return citaRepository.findByMedicoDniAndFechaAfter(medico.get().getDni(), LocalDateTime.now());
-    }
-
     public List<Cita> obtenerCitaMedicoPasado(String dni){
         Optional<Medico> medico = medicoService.getMedico(dni);
         if(medico.isEmpty())
@@ -134,7 +126,7 @@ public class CitaService {
         if(medico.isEmpty())
             return new ArrayList<>();
 
-        return citaRepository.findByMedico_Dni(dni);
+        return citaRepository.findByMedicoDni(dni);
     }
 
     public enum CitaEliminadaResultado {
@@ -160,7 +152,7 @@ public class CitaService {
         return CitaEliminadaResultado.ERROR_ELIMINACION;
     }
     public List<Cita> getCitas(String dni){
-        return citaRepository.findByMedico_Dni(dni);
+        return citaRepository.findByMedicoDni(dni);
     }
     public Optional<Cita> getCita(Long id){
         return citaRepository.findById(id);

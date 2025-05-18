@@ -33,7 +33,7 @@ public class PacienteController {
         model.addAttribute("tipoCuenta", "paciente");
         model.addAttribute("seccion", "citas");
 
-        return "verCitas";
+        return "paciente/verCitas";
     }
 
     @GetMapping("/citasPasadas")
@@ -41,7 +41,7 @@ public class PacienteController {
         model.addAttribute("tipoCuenta", "paciente");
         model.addAttribute("seccion", "citasPasadas");
 
-        return "paciente/verCitasPasadasPaciente";
+        return "paciente/verCitasPasadas";
     }
 
     @GetMapping("/citas/pedir")
@@ -68,7 +68,7 @@ public class PacienteController {
     public String verCitaDetalle(@PathVariable Long id, Model model) {
         model.addAttribute("tipoCuenta", "paciente");
 
-        return "verCitasDetalle";
+        return "paciente/citaDetallada";
     }
 }
 

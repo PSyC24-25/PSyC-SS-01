@@ -14,7 +14,7 @@ import java.util.Optional;
 @Repository
 public interface CitaRepository extends JpaRepository<Cita, Long> {
 
-    List<Cita> findByMedico_Dni(String medicoDni);
+    List<Cita> findByMedicoDni(String medicoDni);
     Optional<Cita> findByIdAndPacienteDni(Long id, String dni);
     void deleteById(Long id);
 
@@ -22,9 +22,6 @@ public interface CitaRepository extends JpaRepository<Cita, Long> {
     List<Cita> findByPacienteDniAndFechaAfter(String dni, LocalDateTime fecha);
 
     List<Cita> findByMedicoDniAndFechaBefore(String dni, LocalDateTime fecha);
-    List<Cita> findByMedicoDniAndFechaAfter(String dni, LocalDateTime fecha);
-
-
 
     @Query("SELECT c FROM Cita c " +
             "WHERE c.medico.id = :id " +
@@ -34,10 +31,5 @@ public interface CitaRepository extends JpaRepository<Cita, Long> {
             @Param("id") Long id,
             @Param("startOfDay") LocalDateTime startOfDay,
             @Param("startOfNextDay") LocalDateTime startOfNextDay
-    );
-    @Query("SELECT c.id FROM Cita c " +
-    "WHERE c.medico.dni = :dni " )
- List<Cita> getCitaMedicos(
-            @Param("dni") String dni
     );
 }

@@ -23,6 +23,24 @@ public class ApiMedicoController {
     @Autowired
     private MedicoService medicoService;
 
+    @GetMapping("/citas/{id}")
+    public ResponseEntity<?> obtenerCita(@PathVariable("id") Long id, HttpServletRequest request){
+        try {
+            String dni = Utility.obtenerDni(request);
+            Optional<Cita> cita = citaService.getCita(id);
+            if (cita.isEmpty()) {
+                return ResponseEntity.status(404).body("Cita no encontrada");
+            } else if (!cita.get().getMedico().getDni().equals(dni)) {
+                return ResponseEntity.status(403).body("No puedes acceder a esta cita");
+            } else {
+                return ResponseEntity.status(200).body(cita.get());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(500).body("Error al obtener la cita");
+        }
+    }
+
     @DeleteMapping("/citas/{id}")
     public ResponseEntity<?> cancelarCita(@PathVariable("id") Long id, HttpServletRequest request) {
         try {

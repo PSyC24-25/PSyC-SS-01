@@ -22,9 +22,8 @@ import static es.deusto.spq.doctorclick.service.CitaService.CITAS_POR_HORA;
 @RequestMapping("/medico")
 public class MedicoController {
 
-    private static final String VISTA_CITA_DETALLADA_MEDICO = "medico/citaDetalladaMedico";
-    private static final String VISTA_VER_CITAS_MEDICO = "medico/verCitasMedico";
-    private static final String VISTA_PERFIL_MEDICO = "medico/miPerfilMedico";
+    private static final String VISTA_VER_CITAS_MEDICO = "medico/calendario";
+    private static final String VISTA_PERFIL_MEDICO = "medico/miPerfil";
 
     @Autowired
     private CitaService citaService;
@@ -60,25 +59,9 @@ public class MedicoController {
     @GetMapping("/citas/{id}")
     public String citasId(@PathVariable("id") Long id, HttpServletRequest request, Model model) {
         model.addAttribute("tipoCuenta", "medico");
+        model.addAttribute("seccion", "citas");
 
-        try {
-            String dni = Utility.obtenerDni(request);
-            Optional<Cita> cita = citaService.getCita(id);
-            if (cita.isEmpty()) {
-                model.addAttribute("mensaje", "No se ha encontrado la cita");
-                return VISTA_VER_CITAS_MEDICO;
-            } else if (!cita.get().getMedico().getDni().equals(dni)) {
-                model.addAttribute("mensaje", "No tiene permiso para esta cita");
-                return VISTA_CITA_DETALLADA_MEDICO;
-            } else {
-                model.addAttribute("cita", cita.get());
-                return VISTA_CITA_DETALLADA_MEDICO;
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            model.addAttribute("mensaje", "error");
-            return VISTA_CITA_DETALLADA_MEDICO;
-        }
+        return "medico/citaDetallada";
     }
 
     @GetMapping("/citasPasadas")
@@ -86,7 +69,7 @@ public class MedicoController {
         model.addAttribute("tipoCuenta", "medico");
         model.addAttribute("seccion", "citasPasadas");
 
-        return "medico/verCitasPasadasMedico";
+        return "medico/verCitasPasadas";
     }
 
     @GetMapping("/miperfil")

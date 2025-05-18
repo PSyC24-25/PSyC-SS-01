@@ -21,8 +21,6 @@ public class Utility {
         }
         JWTClaimsSet claims = AuthService.ObtenerClaimsJWT(token);
         String dni = (String) claims.getClaim("dni");
-        System.out.println(claims.toString());
-        System.out.println(Arrays.toString(request.getCookies()));
         if (dni == null) {
             throw new Exception("DNI no encontrado en el token");
         }

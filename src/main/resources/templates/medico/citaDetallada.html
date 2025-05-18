@@ -1,0 +1,28 @@
+<html lang="es"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{general/plantilla.html}">
+
+<head>
+    <title layout:fragment="titulo">Detalle de cita | DoctorClick</title>
+</head>
+
+<main layout:fragment="content">
+    <div id="contenido">
+        <p><strong>Paciente: </strong><span id="paciente"></span></p>
+        <p><strong>Fecha: </strong><span id="fecha"></span></p>
+        <p><strong>Hora: </strong><span id="hora"></span></p>
+        <p><strong>Especialidad: </strong><span id="especialidad"></span></p>
+        <p><strong>Resumen: </strong><span id="resumen"></span></p>
+    </div>
+    <div class="boton">
+        <button id="cancelarBtn"
+                class="mt-4 bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded">
+            Cancelar cita
+        </button>
+    </div>
+    <script src="/js/medico/citaDetallada.js"></script>
+    <script defer src="/js/medico/cancelarCita.js"></script>
+</main>
+
+</html>
