@@ -116,6 +116,7 @@
                 <artifactId>jacoco-maven-plugin</artifactId>
                 <version>0.8.12</version>
                 <executions>
+                    <!-- Análisis después de los tests -->
                     <execution>
                         <goals>
                             <goal>prepare-agent</goal>
@@ -123,10 +124,32 @@
                     </execution>
                     <execution>
                         <id>report</id>
-                        <phase>test</phase>
+                        <phase>verify</phase>
                         <goals>
                             <goal>report</goal>
                         </goals>
+                    </execution>
+                    <!-- Falla la build si no se alcanza el mínimo -->
+                    <execution>
+                        <id>check</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                        <configuration>
+                            <rules>
+                                <rule>
+                                    <element>BUNDLE</element> <!-- O CLASS, PACKAGE, etc. -->
+                                    <limits>
+                                        <limit>
+                                            <counter>LINE</counter>       <!-- Puede ser: INSTRUCTION, BRANCH, LINE, METHOD, CLASS -->
+                                            <value>COVEREDRATIO</value>   <!-- O COVEREDCOUNT -->
+                                            <minimum>0.55</minimum>       <!-- 70% mínimo -->
+                                        </limit>
+                                    </limits>
+                                </rule>
+                            </rules>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>
