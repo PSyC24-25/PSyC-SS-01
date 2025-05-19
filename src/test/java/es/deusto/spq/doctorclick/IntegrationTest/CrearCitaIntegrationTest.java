@@ -4,12 +4,14 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Map;
 
 import com.nimbusds.jose.JOSEException;
 import es.deusto.spq.doctorclick.model.*;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -45,6 +47,48 @@ class CrearCitaIntegrationTest {
         p.setContrasenia("1234");
         pacienteService.registrarPaciente(p);
     }
+
+    @Test
+    @DisplayName("Obtener horas disponibles de un médico en una fecha concreta")
+    void obtenerHorasDisponiblesMedico() {
+        // Crear una fecha futura con disponibilidad
+        LocalDate fechaConsulta = LocalDate.now().plusDays(1);
+        LocalDateTime horaDisponible = citaService.obtenerHorasDisponibles(idMedico, fechaConsulta).get(0);
+
+        // Construir la URL con parámetros
+        String url = String.format("/api/paciente/citas/disponibles?anyo=%d&mes=%d&dia=%d&medico=%d",
+                fechaConsulta.getYear(),
+                fechaConsulta.getMonthValue(),
+                fechaConsulta.getDayOfMonth(),
+                idMedico
+        );
+
+        // Realizar petición GET
+        ResponseEntity<List> response = restTemplate.getForEntity(url, List.class);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertNotNull(response.getBody());
+
+        // Convertimos horaDisponible a una lista [2025, 5, 20, 8, 0]
+        List<Integer> horaEsperada = List.of(
+                horaDisponible.getYear(),
+                horaDisponible.getMonthValue(),
+                horaDisponible.getDayOfMonth(),
+                horaDisponible.getHour(),
+                horaDisponible.getMinute()
+        );
+
+        // Buscamos si esa lista está en el body
+
+        // Validaciones
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertNotNull(response.getBody());
+        System.out.println(response.getBody());
+        assertTrue(response.getBody().contains(horaEsperada));
+
+    }
+
+
 
     @Test
     void pacienteCreaCitaCorrecta() {
