@@ -13,8 +13,12 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
 
+import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
+import java.time.temporal.TemporalAdjusters;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -200,4 +204,58 @@ class CitaServiceTest {
         assertEquals(1, citas.size());
         assertEquals(cita, citas.get(0));
     }
+
+    @Test
+    @DisplayName("Cita en fin de semana")
+    void finDeSemana() {
+        LocalDate sabado = LocalDate.of(2025, 5, 24);  // es sábado
+        List<LocalDateTime> slots = citaService.obtenerHorasDisponibles(42L, sabado);
+        assertTrue(slots.isEmpty(), "Debe estar vacío en fin de semana");
+    }
+
+    @Test
+    @DisplayName("Verificar que al no haber citas, el tamaño de la lista coincide y el primer hueco es el que empieza la jornada")
+    void diaLaborSinCitas() {
+        LocalDate maniana = LocalDate.now().plusDays(1);
+        // simular que no hay citas ese día
+        when(citaRepository.findByMedicoDniAndFechaInDay(
+                eq(42L),
+                any(LocalDateTime.class),
+                any(LocalDateTime.class)))
+                .thenReturn(List.of());
+
+        List<LocalDateTime> slots = citaService.obtenerHorasDisponibles(42L, maniana);
+
+        int totalEsperado = (CitaService.CITAS_HORA_FIN - CitaService.CITAS_HORA_INICIO)
+                * CitaService.CITAS_POR_HORA;
+        assertEquals(totalEsperado, slots.size(),
+                "Debe devolver todos los huecos: " + totalEsperado);
+
+        // primer slot a las 8:00
+        assertEquals(LocalDateTime.of(maniana, LocalTime.of(
+                        CitaService.CITAS_HORA_INICIO, 0)),
+                slots.get(0));
+    }
+
+    @Test
+    @DisplayName("Simular cita a las 10:00 y verificar que no aparece como opción")
+    void unSlotBloqueado() {
+        LocalDate maniana = LocalDate.now().plusDays(1);
+        LocalDateTime bloqueado = LocalDateTime.of(maniana, LocalTime.of(10, 0));
+        Cita cita = new Cita();
+        cita.setFecha(bloqueado);
+
+        when(citaRepository.findByMedicoDniAndFechaInDay(
+                eq(42L),
+                any(LocalDateTime.class),
+                any(LocalDateTime.class)))
+                .thenReturn(List.of(cita));
+
+        List<LocalDateTime> slots = citaService.obtenerHorasDisponibles(42L, maniana);
+
+        assertFalse(slots.contains(bloqueado),
+                "El hueco 10:00 debe estar excluido");
+    }
+
+
 }
