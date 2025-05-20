@@ -2,15 +2,10 @@
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{general/plantilla.html}">
-      
-
 <head>
-    <link rel="stylesheet" th:href="@{/css/miperfilmedico.css}" />
-
-    <title layout:fragment="titulo">Mi perfil</title>
-
+    <link rel="stylesheet" th:href="@{/css/perfil.css}" />
+    <title layout:fragment="titulo">Tu perfil | Doctorclick</title>
 </head>
-
     <main layout:fragment="content">
         <div>
             <table>
@@ -22,9 +17,7 @@
             </tr>
             </table>
         </div>
-        <button id="baja">Dar de baja</button>
-        <script src="/js/medico/darDeBaja.js"></script>
-
+        <button id="baja">Darse de baja</button>
+        <script src="/js/perfil.js"></script>
     </main>
-
 </html>

@@ -45,13 +45,14 @@ public class ApiMedicoController {
     public ResponseEntity<?> cancelarCita(@PathVariable("id") Long id, HttpServletRequest request) {
         try {
             String dni = Utility.obtenerDni(request);
-            CitaService.CitaEliminadaResultado resultado = citaService.cancelarCitaMedico(dni,id);
+            CitaService.CitaEliminadaResultado resultado = citaService.cancelarCitaDeMedico(dni,id);
 
             return switch (resultado) {
                 case CITA_ELIMINADA -> ResponseEntity.status(200).body("Cita eliminada");
                 case ERROR_MEDICO -> ResponseEntity.status(404).body("Medico no eocntrado");
                 case ERROR_CITA_ID -> ResponseEntity.status(404).body("Cita no encotrada");
                 case ERROR_ELIMINACION -> ResponseEntity.status(404).body("Error en la eliminar del cita");
+                default -> ResponseEntity.status(404).body("Error desconocido.");
             };
         } catch (Exception e) {
             e.printStackTrace();
@@ -59,21 +60,15 @@ public class ApiMedicoController {
         }
     }
 
-   @DeleteMapping("/miperfil")
+   @DeleteMapping("/perfil")
     public ResponseEntity<String> bajaPerfil( HttpServletRequest request) {
         try {
             String dniUsuario = Utility.obtenerDni(request);
             Optional<Medico> medico = medicoService.getMedico(dniUsuario);
 
-
             if (medico.isPresent()) {
-               boolean resultado =  citaService.eliminarCitasMedicos(dniUsuario);
                 medicoService.bajaMedico(medico.get());
-               if(resultado == true){
                 return ResponseEntity.ok("Baja confirmada");
-               }
-               return ResponseEntity.ok("Baja confirmada");
-               
             } else {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Médico no encontrado");
             }

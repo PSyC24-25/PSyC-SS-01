@@ -99,7 +99,7 @@ class CitaServiceTest {
         when(citaRepository.findById(cita.getId())).thenReturn(Optional.of(cita));
         when(medicoService.getMedico(medico.getDni())).thenReturn(Optional.of(medico));
 
-        CitaService.CitaEliminadaResultado resultado = citaService.cancelarCitaMedico(medico.getDni(), cita.getId());
+        CitaService.CitaEliminadaResultado resultado = citaService.cancelarCitaDeMedico(medico.getDni(), cita.getId());
         verify(citaRepository, times(1)).delete(cita);
 
         assertEquals(CitaService.CitaEliminadaResultado.CITA_ELIMINADA, resultado);
@@ -120,19 +120,6 @@ class CitaServiceTest {
         assertEquals(paciente, cita.getPaciente());
         assertEquals(Especialidad.CARDIOLOGIA, cita.getEspecialidad());
         assertEquals(fecha1, cita.getFecha());
-    }
-
-    @Test
-    @DisplayName("Eliminar todas las citas de un médico")
-    void testEliminarCitasMedico() {
-        when(citaRepository.findByMedicoDni(medico.getDni())).thenReturn(List.of(cita));
-        when(citaRepository.findById(cita.getId())).thenReturn(Optional.of(cita));
-        when(medicoService.getMedico(medico.getDni())).thenReturn(Optional.of(medico));
-
-        boolean resultado = citaService.eliminarCitasMedicos(medico.getDni());
-
-        assertTrue(resultado);
-        verify(citaRepository, times(1)).delete(cita);
     }
 
 

@@ -1,6 +1,8 @@
 package es.deusto.spq.doctorclick.model;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.time.LocalDateTime;
 
@@ -12,10 +14,12 @@ public class Cita {
 
     @ManyToOne
     @JoinColumn(name = "paciente_id", referencedColumnName = "id", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Paciente paciente;
 
     @ManyToOne
     @JoinColumn(name = "medico_id", referencedColumnName = "id", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Medico medico;
     private LocalDateTime fecha;
 

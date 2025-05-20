@@ -4,7 +4,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import es.deusto.spq.doctorclick.Utility;
 import es.deusto.spq.doctorclick.model.Cita;
+import es.deusto.spq.doctorclick.model.Medico;
+import es.deusto.spq.doctorclick.model.Paciente;
 import es.deusto.spq.doctorclick.service.CitaService;
+import es.deusto.spq.doctorclick.service.PacienteService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +29,8 @@ public class ApiPacienteController {
 
     @Autowired
     CitaService citaService;
+    @Autowired
+    private PacienteService pacienteService;
 
     @GetMapping("/citasPasadas")
     public ResponseEntity<?> citasPasadas(HttpServletRequest request) {
@@ -143,6 +148,23 @@ public class ApiPacienteController {
             }
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al cancelar la cita: " + e.getMessage());
+        }
+    }
+
+    @DeleteMapping("/perfil")
+    public ResponseEntity<String> bajaPerfil( HttpServletRequest request) {
+        try {
+            String dniUsuario = Utility.obtenerDni(request);
+            Optional<Paciente> paciente = pacienteService.getPaciente(dniUsuario);
+
+            if (paciente.isPresent()) {
+                pacienteService.bajaPaciente(paciente.get());
+                return ResponseEntity.ok("Baja confirmada");
+            } else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Paciente no encontrado");
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al procesar la baja: " + e.getMessage());
         }
     }
 }

@@ -133,10 +133,11 @@ public class CitaService {
     public enum CitaEliminadaResultado {
         CITA_ELIMINADA,
         ERROR_MEDICO,
+        ERROR_PACIENTE,
         ERROR_CITA_ID,
         ERROR_ELIMINACION
     }
-    public CitaEliminadaResultado cancelarCitaMedico(String dni, Long id){
+    public CitaEliminadaResultado cancelarCitaDeMedico(String dni, Long id){
         Optional<Medico> medico = medicoService.getMedico(dni);
         Optional<Cita> cita = citaRepository.findById(id);
 
@@ -152,6 +153,7 @@ public class CitaService {
         }
         return CitaEliminadaResultado.ERROR_ELIMINACION;
     }
+
     public List<Cita> getCitas(String dni){
         return citaRepository.findByMedicoDni(dni);
     }
@@ -170,15 +172,5 @@ public class CitaService {
             return true;
         }
         return false;
-    }
-    public boolean eliminarCitasMedicos( String dniMedico) {;
-       List<Cita> citasMedico = getCitas(dniMedico);
-       for (Cita cita : citasMedico) {
-           CitaEliminadaResultado resultado =  cancelarCitaMedico(dniMedico, cita.getId());
-           if(!resultado.equals(CitaEliminadaResultado.CITA_ELIMINADA))    {
-               return false;
-           }
-       }
-       return true;
     }
 }

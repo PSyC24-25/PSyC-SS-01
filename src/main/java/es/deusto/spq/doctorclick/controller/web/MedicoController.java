@@ -23,7 +23,7 @@ import static es.deusto.spq.doctorclick.service.CitaService.CITAS_POR_HORA;
 public class MedicoController {
 
     private static final String VISTA_VER_CITAS_MEDICO = "medico/calendario";
-    private static final String VISTA_PERFIL_MEDICO = "medico/miPerfil";
+    private static final String VISTA_PERFIL_MEDICO = "medico/perfil";
 
     @Autowired
     private CitaService citaService;
@@ -72,8 +72,8 @@ public class MedicoController {
         return "medico/verCitasPasadas";
     }
 
-    @GetMapping("/miperfil")
-    public String miperfil(HttpServletRequest request, Model model){
+    @GetMapping("/perfil")
+    public String perfil(HttpServletRequest request, Model model){
         model.addAttribute("tipoCuenta", "medico");
         model.addAttribute("seccion", "perfil");
 

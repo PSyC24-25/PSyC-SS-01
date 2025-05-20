@@ -1,0 +1,22 @@
+<html lang="es"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{general/plantilla.html}">
+<head>
+    <link rel="stylesheet" th:href="@{/css/perfil.css}" />
+    <title layout:fragment="titulo">Tu perfil | Doctorclick</title>
+</head>
+    <main layout:fragment="content">
+        <div>
+            <table>
+            <tr>
+                <td id="dni" th:text="${paciente.dni}"></td>
+                <td th:text="${paciente.nombre}"></td>
+                <td th:text="${paciente.apellidos}"></td>
+            </tr>
+            </table>
+        </div>
+        <button id="baja">Darse de baja</button>
+        <script src="/js/perfil.js"></script>
+    </main>
+</html>
