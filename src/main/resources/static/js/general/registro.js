@@ -1,3 +1,25 @@
+let tipoUsuario = "paciente";
+
+const botonesTipoUsuario = document.querySelectorAll(".tipoUsuario > div");
+botonesTipoUsuario.forEach((boton) => boton.addEventListener("click", () => {
+    botonesTipoUsuario.forEach((boton) => boton.classList.remove("activo"));
+    boton.classList.add("activo")
+
+    tipoUsuario = boton.getAttribute("data-valor")
+    console.log(tipoUsuario)
+
+    let especialidadParent = document.getElementById("especialidadParent")
+    let selection = document.getElementById("especialidad")
+
+    if (tipoUsuario === "medico") {
+        especialidadParent.classList.remove("esconder");
+        selection.disabled = false;
+    } else {
+        especialidadParent.classList.add("esconder");
+        selection.disabled = true;
+    }
+}))
+
 document.addEventListener("DOMContentLoaded", function () {
 //BOTON GESTIONA ENVIAR
     let enviar = document.getElementById("enviar")
@@ -11,7 +33,7 @@ document.addEventListener("DOMContentLoaded", function () {
             "contrasena": document.getElementById("contrasena").value,
             "contrasena2": document.getElementById("contrasena2").value,
             "dni": document.getElementById("dni").value,
-            "tipo": document.getElementById("tipo").value,
+            "tipo": tipoUsuario,
             "especialidad": document.getElementById("especialidad").value
         }
 
@@ -47,22 +69,4 @@ document.addEventListener("DOMContentLoaded", function () {
             })
     }
     enviar.addEventListener('click', registrar);
-
-//GESTION SI ES MÉDICO O PACIENTE
-
-    let userType = document.getElementById("tipo")
-    userType.addEventListener('change', function() {
-        let valor = userType.value
-        let especialidadParent = document.getElementById("especialidadParent")
-        let selection = document.getElementById("especialidad")
-
-        if (valor === "medico") {
-            especialidadParent.classList.remove("esconder");
-            selection.disabled = false;
-
-        } else {
-            especialidadParent.classList.add("esconder");
-            selection.disabled = true;
-        }
-    });
 });

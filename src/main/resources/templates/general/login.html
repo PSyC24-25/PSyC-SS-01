@@ -19,12 +19,10 @@
             <input type="hidden" name="_csrf" value="${_csrf.token}"> <!-- Token CSRF generado por Spring -->
             <input type="text" id="dni" name="dni" placeholder="DNI" required>
             <input type="password" id="contrasena" name="contrasena" placeholder="Contraseña" required>
-            <div class="tipoPaciente">
-                <label for="usuario">Iniciar sesión como:</label>
-                <select id="usuario" name="usuario">
-                    <option value="paciente">Paciente</option>
-                    <option value="medico">Médico</option>
-                </select>
+            <span class="tipoUsuarioHint">Tipo de cuenta</span>
+            <div class="tipoUsuario" id="tipoUsuario">
+                <div data-valor="paciente" class="activo">Paciente</div>
+                <div data-valor="medico">Medico</div>
             </div>
             <button type="submit" id="enviar">Iniciar sesión</button>
             <br>

@@ -31,7 +31,7 @@ form input {
     margin-bottom: 5px;
 }
 
-form > .tipoPaciente {
+form > .registroEspecialidad {
     margin-bottom: 10px;
     width: 100%;
     text-align: center;
@@ -97,4 +97,41 @@ form .mensajeError > svg {
     width: 30px;
     height: 30px;
     fill: white;
+}
+
+.tipoUsuario {
+    width: 100%;
+    display: flex;
+    gap: 10px;
+    margin: 5px 0;
+}
+
+.tipoUsuario > div {
+    flex: 1;
+    padding: 5px 10px;
+    box-sizing: border-box;
+    border-radius: 5px;
+    border: 1px solid black;
+}
+
+.tipoUsuario > div.activo {
+    font-weight: bold;
+    border-color: var(--acento);
+    color: var(--acento);
+    background-color: #e8f7ff;
+    cursor: default;
+}
+
+.tipoUsuario > div:not(.activo) {
+    opacity: .8;
+    background-color: #f7f7f7;
+    cursor: pointer;
+}
+
+.tipoUsuarioHint {
+    opacity: .5;
+    font-size: 10px;
+    font-weight: bold;
+    width: 100%;
+    text-align: center;
 }

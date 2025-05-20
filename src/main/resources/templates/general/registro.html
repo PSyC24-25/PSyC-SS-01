@@ -19,14 +19,12 @@
             <input type="text" id="apellidos" name="apellidos" placeholder="Tus dos apellidos" required>
             <input type="password" id="contrasena" name="contrasena" placeholder="Una contraseña" required>
             <input type="password" id="contrasena2" name="contrasena2" placeholder="Repite la contraseña" required>
-            <div class="tipoPaciente" id="tipoUsuario">
-                <label for="tipo">Registrarse como: </label>
-                <select id="tipo" name="tipo">
-                    <option value="medico">Médico</option>
-                    <option value="paciente">Paciente</option>
-                </select>
+            <span class="tipoUsuarioHint">Tipo de cuenta</span>
+            <div class="tipoUsuario" id="tipoUsuario">
+                <div data-valor="paciente" class="activo">Paciente</div>
+                <div data-valor="medico">Medico</div>
             </div>
-            <div id="especialidadParent" class="tipoPaciente">
+            <div id="especialidadParent" class="registroEspecialidad esconder">
                 <label for="especialidad">Especialidad: </label>
                 <select id="especialidad" name="especialidad">
                     <option value="cardiologia">Cardiología</option>

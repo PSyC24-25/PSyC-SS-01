@@ -1,3 +1,14 @@
+let tipoUsuario = "paciente";
+
+const botonesTipoUsuario = document.querySelectorAll(".tipoUsuario > div");
+botonesTipoUsuario.forEach((boton) => boton.addEventListener("click", () => {
+    botonesTipoUsuario.forEach((boton) => boton.classList.remove("activo"));
+    boton.classList.add("activo")
+
+    tipoUsuario = boton.getAttribute("data-valor")
+    console.log(tipoUsuario)
+}))
+
 document.addEventListener("DOMContentLoaded", function(){
 
     let enviar = document.getElementById("enviar")
@@ -7,7 +18,7 @@ document.addEventListener("DOMContentLoaded", function(){
         let data = {
             'dni' : document.getElementById("dni").value,
             'contrasena' : document.getElementById("contrasena").value,
-            'tipoUsuario': document.getElementById("usuario").value
+            'tipoUsuario': tipoUsuario,
         }
 
         let csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
@@ -33,7 +44,7 @@ document.addEventListener("DOMContentLoaded", function(){
                     document.querySelector(".mensajeError > .texto").textContent = data.error;
                     for(const campo of data.campos) {
                         console.log(campo)
-                        document.querySelector(`input[id=${campo}]`).classList.add("error")
+                        document.querySelector(`[id=${campo}]`).classList.add("error")
                     }
                 }
         })
