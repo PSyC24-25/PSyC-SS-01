@@ -69,6 +69,16 @@ public class PacienteServiceTest {
         assertEquals("pass123", resultado.get().getContrasenia());
     }
 
+    @Test
+    @DisplayName("Obtener paciente inexistente por DNI")
+    void obtenerPacienteInexistentePorDni() {
+        String dni = "00000000A";
+
+        when(pacienteRepository.findByDni(dni)).thenReturn(Optional.empty());
+        Optional<Paciente> resultado = pacienteService.getPaciente(dni);
+        assertTrue(resultado.isEmpty());
+    }
+
 
     @Test
     @DisplayName("Obtener paciente por ID")
@@ -82,5 +92,15 @@ public class PacienteServiceTest {
 
         assertTrue(resultado.isPresent());
         assertEquals("Lucía", resultado.get().getNombre());
+    }
+
+    @Test
+    @DisplayName("Obtener paciente inexistente por ID")
+    void obtenerPacienteInexistentePorId() {
+        Long id = 1234L;
+
+        when(pacienteRepository.findById(id)).thenReturn(Optional.empty());
+        Optional<Paciente> resultado = pacienteService.getPaciente(id);
+        assertTrue(resultado.isEmpty());
     }
 }
