@@ -23,8 +23,8 @@ jobs:
       run: mysql -uroot -h127.0.0.1 < src/sql/init.sql  
     - name: Compilar el código
       run: mvn clean compile
-    - name: Testing
-      run: mvn test
+    - name: Testing y comprobacion de coverage
+      run: mvn verify
     - name: Instalar doxygen
       run: sudo apt-get install -y doxygen
     - name: Instalar graphviz
