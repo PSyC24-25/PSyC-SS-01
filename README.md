@@ -28,7 +28,27 @@ A continuación, se detallan los comandos necesarios para configurar la base de 
 
 Con estos pasos, habrás configurado correctamente la base de datos `doctorclick` y el usuario `spq` con los permisos necesarios.
 
+
 ## Ejecución del programa
+
+
+Para ejecutar mediante Docker:
+
+1. **Ejecución Docker:**
+   
+    ```bash
+   docker-compose up --build
+   ```
+
+
+Para ejecutar los test:
+
+1. **Test con Maven:**
+   
+   ```bash
+   mvn test
+   ```
+
 
 Para ejecutar el proyecto, sigue los siguientes pasos:
 
@@ -38,10 +58,10 @@ Para ejecutar el proyecto, sigue los siguientes pasos:
     mvn compile
     ```
 
-2. **Iniciar el servidor Spring Boot:**
+2. **Iniciar el servidor Spring Boot (sin test):**
 
     ```bash
-    mvn spring-boot:run
+    mvn spring-boot:run -DskipTests
     ```
 
 Esto iniciará el servidor y podrás acceder a la aplicación en el puerto configurado.
