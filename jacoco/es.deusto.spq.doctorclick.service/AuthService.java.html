@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AuthService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DoctorClick</a> &gt; <a href="index.source.html" class="el_package">es.deusto.spq.doctorclick.service</a> &gt; <span class="el_source">AuthService.java</span></div><h1>AuthService.java</h1><pre class="source lang-java linenums">package es.deusto.spq.doctorclick.service;
+
+import com.nimbusds.jose.*;
+import com.nimbusds.jose.crypto.*;
+import com.nimbusds.jwt.*;
+
+import java.text.ParseException;
+import java.util.Date;
+
+/**
+ * Servicio utilitario encargado de crear , validar y extraer datos de los tokens JWT usados
+ * para las sesiones.
+ */
+<span class="nc" id="L14">public class AuthService {</span>
+<span class="fc" id="L15">    private static final byte[] PRIVATE_KEY = &quot;f9d7776651394fdae1b70e819f8149c51c52d49e19962ee6cb6b193ce7f6f18a&quot;.getBytes();</span>
+
+	/**
+	 * CrearTokenJWT crea un token JWT a partir del DNI y el tipo de usuario ('medico', 'paciente').
+	 * Devuelve el token como String, firmado con la llave privada.
+	 */
+    public static String CrearTokenJWT(String dni, String tipo) throws JOSEException {
+<span class="fc" id="L22">        JWSSigner signer = new MACSigner(PRIVATE_KEY);</span>
+
+<span class="fc" id="L24">        JWTClaimsSet claimsSet = new JWTClaimsSet.Builder()</span>
+<span class="fc" id="L25">                .expirationTime(new Date(new Date().getTime() + 60 * 1000 * 60)) // 1 hora</span>
+<span class="fc" id="L26">                .claim(&quot;dni&quot;, dni)</span>
+<span class="fc" id="L27">                .claim(&quot;tipo&quot;, tipo)</span>
+<span class="fc" id="L28">                .build();</span>
+
+<span class="fc" id="L30">        SignedJWT signedJWT = new SignedJWT(new JWSHeader(JWSAlgorithm.HS256), claimsSet);</span>
+<span class="fc" id="L31">        signedJWT.sign(signer);</span>
+
+<span class="fc" id="L33">        return signedJWT.serialize();</span>
+    }
+
+	/**
+	 * EsJWTValido devolvera `true` si el token JWT pasado como parametro es valido/firmado por nosotros.
+	 * En cualquier otro caso, ya sea JWT caducado, checksum no valido, o cualquier otro error, devolvera `false`.
+	 */
+    public static boolean EsJWTValido(String tokenJwt) throws JOSEException, ParseException {
+<span class="fc bfc" id="L41" title="All 2 branches covered.">        if(tokenJwt == null) return false;</span>
+
+<span class="fc" id="L43">        SignedJWT signedJWT = SignedJWT.parse(tokenJwt);</span>
+<span class="fc" id="L44">        JWSVerifier verifier = new MACVerifier(PRIVATE_KEY);</span>
+
+<span class="fc bfc" id="L46" title="All 2 branches covered.">        if(!signedJWT.verify(verifier)) {</span>
+<span class="fc" id="L47">            System.out.println(&quot;La firma del token no es valida.&quot;);</span>
+<span class="fc" id="L48">            return false;</span>
+        }
+
+<span class="fc" id="L51">        JWTClaimsSet claims = signedJWT.getJWTClaimsSet();</span>
+<span class="fc" id="L52">        Date expirationTime = claims.getExpirationTime();</span>
+<span class="pc bpc" id="L53" title="1 of 4 branches missed.">        if (expirationTime != null &amp;&amp; expirationTime.before(new Date())) {</span>
+<span class="fc" id="L54">            System.out.println(&quot;Token expirado&quot;);</span>
+<span class="fc" id="L55">            return false;</span>
+        }
+
+<span class="fc" id="L58">        return true;</span>
+    }
+
+	/**
+	 * ObtenerClaimsJWT devuelve un mapa (`JWTClaimsSet`) con los datos embebidos en el JWT.
+	 */
+    public static JWTClaimsSet ObtenerClaimsJWT(String tokenJwt) throws ParseException {
+<span class="fc" id="L65">        SignedJWT signedJWT = SignedJWT.parse(tokenJwt);</span>
+<span class="fc" id="L66">        JWTClaimsSet claims = signedJWT.getJWTClaimsSet();</span>
+
+<span class="fc" id="L68">        return claims;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

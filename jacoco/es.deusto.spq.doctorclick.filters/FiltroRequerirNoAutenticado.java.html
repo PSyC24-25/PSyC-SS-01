@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>FiltroRequerirNoAutenticado.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DoctorClick</a> &gt; <a href="index.source.html" class="el_package">es.deusto.spq.doctorclick.filters</a> &gt; <span class="el_source">FiltroRequerirNoAutenticado.java</span></div><h1>FiltroRequerirNoAutenticado.java</h1><pre class="source lang-java linenums">package es.deusto.spq.doctorclick.filters;
+
+import com.nimbusds.jwt.JWTClaimsSet;
+import es.deusto.spq.doctorclick.service.AuthService;
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.web.filter.OncePerRequestFilter;
+
+<span class="fc" id="L11">public class FiltroRequerirNoAutenticado extends OncePerRequestFilter {</span>
+    @Override
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) {
+<span class="fc" id="L14">        System.out.println(&quot;FiltroNoAutenticado&quot;);</span>
+<span class="fc" id="L15">        String token = null;</span>
+<span class="fc" id="L16">        Cookie[] cookies = request.getCookies();</span>
+<span class="pc bpc" id="L17" title="1 of 2 branches missed.">        if(cookies != null){</span>
+<span class="nc bnc" id="L18" title="All 2 branches missed.">            for(Cookie cookie : cookies){</span>
+<span class="nc bnc" id="L19" title="All 2 branches missed.">                if(cookie.getName().equals(&quot;JWT&quot;)){</span>
+<span class="nc" id="L20">                    token = cookie.getValue();</span>
+                }
+            }
+        }
+
+        try {
+<span class="pc bpc" id="L26" title="1 of 2 branches missed.">            if(!AuthService.EsJWTValido(token)) {</span>
+<span class="fc" id="L27">                chain.doFilter(request, response);</span>
+<span class="fc" id="L28">                return;</span>
+            }
+
+            // Esto se usara para la api
+            // response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            // response.getWriter().write(&quot;Ya tienes una sesion iniciada.&quot;);
+
+            // Si es valido, redirigir a la pantalla principal segun el rol
+<span class="nc" id="L36">            JWTClaimsSet claims = AuthService.ObtenerClaimsJWT(token);</span>
+
+<span class="nc" id="L38">            String tipo = (String)claims.getClaim(&quot;tipo&quot;);</span>
+<span class="nc bnc" id="L39" title="All 2 branches missed.">            if(tipo.equals(&quot;medico&quot;)) {</span>
+<span class="nc" id="L40">                response.sendRedirect(request.getContextPath() + &quot;/medico/&quot;);</span>
+<span class="nc bnc" id="L41" title="All 2 branches missed.">            } else if(tipo.equals(&quot;paciente&quot;)) {</span>
+<span class="nc" id="L42">                response.sendRedirect(request.getContextPath() + &quot;/paciente/&quot;);</span>
+            }
+
+<span class="nc" id="L45">            response.setStatus(HttpServletResponse.SC_TEMPORARY_REDIRECT);</span>
+<span class="nc" id="L46">        } catch (Exception e) {</span>
+<span class="nc" id="L47">            System.out.println(&quot;Error al obtener claims del JWT.&quot;);</span>
+<span class="nc" id="L48">        }</span>
+<span class="nc" id="L49">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

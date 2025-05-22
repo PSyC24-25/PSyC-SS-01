@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ApiMedicoController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DoctorClick</a> &gt; <a href="index.source.html" class="el_package">es.deusto.spq.doctorclick.controller.api</a> &gt; <span class="el_source">ApiMedicoController.java</span></div><h1>ApiMedicoController.java</h1><pre class="source lang-java linenums">package es.deusto.spq.doctorclick.controller.api;
+
+import es.deusto.spq.doctorclick.Utility;
+import es.deusto.spq.doctorclick.model.Cita;
+import es.deusto.spq.doctorclick.model.Medico;
+import es.deusto.spq.doctorclick.service.CitaService;
+import es.deusto.spq.doctorclick.service.MedicoService;
+import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Optional;
+
+@RestController
+@RequestMapping(&quot;/api/medico&quot;)
+<span class="fc" id="L19">public class ApiMedicoController {</span>
+
+    @Autowired
+    private CitaService citaService;
+    @Autowired
+    private MedicoService medicoService;
+
+    @GetMapping(&quot;/citas/{id}&quot;)
+    public ResponseEntity&lt;?&gt; obtenerCita(@PathVariable(&quot;id&quot;) Long id, HttpServletRequest request){
+        try {
+<span class="nc" id="L29">            String dni = Utility.obtenerDni(request);</span>
+<span class="nc" id="L30">            Optional&lt;Cita&gt; cita = citaService.getCita(id);</span>
+<span class="nc bnc" id="L31" title="All 2 branches missed.">            if (cita.isEmpty()) {</span>
+<span class="nc" id="L32">                return ResponseEntity.status(404).body(&quot;Cita no encontrada&quot;);</span>
+<span class="nc bnc" id="L33" title="All 2 branches missed.">            } else if (!cita.get().getMedico().getDni().equals(dni)) {</span>
+<span class="nc" id="L34">                return ResponseEntity.status(403).body(&quot;No puedes acceder a esta cita&quot;);</span>
+            } else {
+<span class="nc" id="L36">                return ResponseEntity.status(200).body(cita.get());</span>
+            }
+<span class="nc" id="L38">        } catch (Exception e) {</span>
+<span class="nc" id="L39">            e.printStackTrace();</span>
+<span class="nc" id="L40">            return ResponseEntity.status(500).body(&quot;Error al obtener la cita&quot;);</span>
+        }
+    }
+
+    @DeleteMapping(&quot;/citas/{id}&quot;)
+    public ResponseEntity&lt;?&gt; cancelarCita(@PathVariable(&quot;id&quot;) Long id, HttpServletRequest request) {
+        try {
+<span class="nc" id="L47">            String dni = Utility.obtenerDni(request);</span>
+<span class="nc" id="L48">            CitaService.CitaEliminadaResultado resultado = citaService.cancelarCitaDeMedico(dni,id);</span>
+
+<span class="nc bnc" id="L50" title="All 5 branches missed.">            return switch (resultado) {</span>
+<span class="nc" id="L51">                case CITA_ELIMINADA -&gt; ResponseEntity.status(200).body(&quot;Cita eliminada&quot;);</span>
+<span class="nc" id="L52">                case ERROR_MEDICO -&gt; ResponseEntity.status(404).body(&quot;Medico no eocntrado&quot;);</span>
+<span class="nc" id="L53">                case ERROR_CITA_ID -&gt; ResponseEntity.status(404).body(&quot;Cita no encotrada&quot;);</span>
+<span class="nc" id="L54">                case ERROR_ELIMINACION -&gt; ResponseEntity.status(404).body(&quot;Error en la eliminar del cita&quot;);</span>
+<span class="nc" id="L55">                default -&gt; ResponseEntity.status(404).body(&quot;Error desconocido.&quot;);</span>
+            };
+<span class="nc" id="L57">        } catch (Exception e) {</span>
+<span class="nc" id="L58">            e.printStackTrace();</span>
+<span class="nc" id="L59">            return ResponseEntity.status(500).body(&quot;Error en el servidor&quot;);</span>
+        }
+    }
+
+   @DeleteMapping(&quot;/perfil&quot;)
+    public ResponseEntity&lt;String&gt; bajaPerfil( HttpServletRequest request) {
+        try {
+<span class="nc" id="L66">            String dniUsuario = Utility.obtenerDni(request);</span>
+<span class="nc" id="L67">            Optional&lt;Medico&gt; medico = medicoService.getMedico(dniUsuario);</span>
+
+<span class="nc bnc" id="L69" title="All 2 branches missed.">            if (medico.isPresent()) {</span>
+<span class="nc" id="L70">                medicoService.bajaMedico(medico.get());</span>
+<span class="nc" id="L71">                return ResponseEntity.ok(&quot;Baja confirmada&quot;);</span>
+            } else {
+<span class="nc" id="L73">                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(&quot;Médico no encontrado&quot;);</span>
+            }
+<span class="nc" id="L75">        } catch (Exception e) {</span>
+<span class="nc" id="L76">            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(&quot;Error al procesar la baja: &quot; + e.getMessage());</span>
+        }
+    }
+
+    @GetMapping(&quot;/citasPasadas&quot;)
+    public ResponseEntity&lt;?&gt; citasPasadas(HttpServletRequest request) {
+        try {
+<span class="nc" id="L83">            String dni = Utility.obtenerDni(request);</span>
+<span class="nc" id="L84">            List&lt;Cita&gt; citas = citaService.obtenerCitaMedicoPasado(dni);</span>
+<span class="nc" id="L85">            return ResponseEntity.status(HttpStatus.OK).body(citas);</span>
+<span class="nc" id="L86">        } catch (Exception e){</span>
+<span class="nc" id="L87">            e.printStackTrace();</span>
+<span class="nc" id="L88">            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());</span>
+        }
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

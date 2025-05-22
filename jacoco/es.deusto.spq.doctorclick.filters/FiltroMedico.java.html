@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>FiltroMedico.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DoctorClick</a> &gt; <a href="index.source.html" class="el_package">es.deusto.spq.doctorclick.filters</a> &gt; <span class="el_source">FiltroMedico.java</span></div><h1>FiltroMedico.java</h1><pre class="source lang-java linenums">package es.deusto.spq.doctorclick.filters;
+
+import es.deusto.spq.doctorclick.service.AuthService;
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.web.filter.OncePerRequestFilter;
+
+import java.io.IOException;
+import java.text.ParseException;
+
+<span class="fc" id="L14">public class FiltroMedico extends OncePerRequestFilter {</span>
+    @Override
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws ServletException, IOException {
+<span class="fc" id="L17">        System.out.println(&quot;FiltroMedico&quot;);</span>
+<span class="fc" id="L18">        String token = null;</span>
+<span class="fc" id="L19">        Cookie[] cookies = request.getCookies();</span>
+<span class="fc bfc" id="L20" title="All 2 branches covered.">        for(Cookie cookie : cookies){</span>
+<span class="pc bpc" id="L21" title="1 of 2 branches missed.">            if(cookie.getName().equals(&quot;JWT&quot;)){</span>
+<span class="fc" id="L22">                token = cookie.getValue();</span>
+            }
+        }
+
+<span class="pc bpc" id="L26" title="1 of 2 branches missed.">        assert token != null; // Sabemos que no es null</span>
+
+        try {
+<span class="pc bpc" id="L29" title="1 of 2 branches missed.">            if(AuthService.ObtenerClaimsJWT(token).getClaim(&quot;tipo&quot;).equals(&quot;medico&quot;)){</span>
+<span class="fc" id="L30">                chain.doFilter(request, response);</span>
+<span class="fc" id="L31">                return;</span>
+            }
+
+<span class="nc" id="L34">            response.sendRedirect(request.getContextPath() + &quot;/auth/login&quot;);</span>
+            // Esto se usara para la api
+            // response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            // response.getWriter().write(&quot;No autorizado.&quot;);
+<span class="nc" id="L38">        } catch (ParseException e) {</span>
+<span class="nc" id="L39">            System.out.println(&quot;Error al obtener claims del JWT.&quot;);</span>
+<span class="nc" id="L40">        }</span>
+<span class="nc" id="L41">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>
